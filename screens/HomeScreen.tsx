@@ -1,15 +1,17 @@
 import { StyleSheet } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { Text, TouchableOpacity, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
+      <Text style={styles.title}>LineTime</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TabTwo')}>
+        <Text >Suggest activities</Text>
+      </TouchableOpacity>
+
     </View>
   );
 }
@@ -29,4 +31,10 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  button: {
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+  },
+
 });
