@@ -30,6 +30,8 @@ export default function SuggestionForm() {
         onChangeText={(text) => setTimeInMinutes(+text)} />
         <Text> minutes available</Text>
       </View>
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
       <TouchableOpacity style={styles.button}>
         <Text>Suggest 🚀</Text>
       </TouchableOpacity>
@@ -67,6 +69,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-    marginTop: 50,
   }
 });
