@@ -1,16 +1,29 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 import { useState } from 'react';
-import { primaryColor, secondaryColor, tertiaryColor } from '../constants/Colors';
-import EditScreenInfo from '../components/EditScreenInfo';
+
+import { secondaryColor } from '../constants/Colors';
+
 import { Text, View, TouchableOpacity } from '../components/Themed';
-import { TextInput } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import { MonoText } from '../components/StyledText';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function SuggestionForm() {
 
-  const [energy, setEnergy] = useState('energized'); // TODO Create Energy type
-  const [timeInMinutes, setTimeInMinutes] = useState(60); 
+  enum EnergyType {
+    Tired,
+    Normal,
+    Energetic
+  }
+
+  const [energy, setEnergy] = useState<EnergyType>(EnergyType.Normal);
+  const [open, setOpen] = useState(false);
+  const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
+
+  const energyTypeItems = [
+    { label: 'Tired', value: EnergyType.Tired },
+    { label: 'Normal', value: EnergyType.Normal },
+    { label: 'Energetic', value: EnergyType.Energetic },
+  ];
 
   return (
     <View style={styles.container}>
@@ -18,19 +31,29 @@ export default function SuggestionForm() {
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
       {/* Energy */}
-      <View style={{ flexDirection: 'row' }}>
-        <MonoText>I'm feeling </MonoText>
-        {/* TODO: Replace following TextInput with energy */}
-        <TextInput style={styles.textInput} value={energy} onChangeText={(text) => setEnergy(text)} />
+      <View style={{flexDirection: "column"}}>
+        <Text>I'm feeling </Text>
+        <DropDownPicker
+          open={open}
+          value={energy}
+          items={energyTypeItems}
+          setValue={setEnergy}
+          setOpen={setOpen}
+          style={{width: 100}}
+        />
+
       </View>
+
+      {/* Line of empty text */}
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
       {/* Time */}
       <View style={{ flexDirection: 'row' }}>
-        <Text>And I have </Text>
-        <TextInput style={styles.textInput} value={timeInMinutes.toString()} 
-        onChangeText={(text) => setTimeInMinutes(+text)} />
+        <Text>and I have </Text>
+        <TextInput style={styles.textInput} value={timeInMinutes.toString()}
+          onChangeText={(text) => setTimeInMinutes(+text)} />
         <Text> minutes available</Text>
       </View>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
       <TouchableOpacity style={styles.button}>
         <Text>Suggest 🚀</Text>
@@ -43,7 +66,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   title: {
     fontSize: 20,
@@ -65,7 +88,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: secondaryColor,
-    margin: 10,
+    marginTop: 30,
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
