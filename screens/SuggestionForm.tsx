@@ -31,7 +31,7 @@ export default function SuggestionForm() {
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
       {/* Energy */}
-      <View style={{flexDirection: "column"}}>
+      <View style={{alignItems:'center', justifyContent: 'center'}}>
         <Text>I'm feeling </Text>
         <DropDownPicker
           open={open}
@@ -39,16 +39,16 @@ export default function SuggestionForm() {
           items={energyTypeItems}
           setValue={setEnergy}
           setOpen={setOpen}
-          style={{width: 100}}
+          style={{width: 150}}
         />
 
       </View>
 
       {/* Line of empty text */}
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View style={styles.blank} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
       {/* Time */}
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', zIndex: -5 }}>
         <Text>and I have </Text>
         <TextInput style={styles.textInput} value={timeInMinutes.toString()}
           onChangeText={(text) => setTimeInMinutes(+text)} />
@@ -77,6 +77,12 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  blank: {
+    marginVertical: 15,
+    height: 1,
+    width: '80%',
+    opacity: 0
+  },
   textInput: {
     width: 80,
     marginLeft: 10,
@@ -92,5 +98,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
+    zIndex: -4
   }
 });
