@@ -1,13 +1,19 @@
 import { StyleSheet, TextInput } from 'react-native';
 import { useState } from 'react';
+import { useForm, Controller } from "react-hook-form";
 
 import { secondaryColor } from '../constants/Colors';
-
 import { Text, View, TouchableOpacity } from '../components/Themed';
-import { MonoText } from '../components/StyledText';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function SuggestionForm() {
+  
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      energy: '',
+      time: ''
+    }
+  });
 
   enum EnergyType {
     Tired,
@@ -15,7 +21,7 @@ export default function SuggestionForm() {
     Energetic
   }
 
-  const [energy, setEnergy] = useState<EnergyType>(EnergyType.Normal);
+  const [energy, setEnergy] = useState<EnergyType>(EnergyType.Energetic);
   const [open, setOpen] = useState(false);
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
 
@@ -51,7 +57,7 @@ export default function SuggestionForm() {
       <View style={{ flexDirection: 'row', zIndex: -5 }}>
         <Text>and I have </Text>
         <TextInput style={styles.textInput} value={timeInMinutes.toString()}
-          onChangeText={(text) => setTimeInMinutes(+text)} />
+          onChangeText={(text) => setTimeInMinutes(+text)} keyboardType='numeric' />
         <Text> minutes available</Text>
       </View>
 
@@ -98,6 +104,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-    zIndex: -4
+    position: 'absolute',
+    bottom: 20
   }
 });
