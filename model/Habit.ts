@@ -2,7 +2,7 @@ export default class Habit {
     
     id: number;
     name: string;
-    lastDone: Date | undefined;
+    lastDone?: Date;
 
     constructor(id: number, name: string) {
         this.id = id;
