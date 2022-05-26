@@ -1,4 +1,4 @@
 export interface Suggestion { 
-    activity: string;
-    time: number;
+    Activity: string;
+    suggested_time: number;
 }

@@ -16,16 +16,19 @@ const energyTypeItems = [
   { label: 'Energetic', value: 6 },
 ];
 
-export default function SuggestionForm({navigation }: RootTabScreenProps<'SuggestionForm'>) {
+export default function SuggestionForm({ navigation }: RootTabScreenProps<'SuggestionForm'>) {
   const [energy, setEnergy] = useState<number>(4);
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
 
   const [open, setOpen] = useState(false);
 
   const onSubmit = () => {
-    let suggestions: Suggestion[] = fetchSuggestions(timeInMinutes, energy);
-    console.log(suggestions);
-    navigation.navigate('SuggestionList', { listOfSuggestions: suggestions });
+    fetchSuggestions(timeInMinutes, energy).then(
+      (suggestions) => {
+        console.log(suggestions);
+        navigation.navigate('SuggestionList', { listOfSuggestions: suggestions });
+      }
+    )
   };
 
   const handleTimeSlide = (value: number) => {
@@ -40,7 +43,7 @@ export default function SuggestionForm({navigation }: RootTabScreenProps<'Sugges
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
       {/* Energy */}
-      <View style={{alignItems:'center', justifyContent: 'center'}}>
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
         <Text>I'm feeling </Text>
         <DropDownPicker
           open={open}
@@ -48,7 +51,7 @@ export default function SuggestionForm({navigation }: RootTabScreenProps<'Sugges
           items={energyTypeItems}
           setValue={setEnergy}
           setOpen={setOpen}
-          style={{width: 150}}
+          style={{ width: 150 }}
         />
 
       </View>
