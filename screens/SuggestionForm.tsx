@@ -1,35 +1,38 @@
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { useForm, Controller } from "react-hook-form";
 
-import { secondaryColor } from '../constants/Colors';
+import { secondaryColor, transparentSecondaryColor } from '../constants/Colors';
 import { Text, View, TouchableOpacity } from '../components/Themed';
 import DropDownPicker from 'react-native-dropdown-picker';
+import CircleSlider from '../components/CircleSlider';
 
-export default function SuggestionForm() {
-  
-  const { control, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: {
-      energy: '',
-      time: ''
-    }
-  });
+import { fetchSuggestions } from '../api/LinetimeAPI';
+import { Suggestion } from '../model/Suggestion';
+import { RootTabScreenProps } from '../types';
 
-  enum EnergyType {
-    Tired,
-    Normal,
-    Energetic
-  }
+const energyTypeItems = [
+  { label: 'Tired', value: 2 },
+  { label: 'Normal', value: 4 },
+  { label: 'Energetic', value: 6 },
+];
 
-  const [energy, setEnergy] = useState<EnergyType>(EnergyType.Energetic);
-  const [open, setOpen] = useState(false);
+export default function SuggestionForm({navigation }: RootTabScreenProps<'SuggestionForm'>) {
+  const [energy, setEnergy] = useState<number>(4);
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
 
-  const energyTypeItems = [
-    { label: 'Tired', value: EnergyType.Tired },
-    { label: 'Normal', value: EnergyType.Normal },
-    { label: 'Energetic', value: EnergyType.Energetic },
-  ];
+  const [open, setOpen] = useState(false);
+
+  const onSubmit = () => {
+    let suggestions: Suggestion[] = fetchSuggestions(timeInMinutes, energy);
+    console.log(suggestions);
+    navigation.navigate('SuggestionList', { listOfSuggestions: suggestions });
+  };
+
+  const handleTimeSlide = (value: number) => {
+    const minutes = Math.round(value / 3);
+    setTimeInMinutes(minutes);
+    return minutes;
+  };
 
   return (
     <View style={styles.container}>
@@ -54,14 +57,12 @@ export default function SuggestionForm() {
       <View style={styles.blank} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
       {/* Time */}
-      <View style={{ flexDirection: 'row', zIndex: -5 }}>
-        <Text>and I have </Text>
-        <TextInput style={styles.textInput} value={timeInMinutes.toString()}
-          onChangeText={(text) => setTimeInMinutes(+text)} keyboardType='numeric' />
-        <Text> minutes available</Text>
+      <View style={{ flexDirection: 'column', zIndex: -5, width: '100%', alignItems: 'center' }}>
+        <Text>Time available</Text>
+        <CircleSlider value={timeInMinutes} min={20} max={300} onValueChange={handleTimeSlide} dialRadius={80} meterColor={secondaryColor} />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={onSubmit}>
         <Text>Suggest 🚀</Text>
       </TouchableOpacity>
     </View>
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     borderColor: "#eee"
   },
   button: {
-    backgroundColor: secondaryColor,
+    backgroundColor: transparentSecondaryColor,
     marginTop: 30,
     borderWidth: 1,
     borderRadius: 10,

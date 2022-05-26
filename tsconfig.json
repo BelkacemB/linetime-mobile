@@ -1,6 +1,8 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "outDir": "out",
+    "sourceMap": true,
+    "strict": false
   }
 }

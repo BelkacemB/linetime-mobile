@@ -1,11 +1,16 @@
 import { StyleSheet } from 'react-native';
-import { primaryColor, secondaryColor, tertiaryColor } from '../constants/Colors';
+import { primaryColor, transparentSecondaryColor } from '../constants/Colors';
 import { Text, TouchableOpacity, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import { Today } from '../components/Today';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
+  const user = "Belkacem"
+
   return (
     <View style={styles.container}>
+      <Today />
+      <Text style={styles.welcome}>Hello, {user}</Text>
       <Text style={styles.title}>LineTime</Text>
       <View style={styles.separator} lightColor={primaryColor} darkColor="rgba(255,255,255,0.1)" />
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SuggestionForm')}>
@@ -29,6 +34,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  welcome: {
+    fontSize: 20,
+    fontVariant: ['small-caps'],
+    marginBottom: 10
+  },
   separator: {
     marginVertical: 30,
     height: 1,
@@ -40,7 +50,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-    backgroundColor: secondaryColor
-  },
-
+    backgroundColor: transparentSecondaryColor
+  }
 });
