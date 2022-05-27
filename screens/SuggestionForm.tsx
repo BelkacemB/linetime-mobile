@@ -7,17 +7,16 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import CircleSlider from '../components/CircleSlider';
 
 import { fetchSuggestions } from '../api/LinetimeAPI';
-import { Suggestion } from '../model/Suggestion';
 import { RootTabScreenProps } from '../types';
 
 const energyTypeItems = [
   { label: 'Tired', value: 2 },
-  { label: 'Normal', value: 4 },
+  { label: 'Normal', value: 3 },
   { label: 'Energetic', value: 6 },
 ];
 
 export default function SuggestionForm({ navigation }: RootTabScreenProps<'SuggestionForm'>) {
-  const [energy, setEnergy] = useState<number>(4);
+  const [energy, setEnergy] = useState<number>(6);
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
 
   const [open, setOpen] = useState(false);
@@ -66,7 +65,7 @@ export default function SuggestionForm({ navigation }: RootTabScreenProps<'Sugge
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onSubmit}>
-        <Text>Suggest 🚀</Text>
+        <Text>LineTime 🚀</Text>
       </TouchableOpacity>
     </View>
   );
