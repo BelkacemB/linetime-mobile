@@ -9,7 +9,6 @@ export const SuggestionList = ({route}) => {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>Suggestion list</Text>
         <FlatList data={listOfSuggestions} renderItem={({item}) => <SuggestionElement suggestion={item} />}  />
     </View>
   )
@@ -20,9 +19,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
   }
 });

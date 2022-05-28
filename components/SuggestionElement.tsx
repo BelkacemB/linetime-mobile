@@ -1,6 +1,7 @@
 import React from 'react'
 import { transparentSecondaryColor } from '../constants/Colors'
-import { Suggestion } from '../model/Suggestion'
+import { Suggestion } from '../model/LinetimeTypes'
+
 import { View, Text } from './Themed'
 import { TouchableOpacity } from './Themed'
 
