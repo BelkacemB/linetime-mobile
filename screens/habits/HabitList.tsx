@@ -1,39 +1,21 @@
-import React, { useReducer } from 'react'
+import React, {useContext} from 'react'
 import { FlatList, StyleSheet } from 'react-native'
+import { HabitElement } from '../../components/HabitElement'
 import { Text, TouchableOpacity, View } from '../../components/Themed'
-import { primaryColor } from '../../constants/Colors'
-import Habit from '../../model/Habit'
-import { HabitContext, habitReducer } from '../../Store'
+import { HabitContext } from '../../Store'
 
 export const HabitList = ({ navigation }) => {
-    // TODO Move this up to the store
-    type HabitContext = {
-        habits: Array<Habit>
-    }
-
-    // This will be an API call in the future
-    const initialState: HabitContext = {
-        habits: []
-    }
-
-    const [state, dispatch] = useReducer(habitReducer, initialState)
+    
+    const { state } = useContext(HabitContext)
+    console.log('habits: ', state.habits)
 
     return (
-        <HabitContext.Provider value={{ state, dispatch }}>
-            {/* List os existing habits */}
             <View style={styles.container}>
-                
-                <View>
-                    <FlatList
+               <FlatList
                         data={state.habits}
                         keyExtractor={(item) => item.id}
-                        renderItem={({ item }) => (<Text>{item.id}</Text>)}
+                        renderItem={({ item }) => (<HabitElement habit={item} />)}
                     />
-
-                </View>
-
-                <View style={styles.separator} lightColor={primaryColor} darkColor="rgba(255,255,255,0.1)" />
-
                 {/* Add a new habit */}
                 <View>
                     <TouchableOpacity onPress={() => { navigation.navigate('AddHabit') }}>
@@ -42,7 +24,6 @@ export const HabitList = ({ navigation }) => {
                 </View>
 
             </View>
-        </HabitContext.Provider>
     )
 }
 

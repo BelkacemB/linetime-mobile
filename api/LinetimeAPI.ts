@@ -12,7 +12,6 @@ export function fetchSuggestions(time: number, energy: number, goal: Goal): Prom
         }
         );
 }
-
 // TODO Make sure this only runs once, and not every time the page is loaded
 export function getUserHabits(): Habit[] {
     // Create a list of mock habits
