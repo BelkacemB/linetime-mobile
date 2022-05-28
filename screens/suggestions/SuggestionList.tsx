@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
-import { SuggestionElement } from '../components/SuggestionElement'
-import { Text, View } from '../components/Themed'
+import { SuggestionElement } from '../../components/SuggestionElement'
+import { View } from '../../components/Themed'
 
 export const SuggestionList = ({route}) => {
   const {listOfSuggestions} = route.params

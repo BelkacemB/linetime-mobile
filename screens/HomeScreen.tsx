@@ -18,7 +18,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SuggestionForm')}>
         <Text>Suggest activities</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SuggestionForm')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HabitList')}>
         <Text>Habit list</Text>
       </TouchableOpacity>
 

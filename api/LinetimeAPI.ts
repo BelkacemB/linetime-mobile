@@ -1,3 +1,4 @@
+import Habit from "../model/Habit";
 import { Goal, Suggestion } from "../model/LinetimeTypes";
 
 export function fetchSuggestions(time: number, energy: number, goal: Goal): Promise<Suggestion[]> {
@@ -10,4 +11,11 @@ export function fetchSuggestions(time: number, energy: number, goal: Goal): Prom
             return [];
         }
         );
+}
+
+// TODO Make sure this only runs once, and not every time the page is loaded
+export function getUserHabits(): Habit[] {
+    // Create a list of mock habits
+    let habits: Habit[] = [];
+    return habits;
 }

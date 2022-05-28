@@ -1,14 +1,14 @@
-import { StyleSheet } from 'react-native';
 import { useState } from 'react';
-
-import { secondaryColor, transparentSecondaryColor } from '../constants/Colors';
-import { Text, View, TouchableOpacity } from '../components/Themed';
+import { StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import CircleSlider from '../components/CircleSlider';
+import { fetchSuggestions } from '../../api/LinetimeAPI';
+import CircleSlider from '../../components/CircleSlider';
+import { Text, TouchableOpacity, View } from '../../components/Themed';
+import { secondaryColor, transparentSecondaryColor } from '../../constants/Colors';
+import { Goal } from '../../model/LinetimeTypes';
+import { RootTabScreenProps } from '../../types';
 
-import { fetchSuggestions } from '../api/LinetimeAPI';
-import { RootTabScreenProps } from '../types';
-import { Goal } from '../model/LinetimeTypes';
+
 
 const energyTypeItems = [
   { label: 'Tired', value: 2 },

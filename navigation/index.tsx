@@ -9,12 +9,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 
-import ModalScreen from '../screens/ModalScreen';
 import HomeScreen from '../screens/HomeScreen';
 import { RootStackParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
-import SuggestionForm from '../screens/SuggestionForm';
-import { SuggestionList } from '../screens/SuggestionList';
+import SuggestionForm from '../screens/suggestions/SuggestionForm';
+import { SuggestionList } from '../screens/suggestions/SuggestionList';
+import { HabitList } from '../screens/habits/HabitList';
+import { AddHabit } from '../screens/habits/AddHabit';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -38,20 +39,8 @@ function RootNavigator() {
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SuggestionForm" component={SuggestionForm} options={{title: "What to do?"}} />
       <Stack.Screen name="SuggestionList" component={SuggestionList} options={{title: "Suggestions"}} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
+      <Stack.Screen name="HabitList" component={HabitList} options={{ title: "Habit list" }} />
+      <Stack.Screen name="AddHabit" component={AddHabit} options={{ title: "Add a new habit" }} />
     </Stack.Navigator>
   );
-}
-
-
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
