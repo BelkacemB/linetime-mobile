@@ -8,6 +8,7 @@ import CircleSlider from '../components/CircleSlider';
 
 import { fetchSuggestions } from '../api/LinetimeAPI';
 import { RootTabScreenProps } from '../types';
+import { Goal } from '../model/LinetimeTypes';
 
 const energyTypeItems = [
   { label: 'Tired', value: 2 },
@@ -15,14 +16,22 @@ const energyTypeItems = [
   { label: 'Energetic', value: 6 },
 ];
 
+const goalItems = [
+  { label: 'Productive', value: 'Benefits' },
+  { label: 'Fun', value: 'Fun' },
+]
+
 export default function SuggestionForm({ navigation }: RootTabScreenProps<'SuggestionForm'>) {
   const [energy, setEnergy] = useState<number>(6);
+  const [goal, setGoal] = useState<Goal>("Benefits");
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
 
-  const [open, setOpen] = useState(false);
+  // Dropdown state management 
+  const [energyOpen, setEnergyOpen] = useState(false);
+  const [goalOpen, setGoalOpen] = useState(false);
 
   const onSubmit = () => {
-    fetchSuggestions(timeInMinutes, energy).then(
+    fetchSuggestions(timeInMinutes, energy, goal).then(
       (suggestions) => {
         console.log(suggestions);
         navigation.navigate('SuggestionList', { listOfSuggestions: suggestions });
@@ -45,11 +54,25 @@ export default function SuggestionForm({ navigation }: RootTabScreenProps<'Sugge
       <View style={{ alignItems: 'center', justifyContent: 'center' }}>
         <Text>I'm feeling </Text>
         <DropDownPicker
-          open={open}
+          open={energyOpen}
           value={energy}
           items={energyTypeItems}
           setValue={setEnergy}
-          setOpen={setOpen}
+          setOpen={setEnergyOpen}
+          style={{ width: 150 }}
+        />
+
+      </View>
+
+      {/* Goal */}
+      <View style={{ alignItems: 'center', justifyContent: 'center', zIndex: -4, marginTop: 10 }}>
+        <Text>I want to do something</Text>
+        <DropDownPicker
+          open={goalOpen}
+          value={goal}
+          items={goalItems}
+          setValue={setGoal}
+          setOpen={setGoalOpen}
           style={{ width: 150 }}
         />
 
