@@ -41,7 +41,9 @@ export default function SuggestionForm({ navigation }: RootTabScreenProps<'Sugge
 
   const handleTimeSlide = (value: number) => {
     const minutes = Math.round(value / 3);
-    setTimeInMinutes(minutes);
+    if (minutes !== timeInMinutes) {
+      setTimeInMinutes(minutes);
+    }
     return minutes;
   };
 

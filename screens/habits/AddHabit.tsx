@@ -1,43 +1,56 @@
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import React, { useContext } from 'react'
 import { StyleSheet, TextInput } from 'react-native';
+
 import { TouchableOpacity, View, Text } from '../../components/Themed'
+import { transparentSecondaryColor } from '../../constants/Colors';
+
 import Habit, { HabitBuilder } from '../../model/Habit';
 import { HabitContext } from '../../Store'
 
-export const AddHabit = () => {
+export const AddHabit = ({ navigation }) => {
 
   const [name, setName] = React.useState('');
-  const [benefit, setBenefit] = React.useState<number[]>();
-  const [fun, setFun] = React.useState<number[]>();
+  const [benefit, setBenefit] = React.useState<number[]>([0]);
+  const [fun, setFun] = React.useState<number[]>([0]);
 
   const { dispatch } = useContext(HabitContext)
 
   const buildAndRegisterHabit = () => {
+    // Generate random integer between 0 and 100
+    const randomInt = (min: number, max: number) => {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     let habit: Habit = new HabitBuilder()
-      .setId(Math.random())
+      .setId(randomInt(0, 500)) // TODO Remove later 
       .setName(name)
       .setBenefits(benefit[0])
       .setFun(fun[0])
       .build();
 
-    dispatch({ type: 'ADD_HABIT', payload: habit })
+    console.log(habit);
+    dispatch({ type: 'ADD_HABIT', payload: habit });
+
+    navigation.goBack();
   }
 
   return (
     <View style={styles.container}>
-      <Text>Add new habit</Text>
+      <Text style={styles.title}>Add new habit</Text>
       <TextInput
         placeholder="Habit name"
         onChangeText={(text) => { setName(text) }}
+        style={styles.textInput}
       />
 
-      <MultiSlider values={[3]} min={0} max={3} onValuesChange={(values) => setBenefit(values)} step={1} />
-      <MultiSlider values={[3]} min={0} max={3} onValuesChange={(values) => setFun(values)} step={1} />
+      <Text style={{fontSize: 20}}>How beneficial is this activity to you?</Text>
+      <MultiSlider values={benefit} min={0} max={3} onValuesChange={(values) => setBenefit(values)} />
 
-      <TouchableOpacity onPress={() => {
-        buildAndRegisterHabit()
-      }}>
+      <Text style={{fontSize: 20}}>How fun is this activity to you?</Text>
+      <MultiSlider values={fun} min={0} max={3} onValuesChange={(values) => setFun(values)} />
+
+      <TouchableOpacity onPress={() => { buildAndRegisterHabit() }} style={styles.button} >
         <Text>Add</Text>
       </TouchableOpacity>
     </View>
@@ -49,5 +62,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  textInput: {
+    width: 80,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 5,
+    borderWidth: 2,
+    borderRadius: 8,
+    borderColor: "#eee"
+  },
+  button: {
+    backgroundColor: transparentSecondaryColor,
+    marginTop: 30,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    position: 'absolute',
+    bottom: 20
   }
 })

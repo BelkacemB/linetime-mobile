@@ -11,6 +11,7 @@ import SuggestionForm from '../screens/suggestions/SuggestionForm';
 import { SuggestionList } from '../screens/suggestions/SuggestionList';
 import { HabitList } from '../screens/habits/HabitList';
 import { AddHabit } from '../screens/habits/AddHabit';
+import { EditHabit } from '../screens/habits/EditHabit';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -40,6 +41,7 @@ function RootNavigator() {
 
       <Stack.Screen name="HabitList" component={HabitList} options={{ title: "Habit list" }} />
       <Stack.Screen name="AddHabit" component={AddHabit} options={{ title: "Add a new habit" }} />
+      <Stack.Screen name="EditHabit" component={EditHabit} options={{ title: "View habit" }} />
     </Stack.Navigator>
   );
 }

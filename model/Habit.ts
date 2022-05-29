@@ -70,4 +70,16 @@ export class HabitBuilder {
         return this._habit;
     }
 
+    // Copy existing habit
+    copy(habit: Habit) {
+        this._habit.id = habit.id;
+        this._habit.name = habit.name;
+        this._habit.lastDone = habit.lastDone;
+        this._habit.minTime = habit.minTime;
+        this._habit.maxTime = habit.maxTime;
+        this._habit.fun = habit.fun;
+        this._habit.benefits = habit.benefits;
+        return this.build();
+    }
+
 }

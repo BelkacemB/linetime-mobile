@@ -7,19 +7,18 @@ import { HabitContext } from '../../Store'
 export const HabitList = ({ navigation }) => {
     
     const { state } = useContext(HabitContext)
-    console.log('habits: ', state.habits)
 
     return (
             <View style={styles.container}>
                <FlatList
                         data={state.habits}
                         keyExtractor={(item) => item.id}
-                        renderItem={({ item }) => (<HabitElement habit={item} />)}
+                        renderItem={({ item }) => (<HabitElement habit={item} navigation={navigation} />)}
                     />
                 {/* Add a new habit */}
                 <View>
-                    <TouchableOpacity onPress={() => { navigation.navigate('AddHabit') }}>
-                        <Text>➕ Add new habit</Text>
+                    <TouchableOpacity  onPress={() => { navigation.navigate('AddHabit') }}>
+                        <Text style= {{fontSize: 20, marginBottom:10}}>➕ Add new habit</Text>
                     </TouchableOpacity>
                 </View>
 
