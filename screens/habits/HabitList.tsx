@@ -1,17 +1,24 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import { FlatList, StyleSheet } from 'react-native'
 import { HabitElement } from '../../components/HabitElement'
 import { Text, TouchableOpacity, View } from '../../components/Themed'
 import { HabitContext } from '../../Store'
+import { onHabitListChanged } from '../../api/HabitService';
+import Habit from '../../model/Habit'
 
 export const HabitList = ({ navigation }) => {
+
+    const [habits, setHabits] = React.useState<Habit[]>([]);
     
-    const { state } = useContext(HabitContext)
+    // Update state when onHabitListChanged is called
+    useEffect(() => {
+        onHabitListChanged(setHabits);
+    }, []);
 
     return (
             <View style={styles.container}>
                <FlatList
-                        data={state.habits}
+                        data={habits}
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (<HabitElement habit={item} navigation={navigation} />)}
                     />

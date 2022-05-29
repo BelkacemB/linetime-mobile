@@ -1,7 +1,7 @@
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import React, { useContext } from 'react'
 import { StyleSheet, TextInput } from 'react-native';
-import { persistHabit as persistHabit } from '../../api/HabitService';
+import { persistHabit } from '../../api/HabitService';
 
 import { TouchableOpacity, View, Text } from '../../components/Themed'
 import { transparentSecondaryColor } from '../../constants/Colors';

@@ -7,16 +7,13 @@ export const persistHabit = (habit: Habit) => {
     push(habitsRef, habit);
 }
 
-export class HabitService {
-    static getHabits() {
-        const habits: Array<Habit> = [];
-        onValue(habitsRef, (snapshot) => {
-            snapshot.forEach(childSnapshot => {
-                const habit = childSnapshot.val() as Habit;
-                habit.id = childSnapshot.key;
-                habits.push(habit);
-            });
+export const onHabitListChanged = (callback: (habits: Habit[]) => void) => {
+    onValue(habitsRef, (snapshot: any) => {
+        const habits: Habit[] = [];
+        snapshot.forEach((childSnapshot: any) => {
+            const habit = childSnapshot.val();
+            habits.push(habit);
         });
-        return habits;
-    }
+        callback(habits);
+    })
 }
