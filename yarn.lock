@@ -6050,7 +6050,7 @@
   dependencies:
     "micromatch" "^4.0.2"
 
-"firebase@^9.8.2":
+"firebase@^9.6.11":
   "integrity" "sha512-cVPpiR18vsLuGWAAVkVhNO6mYsEgYBqawvMI2zxKo2FCtneyBgMwOyWKI8VyCmL5ze5p5QJTPjkoatM6rZkd0Q=="
   "resolved" "https://registry.npmjs.org/firebase/-/firebase-9.8.2.tgz"
   "version" "9.8.2"
