@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { fetchSuggestions } from '../../api/LinetimeAPI';
+import { fetchSuggestions } from '../../api/LinetimeService';
 import CircleSlider from '../../components/CircleSlider';
 import { Text, TouchableOpacity, View } from '../../components/Themed';
 import { secondaryColor, transparentSecondaryColor } from '../../constants/Colors';
@@ -41,6 +41,7 @@ export default function SuggestionForm({ navigation }: RootTabScreenProps<'Sugge
 
   const handleTimeSlide = (value: number) => {
     const minutes = Math.round(value / 3);
+    // Do not update state on the first rendering
     if (minutes !== timeInMinutes) {
       setTimeInMinutes(minutes);
     }

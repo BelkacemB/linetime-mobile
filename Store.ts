@@ -12,7 +12,6 @@ export const habitReducer = (state, action) => {
                 habits: [...state.habits, action.payload]
             };
         case "REMOVE_HABIT":
-            // Remove habit from state.habits
             return {
                 ...state,
                 habits: state.habits.filter(
@@ -20,7 +19,6 @@ export const habitReducer = (state, action) => {
                 )
             };
         case "UPDATE_HABIT":
-            // Update habit in state.habits
             return {
                 ...state,
                 habits: state.habits.map(habit => {

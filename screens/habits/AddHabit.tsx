@@ -1,6 +1,7 @@
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import React, { useContext } from 'react'
 import { StyleSheet, TextInput } from 'react-native';
+import { persistHabit as persistHabit } from '../../api/HabitService';
 
 import { TouchableOpacity, View, Text } from '../../components/Themed'
 import { transparentSecondaryColor } from '../../constants/Colors';
@@ -23,7 +24,7 @@ export const AddHabit = ({ navigation }) => {
     }
 
     let habit: Habit = new HabitBuilder()
-      .setId(randomInt(0, 500)) // TODO Remove later 
+      .setId(randomInt(0, 500).toString()) // TODO Remove later 
       .setName(name)
       .setBenefits(benefit[0])
       .setFun(fun[0])
@@ -31,7 +32,7 @@ export const AddHabit = ({ navigation }) => {
 
     console.log(habit);
     dispatch({ type: 'ADD_HABIT', payload: habit });
-
+    persistHabit(habit);
     navigation.goBack();
   }
 

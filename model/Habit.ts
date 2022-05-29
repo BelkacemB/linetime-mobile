@@ -1,6 +1,6 @@
 export default class Habit {
     
-    id: number;
+    id: string;
     name: string;
     lastDone?: Date;
     minTime?: number;
@@ -8,7 +8,7 @@ export default class Habit {
     fun: number;
     benefits: number;
 
-    constructor(id: number, name: string) {
+    constructor(id: string, name: string) {
         this.id = id;
         this.name = name;
     }
@@ -28,10 +28,10 @@ export class HabitBuilder {
     private readonly _habit: Habit;
 
     constructor() {
-        this._habit = new Habit(0, "");
+        this._habit = new Habit("", "");
     }
 
-    setId(id: number) {
+    setId(id: string) {
         this._habit.id = id;
         return this;
     }

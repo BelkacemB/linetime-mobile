@@ -33,10 +33,10 @@ export const EditHabit = ({ navigation, route }) => {
             />
 
             <Text style={{ fontSize: 20 }}>How beneficial is this activity to you?</Text>
-            <MultiSlider values={[habit.benefits?? 0]} min={0} max={3} onValuesChange={(values) => habit.benefits = values[0]} />
+            <MultiSlider values={[habit.benefits?? 0]} min={0} max={3} onValuesChange={(values) => habit.benefits = values[0]} step={0.5} />
 
             <Text style={{ fontSize: 20 }}>How fun is this activity to you?</Text>
-            <MultiSlider values={[habit.fun?? 0]} min={0} max={3} onValuesChange={(values) => habit.fun = values[0]} />
+            <MultiSlider values={[habit.fun?? 0]} min={0} max={3} onValuesChange={(values) => habit.fun = values[0]} step={0.5} />
 
             {/* TODO Style the buttons correctly */}
             <View style={{flexDirection: 'row'}}>
