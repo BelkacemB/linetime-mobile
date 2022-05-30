@@ -1,17 +1,11 @@
 import Habit from "./Habit";
 
 class User {
+  habits: Habit[] = [];
 
-    habits: Habit[] = [];
+  constructor(public id: number, public name: string, public email: string) {}
 
-    constructor(
-        public id: number,
-        public name: string,
-        public email: string
-    ) {}
-
-    getHabits(): Habit[] {
-        return this.habits;
-    }
-    
+  getHabits(): Habit[] {
+    return this.habits;
+  }
 }
