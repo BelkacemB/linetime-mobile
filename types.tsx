@@ -27,6 +27,11 @@ export type RootStackParamList = {
   EditHabit: { habit: Habit };
 };
 
+export type RootLoginParamList = {
+  Login: undefined;
+  SignUp: undefined;
+};
+
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
