@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import Habit from '../model/Habit'
-import { HabitContext } from '../Store'
 import { Text, View, TouchableOpacity } from './Themed'
 
 type HabitProps = {
@@ -10,11 +9,8 @@ type HabitProps = {
 
 export const HabitElement = ({ habit, navigation }: HabitProps) => {
 
-    const { dispatch } = useContext(HabitContext)
 
-    const deleteHabit = () => {
-        dispatch({ type: 'REMOVE_HABIT', payload: habit.id })
-    }
+
 
     const editHabit = () => {
         navigation.navigate('EditHabit', { habit: habit })
@@ -26,7 +22,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
             <TouchableOpacity style={{ borderRadius: 50, borderWidth: 1, padding: 10, marginLeft: 20 }} onPress={editHabit} >
                 <Text>Edit</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ borderRadius: 50, borderWidth: 1, padding: 10 }} onPress={deleteHabit}>
+            <TouchableOpacity style={{ borderRadius: 50, borderWidth: 1, padding: 10 }}>
                 <Text>❌</Text>
             </TouchableOpacity>
         </View>

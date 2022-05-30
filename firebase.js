@@ -2,8 +2,7 @@
 import { initializeApp } from "firebase/app";
 import {getAuth} from "firebase/auth";
 import {getDatabase, ref} from "firebase/database";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+// TODO https://docs.expo.dev/guides/using-firebase/
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

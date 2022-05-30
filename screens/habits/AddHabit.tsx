@@ -7,15 +7,12 @@ import { TouchableOpacity, View, Text } from '../../components/Themed'
 import { transparentSecondaryColor } from '../../constants/Colors';
 
 import Habit, { HabitBuilder } from '../../model/Habit';
-import { HabitContext } from '../../Store'
 
 export const AddHabit = ({ navigation }) => {
 
   const [name, setName] = React.useState('');
   const [benefit, setBenefit] = React.useState<number[]>([0]);
   const [fun, setFun] = React.useState<number[]>([0]);
-
-  const { dispatch } = useContext(HabitContext)
 
   const buildAndRegisterHabit = () => {
     // Generate random integer between 0 and 100
@@ -24,15 +21,14 @@ export const AddHabit = ({ navigation }) => {
     }
 
     let habit: Habit = new HabitBuilder()
-      .setId(randomInt(0, 500).toString()) // TODO Remove later 
       .setName(name)
       .setBenefits(benefit[0])
       .setFun(fun[0])
       .build();
 
-    console.log(habit);
-    dispatch({ type: 'ADD_HABIT', payload: habit });
+    // TODO Get the key from the DB and set it
     persistHabit(habit);
+    
     navigation.goBack();
   }
 

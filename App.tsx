@@ -6,7 +6,6 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
 import { useReducer } from 'react';
-import { HabitContext, habitReducer } from './Store';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -16,18 +15,15 @@ export default function App() {
     habits: []
   }
   
-  const [state, dispatch] = useReducer(habitReducer, initialState)
 
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
-      <HabitContext.Provider value={{ state, dispatch }}>
         <SafeAreaProvider>
           <Navigation colorScheme={colorScheme} />
           <StatusBar />
         </SafeAreaProvider>
-      </HabitContext.Provider>
     );
   }
 }
