@@ -1,7 +1,10 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import React, { useContext } from "react";
 import { StyleSheet, TextInput } from "react-native";
+
 import { persistHabit } from "../../api/HabitService";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase";
 
 import { TouchableOpacity, View, Text } from "../../components/Themed";
 import { transparentSecondaryColor } from "../../constants/Colors";
@@ -13,6 +16,8 @@ export const AddHabit = ({ navigation }) => {
   const [benefit, setBenefit] = React.useState<number[]>([0]);
   const [fun, setFun] = React.useState<number[]>([0]);
 
+  const [user] = useAuthState(auth);
+
   const buildAndRegisterHabit = () => {
     // Generate random integer between 0 and 100
     const randomInt = (min: number, max: number) => {
@@ -23,6 +28,7 @@ export const AddHabit = ({ navigation }) => {
       .setName(name)
       .setBenefits(benefit[0])
       .setFun(fun[0])
+      .setUserId(user.uid)
       .build();
 
     // TODO Get the key from the DB and set it
