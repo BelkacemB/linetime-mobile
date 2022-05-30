@@ -1,26 +1,24 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
-import { onHabitListChanged } from "../../api/HabitService";
-import Habit from "../../model/Habit";
+import { useList } from "react-firebase-hooks/database";
+import { habitsRef } from "../../firebase";
 
 export const HabitList = ({ navigation }) => {
-  const [habits, setHabits] = React.useState<Habit[]>([]);
-
-  // Update state when onHabitListChanged is called
-  useEffect(() => {
-    onHabitListChanged(setHabits);
-  }, []);
+  const [snapshots, loading, error] = useList(habitsRef);
 
   return (
     <View style={styles.container}>
+      {loading && <Text>Loading...</Text>}
+      {error && <Text>Error: {error.message}</Text>}
+
       <FlatList
-        data={habits}
-        keyExtractor={(item) => item.id}
+        data={snapshots}
         renderItem={({ item }) => (
-          <HabitElement habit={item} navigation={navigation} />
+          <HabitElement habit={item.val()} navigation={navigation} />
         )}
+        keyExtractor={(item) => item.key}
       />
       {/* Add a new habit */}
       <View>
