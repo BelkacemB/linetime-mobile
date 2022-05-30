@@ -1,16 +1,14 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Habit from '../model/Habit'
 import { Text, View, TouchableOpacity } from './Themed'
 
 type HabitProps = {
     habit: Habit,
-    navigation: any
+    // Provide type for navigation prop
+    navigation: any,
 }
 
 export const HabitElement = ({ habit, navigation }: HabitProps) => {
-
-
-
 
     const editHabit = () => {
         navigation.navigate('EditHabit', { habit: habit })

@@ -5,16 +5,11 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
-import { useReducer } from 'react';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-  const initialState = {
-    habits: []
-  }
-  
 
   if (!isLoadingComplete) {
     return null;

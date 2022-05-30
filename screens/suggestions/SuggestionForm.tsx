@@ -33,7 +33,6 @@ export default function SuggestionForm({ navigation }: RootTabScreenProps<'Sugge
   const onSubmit = () => {
     fetchSuggestions(timeInMinutes, energy, goal).then(
       (suggestions) => {
-        console.log(suggestions);
         navigation.navigate('SuggestionList', { listOfSuggestions: suggestions });
       }
     )

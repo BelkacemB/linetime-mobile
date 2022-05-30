@@ -1,6 +1,6 @@
 export default class Habit {
     
-    id: string;
+    id?: string;
     name: string;
     lastDone?: Date;
     minTime?: number;
@@ -21,6 +21,11 @@ export default class Habit {
         return this.lastDone;
     }
 
+    setId(id: string) {
+        this.id = id;
+    }
+
+
 }
 
 export class HabitBuilder {
@@ -29,11 +34,6 @@ export class HabitBuilder {
 
     constructor() {
         this._habit = new Habit("", "");
-    }
-
-    setId(id: string) {
-        this._habit.id = id;
-        return this;
     }
 
     setName(name: string) {

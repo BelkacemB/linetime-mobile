@@ -1,17 +1,17 @@
 import { habitsRef } from "../firebase";
-import { push, onValue } from "firebase/database";
+import { push, onValue, DataSnapshot } from "firebase/database";
 import Habit from "../model/Habit";
 
 export const persistHabit = (habit: Habit) => {
-    console.log(`Adding habit to database: ${habit.name}`);
-    push(habitsRef, habit);
+    const {id, ...data} = habit;
+    push(habitsRef, data);
 }
 
 export const onHabitListChanged = (callback: (habits: Habit[]) => void) => {
-    onValue(habitsRef, (snapshot: any) => {
+    onValue(habitsRef, (snapshot: DataSnapshot) => {
         const habits: Habit[] = [];
-        snapshot.forEach((childSnapshot: any) => {
-            const habit = childSnapshot.val();
+        snapshot.forEach((childSnapshot: DataSnapshot) => {
+            let habit = {...childSnapshot.val(), id: childSnapshot.key};
             habits.push(habit);
         });
         callback(habits);

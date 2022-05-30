@@ -2,7 +2,6 @@ import React, {useContext, useEffect} from 'react'
 import { FlatList, StyleSheet } from 'react-native'
 import { HabitElement } from '../../components/HabitElement'
 import { Text, TouchableOpacity, View } from '../../components/Themed'
-import { HabitContext } from '../../Store'
 import { onHabitListChanged } from '../../api/HabitService';
 import Habit from '../../model/Habit'
 
