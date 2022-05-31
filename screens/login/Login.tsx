@@ -7,18 +7,24 @@ import { View, Text, TouchableOpacity } from "../../components/Themed";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
+const errorCodeToMessage = {
+  "auth/invalid-email": "Invalid email address",
+  "auth/user-disabled": "User disabled",
+  "auth/user-not-found": "User not found",
+  "auth/wrong-password": "Wrong password",
+};
+
 export const Login = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState("");
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        console.log("User logged in");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    .catch(error => {
+      const message = errorCodeToMessage[error.code] || error.message;
+      setError(message);
+    })
   };
 
   return (
@@ -40,6 +46,7 @@ export const Login = ({ navigation }) => {
         secureTextEntry={true}
         onChangeText={(text) => setPassword(text)}
       />
+      <Text style={{color: 'red'}}>{error}</Text>
       <TouchableOpacity onPress={handleLogin}>
         <Text>Login</Text>
       </TouchableOpacity>
