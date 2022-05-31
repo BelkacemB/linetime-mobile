@@ -18,12 +18,7 @@ export const AddHabit = ({ navigation }) => {
 
   const [user] = useAuthState(auth);
 
-  const buildAndRegisterHabit = () => {
-    // Generate random integer between 0 and 100
-    const randomInt = (min: number, max: number) => {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
-
+  async function buildAndRegisterHabit() {
     let habit: Habit = new HabitBuilder()
       .setName(name)
       .setBenefits(benefit[0])
@@ -31,8 +26,7 @@ export const AddHabit = ({ navigation }) => {
       .setUserId(user.uid)
       .build();
 
-    // TODO Get the key from the DB and set it
-    persistHabit(habit);
+    await persistHabit(habit, user.uid);
 
     navigation.goBack();
   };

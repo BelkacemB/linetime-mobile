@@ -21,5 +21,3 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getDatabase(app);
 
-// get the users collection
-export const habitsRef = ref(db, "habits");

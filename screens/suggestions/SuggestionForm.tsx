@@ -1,9 +1,12 @@
-import { useState } from "react";
-import { StyleSheet } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
-import { fetchSuggestions } from "../../api/LinetimeService";
-import CircleSlider from "../../components/CircleSlider";
+import React, { useState }  from "react";
+import { ScrollView, StyleSheet } from "react-native";
+
 import { Text, TouchableOpacity, View } from "../../components/Themed";
+import DropDownPicker from "react-native-dropdown-picker";
+import CircleSlider from "../../components/CircleSlider";
+
+import { fetchSuggestions } from "../../api/LinetimeService";
+
 import {
   secondaryColor,
   transparentSecondaryColor,
@@ -160,7 +163,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-    position: "absolute",
     bottom: 20,
   },
 });

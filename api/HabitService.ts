@@ -1,8 +1,10 @@
-import { habitsRef } from "../firebase";
-import { push, onValue, DataSnapshot } from "firebase/database";
+import { db } from "../firebase";
+import { ref, push } from "firebase/database";
 import Habit from "../model/Habit";
 
-export const persistHabit = (habit: Habit) => {
+export async function persistHabit (habit: Habit, uid: string) {
   const { id, ...data } = habit;
-  push(habitsRef, data);
+  await push(ref(db, `habits/${uid}`), data);
 };
+
+export const getUserDBRef = (uid: string) => ref(db, `habits/${uid}`);

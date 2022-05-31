@@ -3,21 +3,15 @@ import { FlatList, StyleSheet } from "react-native";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import { useList } from "react-firebase-hooks/database";
-import { habitsRef } from "../../firebase";
 
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "../../firebase";
+import { getUserDBRef } from "../../api/HabitService";
 
 export const HabitList = ({ navigation }) => {
-  const [snapshots, loading, error] = useList(habitsRef);
   const [user] = useAuthState(auth);
+  const [snapshots, loading, error] = useList(getUserDBRef(user?.uid));
   
-  // Is this costly ?
-  const filteredSnapshots = snapshots.filter((snapshot) => {
-    const habit = snapshot.val();
-    return habit.userId === user.uid;
-  });
-
 
   return (
     <View style={styles.container}>
@@ -25,7 +19,7 @@ export const HabitList = ({ navigation }) => {
       {error && <Text>Error: {error.message}</Text>}
 
       <FlatList
-        data={filteredSnapshots}
+        data={snapshots}
         renderItem={({ item }) => (
           <HabitElement habit={item.val()} navigation={navigation} />
         )}
