@@ -31,7 +31,7 @@ export const AddHabit = ({ navigation }) => {
       .setUserId(userId)
       .build();
 
-    await persistHabit(habit, userId);
+    await persistHabit(habit);
 
     navigation.goBack();
   }

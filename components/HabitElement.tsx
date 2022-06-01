@@ -18,7 +18,9 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
   };
 
   async function remove() {
-    await deleteHabit(habit.id, userId);
+    // TODO Display a confirmation dialog
+    // TODO Display a snackbar with the result of the operation
+    await deleteHabit(habit);
   }
 
   return (
