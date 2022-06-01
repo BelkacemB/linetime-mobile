@@ -1,6 +1,8 @@
 import React from "react";
 import Habit from "../model/Habit";
 import { Text, View, TouchableOpacity } from "./Themed";
+import { deleteHabit } from "../api/HabitService";
+import useUserId from "../hooks/useUserId";
 
 type HabitProps = {
   habit: Habit;
@@ -9,9 +11,15 @@ type HabitProps = {
 };
 
 export const HabitElement = ({ habit, navigation }: HabitProps) => {
-  const editHabit = () => {
+  const userId = useUserId();
+
+  const edit = () => {
     navigation.navigate("EditHabit", { habit: habit });
   };
+
+  async function remove() {
+    await deleteHabit(habit.id, userId);
+  }
 
   return (
     <View
@@ -33,12 +41,13 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
           padding: 10,
           marginLeft: 20,
         }}
-        onPress={editHabit}
+        onPress={edit}
       >
         <Text>Edit</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={{ borderRadius: 50, borderWidth: 1, padding: 10 }}
+        onPress={remove}
       >
         <Text>❌</Text>
       </TouchableOpacity>

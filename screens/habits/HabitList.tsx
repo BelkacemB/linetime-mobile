@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import { useList } from "react-firebase-hooks/database";
 
 import { getUserDBRef } from "../../api/HabitService";
-import useUserId from "../../hooks/useUserId";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase";
 
 export const HabitList = ({ navigation }) => {
-  const userId = useUserId();
-
-  const [snapshots, loading, error] = useList(getUserDBRef(userId));
+  const [user] = useAuthState(auth);
+  const [snapshots, loading, error] = useList(getUserDBRef(user.uid));
 
   return (
     <View style={styles.container}>
@@ -20,7 +20,10 @@ export const HabitList = ({ navigation }) => {
       <FlatList
         data={snapshots}
         renderItem={({ item }) => (
-          <HabitElement habit={item.val()} navigation={navigation} />
+          <HabitElement
+            habit={{ id: item.key, ...item.val() }}
+            navigation={navigation}
+          />
         )}
         keyExtractor={(item) => item.key}
       />
