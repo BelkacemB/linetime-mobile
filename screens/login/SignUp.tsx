@@ -10,13 +10,9 @@ export const SignUp = ({ navigation }) => {
   const [password, setPassword] = React.useState("");
 
   const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        console.log("User created");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    createUserWithEmailAndPassword(auth, email, password).catch((error) => {
+      console.log(error);
+    });
   };
 
   return (

@@ -1,6 +1,6 @@
 export type Goal = "Benefits" | "Fun";
 
 export type Suggestion = {
-  activity: string;
+  name: string;
   suggestedTime: number;
 };

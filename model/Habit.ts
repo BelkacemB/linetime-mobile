@@ -6,6 +6,7 @@ export default class Habit {
   maxTime?: number;
   fun: number;
   benefits: number;
+  energy: number;
   userId: string;
 
   constructor(id: string, name: string) {
@@ -68,6 +69,11 @@ export class HabitBuilder {
     return this;
   }
 
+  setEnergy(energy: number) {
+    this._habit.energy = energy;
+    return this;
+  }
+
   build(): Habit {
     return this._habit;
   }
@@ -79,8 +85,10 @@ export class HabitBuilder {
     this._habit.lastDone = habit.lastDone;
     this._habit.minTime = habit.minTime;
     this._habit.maxTime = habit.maxTime;
+    this._habit.energy = habit.energy;
     this._habit.fun = habit.fun;
     this._habit.benefits = habit.benefits;
+    this._habit.userId = habit.userId;
     return this.build();
   }
 }

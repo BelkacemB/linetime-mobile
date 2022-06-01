@@ -24,7 +24,7 @@ export const SuggestionElement = ({ suggestion }: Props) => {
       }}
     >
       <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-        {suggestion.activity}
+        {suggestion.name}
       </Text>
       <Text> for </Text>
       <Text style={{ fontSize: 20, fontWeight: "bold" }}>

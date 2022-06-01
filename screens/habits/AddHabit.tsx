@@ -10,26 +10,31 @@ import { TouchableOpacity, View, Text } from "../../components/Themed";
 import { transparentSecondaryColor } from "../../constants/Colors";
 
 import Habit, { HabitBuilder } from "../../model/Habit";
+import useUserId from "../../hooks/useUserId";
 
 export const AddHabit = ({ navigation }) => {
   const [name, setName] = React.useState("");
   const [benefit, setBenefit] = React.useState<number[]>([0]);
+  const [energy, setEnergy] = React.useState<number[]>([0]);
   const [fun, setFun] = React.useState<number[]>([0]);
 
-  const [user] = useAuthState(auth);
+  const userId = useUserId();
 
   async function buildAndRegisterHabit() {
     let habit: Habit = new HabitBuilder()
       .setName(name)
       .setBenefits(benefit[0])
       .setFun(fun[0])
-      .setUserId(user.uid)
+      .setEnergy(energy[0])
+      .setMinTime(20)
+      .setMaxTime(40)
+      .setUserId(userId)
       .build();
 
-    await persistHabit(habit, user.uid);
+    await persistHabit(habit, userId);
 
     navigation.goBack();
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -58,6 +63,14 @@ export const AddHabit = ({ navigation }) => {
         min={0}
         max={3}
         onValuesChange={(values) => setFun(values)}
+      />
+
+      <Text style={{ fontSize: 20 }}>How tiring is this activity to you?</Text>
+      <MultiSlider
+        values={energy}
+        min={0}
+        max={3}
+        onValuesChange={(values) => setEnergy(values)}
       />
 
       <TouchableOpacity

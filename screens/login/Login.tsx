@@ -20,11 +20,10 @@ export const Login = ({ navigation }) => {
   const [error, setError] = React.useState("");
 
   const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-    .catch(error => {
+    signInWithEmailAndPassword(auth, email, password).catch((error) => {
       const message = errorCodeToMessage[error.code] || error.message;
       setError(message);
-    })
+    });
   };
 
   return (
@@ -46,7 +45,7 @@ export const Login = ({ navigation }) => {
         secureTextEntry={true}
         onChangeText={(text) => setPassword(text)}
       />
-      <Text style={{color: 'red'}}>{error}</Text>
+      <Text style={{ color: "red" }}>{error}</Text>
       <TouchableOpacity onPress={handleLogin}>
         <Text>Login</Text>
       </TouchableOpacity>

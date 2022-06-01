@@ -1,12 +1,13 @@
-import Habit from "../model/Habit";
-import { Goal, Suggestion } from "../model/LinetimeTypes";
+import { Suggestion } from "../model/LinetimeTypes";
+
+const API_URL = "http://localhost:8000/opt";
 
 export function fetchSuggestions(
   time: number,
   energy: number,
-  goal: Goal
+  userId: string
 ): Promise<Suggestion[]> {
-  let targetUrl = `http://localhost:8000/opt?time=${time}&energy=${energy}&goal=${goal}`;
+  let targetUrl = `${API_URL}?time=${time}&energy=${energy}&user-id=${userId}`;
   return fetch(targetUrl)
     .then((response) => response.json())
     .then((json) => json as Suggestion[])

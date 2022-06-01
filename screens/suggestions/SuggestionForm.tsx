@@ -1,5 +1,5 @@
-import React, { useState }  from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
 
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -11,8 +11,8 @@ import {
   secondaryColor,
   transparentSecondaryColor,
 } from "../../constants/Colors";
-import { Goal } from "../../model/LinetimeTypes";
 import { RootTabScreenProps } from "../../types";
+import useUserId from "../../hooks/useUserId";
 
 const energyTypeItems = [
   { label: "Tired", value: 2 },
@@ -20,27 +20,17 @@ const energyTypeItems = [
   { label: "Energetic", value: 6 },
 ];
 
-const goalItems = [
-  { label: "Productive", value: "Benefits" },
-  { label: "Fun", value: "Fun" },
-];
-
 export default function SuggestionForm({
   navigation,
 }: RootTabScreenProps<"SuggestionForm">) {
+  const userId = useUserId();
+
+  // Form state
   const [energy, setEnergy] = useState<number>(6);
-  const [goal, setGoal] = useState<Goal>("Benefits");
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
 
-  // Dropdown state management
+  // UI state
   const [energyOpen, setEnergyOpen] = useState(false);
-  const [goalOpen, setGoalOpen] = useState(false);
-
-  const onSubmit = () => {
-    fetchSuggestions(timeInMinutes, energy, goal).then((suggestions) => {
-      navigation.navigate("SuggestionList", { listOfSuggestions: suggestions });
-    });
-  };
 
   const handleTimeSlide = (value: number) => {
     const minutes = Math.round(value / 3);
@@ -49,6 +39,12 @@ export default function SuggestionForm({
       setTimeInMinutes(minutes);
     }
     return minutes;
+  };
+
+  const onSubmit = () => {
+    fetchSuggestions(timeInMinutes, energy, userId).then((suggestions) => {
+      navigation.navigate("SuggestionList", { listOfSuggestions: suggestions });
+    });
   };
 
   return (
@@ -69,26 +65,6 @@ export default function SuggestionForm({
           items={energyTypeItems}
           setValue={setEnergy}
           setOpen={setEnergyOpen}
-          style={{ width: 150 }}
-        />
-      </View>
-
-      {/* Goal */}
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: -4,
-          marginTop: 10,
-        }}
-      >
-        <Text>I want to do something</Text>
-        <DropDownPicker
-          open={goalOpen}
-          value={goal}
-          items={goalItems}
-          setValue={setGoal}
-          setOpen={setGoalOpen}
           style={{ width: 150 }}
         />
       </View>

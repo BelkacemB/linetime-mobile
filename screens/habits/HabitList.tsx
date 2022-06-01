@@ -4,14 +4,13 @@ import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import { useList } from "react-firebase-hooks/database";
 
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "../../firebase";
 import { getUserDBRef } from "../../api/HabitService";
+import useUserId from "../../hooks/useUserId";
 
 export const HabitList = ({ navigation }) => {
-  const [user] = useAuthState(auth);
-  const [snapshots, loading, error] = useList(getUserDBRef(user?.uid));
-  
+  const userId = useUserId();
+
+  const [snapshots, loading, error] = useList(getUserDBRef(userId));
 
   return (
     <View style={styles.container}>
