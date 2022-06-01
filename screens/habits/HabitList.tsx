@@ -2,30 +2,33 @@ import React, { useState, useEffect } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
-import { useList } from "react-firebase-hooks/database";
 
-import { getUserDBRef } from "../../api/HabitService";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 
+import { getUserHabits } from "../../api/HabitService";
+
 export const HabitList = ({ navigation }) => {
   const [user] = useAuthState(auth);
-  const [snapshots, loading, error] = useList(getUserDBRef(user.uid));
+  const [habits, setHabits] = useState([]);
+
+  // Create a boolean state to track whether the data has been updated or not
+  // TODO Better solution: build a custom hook to handle this
+
+  useEffect(() => {
+    getUserHabits(user.uid).then((habits) => {
+      setHabits(habits);
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
-      {loading && <Text>Loading...</Text>}
-      {error && <Text>Error: {error.message}</Text>}
-
       <FlatList
-        data={snapshots}
+        data={habits}
         renderItem={({ item }) => (
-          <HabitElement
-            habit={{ id: item.key, ...item.val() }}
-            navigation={navigation}
-          />
+          <HabitElement habit={item} navigation={navigation} />
         )}
-        keyExtractor={(item) => item.key}
+        keyExtractor={(item) => item.id}
       />
       {/* Add a new habit */}
       <View>

@@ -1,6 +1,6 @@
 import { Suggestion } from "../model/LinetimeTypes";
 
-const API_URL = "http://localhost:8000/opt";
+const API_URL = "http://localhost:8001/opt";
 
 export function fetchSuggestions(
   time: number,

@@ -11,16 +11,12 @@ type HabitProps = {
 };
 
 export const HabitElement = ({ habit, navigation }: HabitProps) => {
-  const userId = useUserId();
-
   const edit = () => {
     navigation.navigate("EditHabit", { habit: habit });
   };
 
-  async function remove() {
-    // TODO Display a confirmation dialog
-    // TODO Display a snackbar with the result of the operation
-    await deleteHabit(habit);
+  function remove() {
+    deleteHabit(habit);
   }
 
   return (

@@ -20,7 +20,7 @@ export const AddHabit = ({ navigation }) => {
 
   const userId = useUserId();
 
-  async function buildAndRegisterHabit() {
+  function buildAndRegisterHabit() {
     let habit: Habit = new HabitBuilder()
       .setName(name)
       .setBenefits(benefit[0])
@@ -31,7 +31,7 @@ export const AddHabit = ({ navigation }) => {
       .setUserId(userId)
       .build();
 
-    await persistHabit(habit);
+    persistHabit(habit);
 
     navigation.goBack();
   }

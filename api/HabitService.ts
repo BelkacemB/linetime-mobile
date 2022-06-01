@@ -1,19 +1,41 @@
-import { db } from "../firebase";
-import { ref, push, remove } from "firebase/database";
 import Habit from "../model/Habit";
 
-export async function persistHabit(habit: Habit) {
-  const { id, ...data } = habit;
-  await push(ref(db, `habits/${habit.userId}`), data);
+const API_URL = "http://localhost:8001/habits";
+
+export function persistHabit(habit: Habit) {
+  // Send a POST request to the server with the habit as JSON
+  fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(habit),
+  }).catch((error) => {
+    console.log(error);
+  });
 }
 
-export async function deleteHabit(habit: Habit) {
-  const habitDbPath = `habits/${habit.userId}/${habit.id}`;
+export function deleteHabit(habit: Habit) {
+  // Send a DELETE request to the server with the habit as JSON
+  console.log(`${API_URL}/${habit.userId}/${habit.id}`)
+  
+  fetch(`${API_URL}/${habit.userId}/${habit.id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).catch((error) => {
+    console.log(error);
+  });
+}
 
-  remove(ref(db, habitDbPath))
+export async function getUserHabits(userId: string): Promise<Habit[]> {
+  // Send a GET request to the server with the userId as URL parameter
+  return fetch(`${API_URL}/${userId}`)
+    .then((response) => response.json())
+    .then((json) => json as Habit[])
     .catch((error) => {
       console.log(error);
+      return [];
     });
 }
-
-export const getUserDBRef = (uid: string) => ref(db, `habits/${uid}`);
