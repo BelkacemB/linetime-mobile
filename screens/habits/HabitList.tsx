@@ -12,21 +12,25 @@ export const HabitList = ({ navigation }) => {
   const [user] = useAuthState(auth);
   const [habits, setHabits] = useState([]);
 
-  // Create a boolean state to track whether the data has been updated or not
-  // TODO Better solution: build a custom hook to handle this
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
+    console.log("HabitList: useEffect has been called");
     getUserHabits(user.uid).then((habits) => {
       setHabits(habits);
     });
-  }, []);
+  }, [update]);
+
+  const onUpdate = () => {
+    setUpdate(!update);
+  }
 
   return (
     <View style={styles.container}>
       <FlatList
         data={habits}
         renderItem={({ item }) => (
-          <HabitElement habit={item} navigation={navigation} />
+          <HabitElement habit={item} navigation={navigation} onDelete={onUpdate} />
         )}
         keyExtractor={(item) => item.id}
       />
@@ -34,7 +38,7 @@ export const HabitList = ({ navigation }) => {
       <View>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("AddHabit");
+            navigation.navigate("AddHabit", { onAdd: onUpdate });
           }}
         >
           <Text style={{ fontSize: 20, marginBottom: 10 }}>

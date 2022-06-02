@@ -3,8 +3,6 @@ import React, { useContext } from "react";
 import { StyleSheet, TextInput } from "react-native";
 
 import { persistHabit } from "../../api/HabitService";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase";
 
 import { TouchableOpacity, View, Text } from "../../components/Themed";
 import { transparentSecondaryColor } from "../../constants/Colors";
@@ -12,7 +10,9 @@ import { transparentSecondaryColor } from "../../constants/Colors";
 import Habit, { HabitBuilder } from "../../model/Habit";
 import useUserId from "../../hooks/useUserId";
 
-export const AddHabit = ({ navigation }) => {
+export const AddHabit = ({ navigation, route }) => {
+  const {onAdd} = route.params;
+
   const [name, setName] = React.useState("");
   const [benefit, setBenefit] = React.useState<number[]>([0]);
   const [energy, setEnergy] = React.useState<number[]>([0]);
@@ -32,8 +32,9 @@ export const AddHabit = ({ navigation }) => {
       .build();
 
     persistHabit(habit);
-
-    navigation.goBack();
+    onAdd(); 
+    
+    navigation.navigate("HabitList");
   }
 
   return (

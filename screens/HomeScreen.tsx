@@ -4,6 +4,7 @@ import { Text, TouchableOpacity, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { Today } from "../components/Today";
 import { Avatar } from "react-native-paper";
+import React from "react";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const user = "Belkacem";

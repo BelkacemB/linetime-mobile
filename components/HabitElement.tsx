@@ -2,21 +2,22 @@ import React from "react";
 import Habit from "../model/Habit";
 import { Text, View, TouchableOpacity } from "./Themed";
 import { deleteHabit } from "../api/HabitService";
-import useUserId from "../hooks/useUserId";
 
 type HabitProps = {
   habit: Habit;
   // Provide type for navigation prop
   navigation: any;
+  onDelete: () => void;
 };
 
-export const HabitElement = ({ habit, navigation }: HabitProps) => {
+export const HabitElement = ({ habit, navigation, onDelete }: HabitProps) => {
   const edit = () => {
     navigation.navigate("EditHabit", { habit: habit });
   };
 
   function remove() {
     deleteHabit(habit);
+    onDelete(); 
   }
 
   return (
