@@ -12,6 +12,12 @@ export const HabitList = ({ navigation }) => {
   const [user] = useAuthState(auth);
   const [habits, loading, onUpdate] = useHabitList(user.uid);
 
+  let categoriesSet = new Set(
+    habits
+      .filter((habit) => habit.category !== null)
+      .map((habit) => habit.category)
+  );
+
   return (
     <View style={styles.container}>
       {loading && <Text>Loading... (replace this with a spinner)</Text>}
@@ -30,7 +36,10 @@ export const HabitList = ({ navigation }) => {
       <View>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("AddHabit", { onAdd: onUpdate });
+            navigation.navigate("AddHabit", {
+              onAdd: onUpdate,
+              availableCategories: Array.from(categoriesSet),
+            });
           }}
         >
           <Text style={{ fontSize: 20, marginBottom: 10 }}>

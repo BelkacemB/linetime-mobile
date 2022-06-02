@@ -8,6 +8,7 @@ export default class Habit {
   benefits: number;
   energy: number;
   userId: string;
+  category?: string;
 
   constructor(id: string, name: string) {
     this.id = id;
@@ -71,6 +72,11 @@ export class HabitBuilder {
 
   setEnergy(energy: number) {
     this._habit.energy = energy;
+    return this;
+  }
+
+  setCategory(category: string) {
+    this._habit.category = category;
     return this;
   }
 
