@@ -11,7 +11,7 @@ import Habit, { HabitBuilder } from "../../model/Habit";
 import useUserId from "../../hooks/useUserId";
 
 export const AddHabit = ({ navigation, route }) => {
-  const {onAdd} = route.params;
+  const { onAdd } = route.params;
 
   const [name, setName] = React.useState("");
   const [benefit, setBenefit] = React.useState<number[]>([0]);
@@ -32,8 +32,8 @@ export const AddHabit = ({ navigation, route }) => {
       .build();
 
     persistHabit(habit);
-    onAdd(); 
-    
+    onAdd();
+
     navigation.navigate("HabitList");
   }
 

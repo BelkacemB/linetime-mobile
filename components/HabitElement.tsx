@@ -17,7 +17,7 @@ export const HabitElement = ({ habit, navigation, onDelete }: HabitProps) => {
 
   function remove() {
     deleteHabit(habit);
-    onDelete(); 
+    onDelete();
   }
 
   return (

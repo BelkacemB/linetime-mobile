@@ -1,6 +1,8 @@
+import { Platform } from "react-native";
 import Habit from "../model/Habit";
 
-const API_URL = "http://localhost:8001/habits";
+const IP_ADDRESS = Platform.OS === "android" ? "10.0.2.2" : "localhost";
+const API_URL = `http://${IP_ADDRESS}:8001/habits`;
 
 export function persistHabit(habit: Habit) {
   // Send a POST request to the server with the habit as JSON
@@ -16,9 +18,6 @@ export function persistHabit(habit: Habit) {
 }
 
 export function deleteHabit(habit: Habit) {
-  // Send a DELETE request to the server with the habit as JSON
-  console.log(`${API_URL}/${habit.userId}/${habit.id}`)
-  
   fetch(`${API_URL}/${habit.userId}/${habit.id}`, {
     method: "DELETE",
     headers: {

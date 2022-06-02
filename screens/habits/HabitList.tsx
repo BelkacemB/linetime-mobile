@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
@@ -6,31 +6,23 @@ import { Text, TouchableOpacity, View } from "../../components/Themed";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 
-import { getUserHabits } from "../../api/HabitService";
+import useHabitList from "../../hooks/useHabitList";
 
 export const HabitList = ({ navigation }) => {
   const [user] = useAuthState(auth);
-  const [habits, setHabits] = useState([]);
-
-  const [update, setUpdate] = useState(false);
-
-  useEffect(() => {
-    console.log("HabitList: useEffect has been called");
-    getUserHabits(user.uid).then((habits) => {
-      setHabits(habits);
-    });
-  }, [update]);
-
-  const onUpdate = () => {
-    setUpdate(!update);
-  }
+  const [habits, loading, onUpdate] = useHabitList(user.uid);
 
   return (
     <View style={styles.container}>
+      {loading && <Text>Loading... (replace this with a spinner)</Text>}
       <FlatList
         data={habits}
         renderItem={({ item }) => (
-          <HabitElement habit={item} navigation={navigation} onDelete={onUpdate} />
+          <HabitElement
+            habit={item}
+            navigation={navigation}
+            onDelete={onUpdate}
+          />
         )}
         keyExtractor={(item) => item.id}
       />
