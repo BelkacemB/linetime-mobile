@@ -18,6 +18,19 @@ export function persistHabit(habit: Habit) {
   });
 }
 
+// Update the habit with an UPDATE request
+export function updateHabit(habit: Habit) {
+  fetch(`${API_URL}/${habit.userId}/${habit.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(habit),
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
 export function deleteHabit(habit: Habit) {
   fetch(`${API_URL}/${habit.userId}/${habit.id}`, {
     method: "DELETE",

@@ -7,17 +7,24 @@ type HabitProps = {
   habit: Habit;
   // Provide type for navigation prop
   navigation: any;
-  onDelete: () => void;
+  onUpdateOrDelete: () => void;
 };
 
-export const HabitElement = ({ habit, navigation, onDelete }: HabitProps) => {
+export const HabitElement = ({
+  habit,
+  navigation,
+  onUpdateOrDelete,
+}: HabitProps) => {
   const edit = () => {
-    navigation.navigate("EditHabit", { habit: habit });
+    navigation.navigate("EditHabit", {
+      habit: habit,
+      onUpdate: onUpdateOrDelete,
+    });
   };
 
   function remove() {
     deleteHabit(habit);
-    onDelete();
+    onUpdateOrDelete();
   }
 
   return (

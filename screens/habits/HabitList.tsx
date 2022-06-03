@@ -1,5 +1,6 @@
 import React from "react";
 import { SectionList, StyleSheet } from "react-native";
+
 import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 
@@ -23,14 +24,16 @@ export const HabitList = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {loading && <Text>Loading... (replace this with a spinner)</Text>}
+      {loading && (
+        <Text>Loading... (replace this with a spinner or a skeleton)</Text>
+      )}
       <SectionList
         sections={sectionListData}
         renderItem={({ item }) => (
           <HabitElement
             habit={item}
             navigation={navigation}
-            onDelete={onUpdate}
+            onUpdateOrDelete={onUpdate}
           />
         )}
         keyExtractor={(item) => item.id}
@@ -74,5 +77,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     borderBottomColor: "#ccc",
-  },  
+  },
 });

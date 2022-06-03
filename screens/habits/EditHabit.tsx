@@ -1,22 +1,26 @@
 import React from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { Button, StyleSheet, TextInput } from "react-native";
+
 import { Text, View, TouchableOpacity } from "../../components/Themed";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import { HabitBuilder } from "../../model/Habit";
 import { transparentSecondaryColor } from "../../constants/Colors";
 
+import { updateHabit } from "../../api/HabitService";
+
 export const EditHabit = ({ navigation, route }) => {
-  let { habit } = route.params;
+  let { habit, onUpdate } = route.params;
 
-  const originalHabit = new HabitBuilder().copy(habit);
-
-  const updateHabit = () => {
-    navigation.goBack();
+  const updateCurHabit = () => {
+    updateHabit(habit);
+    refreshListAndGoBack();
   };
 
-  // TODO This is still updating the element, fix it
   const cancelUpdate = () => {
-    habit = originalHabit;
+    refreshListAndGoBack();
+  };
+
+  const refreshListAndGoBack = () => {
+    onUpdate();
     navigation.goBack();
   };
 
@@ -40,7 +44,7 @@ export const EditHabit = ({ navigation, route }) => {
         min={0}
         max={3}
         onValuesChange={(values) => (habit.benefits = values[0])}
-        step={0.5}
+        step={0.1}
       />
 
       <Text style={{ fontSize: 20 }}>How fun is this activity to you?</Text>
@@ -49,25 +53,17 @@ export const EditHabit = ({ navigation, route }) => {
         min={0}
         max={3}
         onValuesChange={(values) => (habit.fun = values[0])}
-        step={0.5}
+        step={0.1}
       />
 
-      {/* TODO Style the buttons correctly */}
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity
-          onPress={() => {
-            updateHabit();
-          }}
-        >
-          <Text>Update</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <Button title="Update" onPress={updateCurHabit} />
+        <Button
+          title="Cancel"
           onPress={() => {
             cancelUpdate();
           }}
-        >
-          <Text>Cancel</Text>
-        </TouchableOpacity>
+        />
       </View>
     </View>
   );
