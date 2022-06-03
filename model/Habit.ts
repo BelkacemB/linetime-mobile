@@ -9,6 +9,7 @@ export default class Habit {
   energy: number;
   userId: string;
   category?: string;
+  tags?: string[];
 
   constructor(id: string, name: string) {
     this.id = id;
@@ -80,6 +81,11 @@ export class HabitBuilder {
     return this;
   }
 
+  setTags(tags: string[]) {
+    this._habit.tags = tags;
+    return this;
+  }
+
   build(): Habit {
     return this._habit;
   }
@@ -95,6 +101,7 @@ export class HabitBuilder {
     this._habit.fun = habit.fun;
     this._habit.benefits = habit.benefits;
     this._habit.userId = habit.userId;
+    this._habit.tags = habit.tags;
     return this.build();
   }
 }

@@ -1,8 +1,9 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, StyleSheet, TextInput } from "react-native";
 
 import { persistHabit } from "../../api/HabitService";
+import { Chip } from "react-native-paper";
 
 import { TouchableOpacity, View, Text } from "../../components/Themed";
 import { transparentSecondaryColor } from "../../constants/Colors";
@@ -20,6 +21,11 @@ export const AddHabit = ({ navigation, route }) => {
   const [energy, setEnergy] = React.useState<number[]>([0]);
   const [fun, setFun] = React.useState<number[]>([0]);
   const [category, setCategory] = React.useState<string>(null);
+
+  const [tags, setTags] = React.useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+  const [newTag, setNewTag] = React.useState("");
+
   const [categories, setCategories] = React.useState<string[]>(
     availableCategories ?? []
   );
@@ -29,6 +35,10 @@ export const AddHabit = ({ navigation, route }) => {
   const [newCategoryInputDisplayed, setNewCategoryInputDisplayed] =
     React.useState(false);
   const [newCategoryName, setNewCategoryName] = React.useState("");
+
+  useEffect(() => {
+    setTags(categories.map((category) => category.toLowerCase()));
+  }, [categories]);
 
   const addCategory = (name: string) => {
     setCategories([...categories, name]);
@@ -49,6 +59,7 @@ export const AddHabit = ({ navigation, route }) => {
       .setMaxTime(40)
       .setUserId(userId)
       .setCategory(category)
+      .setTags(selectedTags)
       .build();
 
     persistHabit(habit);
@@ -56,6 +67,14 @@ export const AddHabit = ({ navigation, route }) => {
 
     navigation.navigate("HabitList");
   }
+
+  const toggleTagSelection = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -118,7 +137,6 @@ export const AddHabit = ({ navigation, route }) => {
         }}
       />
 
-      {/* TODO Move this to a separate component */}
       {newCategoryInputDisplayed && (
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <TextInput
@@ -136,6 +154,38 @@ export const AddHabit = ({ navigation, route }) => {
           />
         </View>
       )}
+
+      {/* Add tags */}
+      <Text style={{ fontSize: 20 }}>Add tags</Text>
+      <View style={styles.container}>
+        <TextInput
+          placeholder="Tag"
+          style={styles.textInput}
+          onChangeText={(text) => {
+            setNewTag(text);
+          }}
+        />
+        <Button
+          title="Add"
+          onPress={() => {
+            setTags([...tags, newTag]);
+          }}
+        />
+              {tags.map((tag) => (
+        <Chip
+          key={tag}
+          style={{ margin: 2, height: 20}}
+          onPress={() => {
+            toggleTagSelection(tag);
+          }}
+          selected={selectedTags.includes(tag)}
+        >
+          {tag}
+        </Chip>
+      ))}
+      </View>
+      {/* Display chips for tags */}
+
 
       <TouchableOpacity
         onPress={() => {
@@ -174,7 +224,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-    position: "absolute",
     bottom: 20,
   },
 });
