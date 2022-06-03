@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function useUserId() {
   const [user] = useAuthState(auth);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string>(user.uid);
 
   useEffect(() => {
     if (user) {

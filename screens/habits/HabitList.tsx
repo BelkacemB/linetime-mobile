@@ -3,14 +3,10 @@ import { FlatList, StyleSheet } from "react-native";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase";
-
-import useHabitList from "../../hooks/useHabitList";
+import useUserHabitList from "../../hooks/useUserHabitList";
 
 export const HabitList = ({ navigation }) => {
-  const [user] = useAuthState(auth);
-  const [habits, loading, onUpdate] = useHabitList(user.uid);
+  const [habits, loading, onUpdate] = useUserHabitList();
 
   let categoriesSet = new Set(
     habits

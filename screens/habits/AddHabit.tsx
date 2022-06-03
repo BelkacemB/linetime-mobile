@@ -19,7 +19,7 @@ export const AddHabit = ({ navigation, route }) => {
   const [benefit, setBenefit] = React.useState<number[]>([0]);
   const [energy, setEnergy] = React.useState<number[]>([0]);
   const [fun, setFun] = React.useState<number[]>([0]);
-  const [category, setCategory] = React.useState<string>("");
+  const [category, setCategory] = React.useState<string>(null);
   const [categories, setCategories] = React.useState<string[]>(
     availableCategories ?? []
   );
