@@ -57,9 +57,6 @@ export const AddHabit = ({ navigation, route }) => {
     navigation.navigate("HabitList");
   }
 
-  // Debug the categories state
-  console.log(categories);
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Add new habit</Text>

@@ -5,7 +5,7 @@ import { Text, TouchableOpacity, View } from "../../components/Themed";
 import DropDownPicker from "react-native-dropdown-picker";
 import CircleSlider from "../../components/CircleSlider";
 
-import { fetchSuggestions } from "../../api/LinetimeService";
+import { fetchSuggestions, SuggestionRequest } from "../../api/LinetimeService";
 
 import {
   secondaryColor,
@@ -61,7 +61,14 @@ export default function SuggestionForm({
   };
 
   const onSubmit = () => {
-    fetchSuggestions(timeInMinutes, energy, userId).then((suggestions) => {
+    const suggestionRequest: SuggestionRequest = {
+      time: timeInMinutes,
+      energy: energy,
+      userId: userId,
+      category: category,
+    };
+    console.log(suggestionRequest);
+    fetchSuggestions(suggestionRequest).then((suggestions) => {
       navigation.navigate("SuggestionList", { listOfSuggestions: suggestions });
     });
   };
@@ -89,12 +96,17 @@ export default function SuggestionForm({
       </View>
       {/* Category */}
       {categories.length > 0 && (
-        <View style={{ alignItems: "center", justifyContent: "center", zIndex: -4 }}>
+        <View
+          style={{ alignItems: "center", justifyContent: "center", zIndex: -4 }}
+        >
           <Text>I want to do something relating to</Text>
           <DropDownPicker
             open={categoryOpen}
             value={category}
-            items={categories.map((category) => ({ label: category, value: category }))}
+            items={categories.map((category) => ({
+              label: category,
+              value: category,
+            }))}
             setValue={setCategory}
             setOpen={setCategoryOpen}
             style={{ width: 150 }}
