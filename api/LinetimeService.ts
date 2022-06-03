@@ -1,6 +1,10 @@
+import { Platform } from "react-native";
 import { Suggestion } from "../model/LinetimeTypes";
 
-const API_URL = "http://localhost:8001/opt";
+const IP_ADDRESS = Platform.OS === "android" ? "10.0.2.2" : "localhost";
+const PORT = 8002;
+
+const API_URL = `http://${IP_ADDRESS}:${PORT}/opt`;
 
 export function fetchSuggestions(
   time: number,

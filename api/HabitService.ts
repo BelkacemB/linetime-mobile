@@ -2,10 +2,11 @@ import { Platform } from "react-native";
 import Habit from "../model/Habit";
 
 const IP_ADDRESS = Platform.OS === "android" ? "10.0.2.2" : "localhost";
-const API_URL = `http://${IP_ADDRESS}:8001/habits`;
+const PORT = 8002;
+
+const API_URL = `http://${IP_ADDRESS}:${PORT}/habits`;
 
 export function persistHabit(habit: Habit) {
-  // Send a POST request to the server with the habit as JSON
   fetch(API_URL, {
     method: "POST",
     headers: {
