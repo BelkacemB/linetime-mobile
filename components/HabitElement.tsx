@@ -32,7 +32,7 @@ export const HabitElement = ({ habit, navigation, onDelete }: HabitProps) => {
         padding: 5,
       }}
     >
-      <Text style={{ fontSize: 20, fontWeight: "bold" }}>{habit.name}</Text>
+      <Text style={{ fontSize: 20 }}>{habit.name}</Text>
       <TouchableOpacity
         style={{
           borderRadius: 50,

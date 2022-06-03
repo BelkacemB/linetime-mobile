@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { SectionList, StyleSheet } from "react-native";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 
@@ -14,11 +14,18 @@ export const HabitList = ({ navigation }) => {
       .map((habit) => habit.category)
   );
 
+  const sectionListData = [
+    ...[...categoriesSet].map((category) => ({
+      title: category ?? "Other",
+      data: habits.filter((habit) => habit.category === category),
+    })),
+  ];
+
   return (
     <View style={styles.container}>
       {loading && <Text>Loading... (replace this with a spinner)</Text>}
-      <FlatList
-        data={habits}
+      <SectionList
+        sections={sectionListData}
         renderItem={({ item }) => (
           <HabitElement
             habit={item}
@@ -27,6 +34,9 @@ export const HabitList = ({ navigation }) => {
           />
         )}
         keyExtractor={(item) => item.id}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={styles.header}>{title}</Text>
+        )}
       />
       {/* Add a new habit */}
       <View>
@@ -59,4 +69,10 @@ const styles = StyleSheet.create({
     width: "80%",
     opacity: 0.2,
   },
+  header: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginBottom: 10,
+    borderBottomColor: "#ccc",
+  },  
 });
