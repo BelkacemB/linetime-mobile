@@ -18,9 +18,10 @@ export function fetchSuggestions(
 ): Promise<Suggestion[]> {
   let targetUrl = `${API_URL}?time=${suggestionRequest.time}&energy=${
     suggestionRequest.energy
-  }&user-id=${suggestionRequest.userId}
-  &tags=${suggestionRequest.tags ? suggestionRequest.tags.join(",") : ""}`;
-
+  }&user-id=${suggestionRequest.userId}&tags=${
+    suggestionRequest.tags ? suggestionRequest.tags.join(",") : ""
+  }`;
+  console.log(targetUrl);
   return fetch(targetUrl)
     .then((response) => response.json())
     .then((json) => json as Suggestion[])

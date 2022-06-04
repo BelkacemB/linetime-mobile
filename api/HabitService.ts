@@ -43,7 +43,6 @@ export function deleteHabit(habit: Habit) {
 }
 
 export async function getUserHabits(userId: string): Promise<Habit[]> {
-  // Send a GET request to the server with the userId as URL parameter
   return fetch(`${API_URL}/${userId}`)
     .then((response) => response.json())
     .then((json) => json as Habit[])

@@ -1,6 +1,10 @@
 import React from "react";
 import { transparentSecondaryColor } from "../constants/Colors";
+import useUserHabitList from "../hooks/useUserHabitList";
+import Habit from "../model/Habit";
 import { Suggestion } from "../model/LinetimeTypes";
+
+import { updateHabit } from "../api/HabitService";
 
 import { View, Text } from "./Themed";
 import { TouchableOpacity } from "./Themed";
@@ -10,6 +14,13 @@ type Props = {
 };
 
 export const SuggestionElement = ({ suggestion }: Props) => {
+  const [habits] = useUserHabitList();
+  const [hidden, setHidden] = React.useState(false);
+
+  const matchingHabit: Habit = habits.find(
+    (habit) => habit.id === suggestion.id
+  );
+
   return (
     <View
       style={{
@@ -21,6 +32,7 @@ export const SuggestionElement = ({ suggestion }: Props) => {
         marginHorizontal: 20,
         padding: 5,
         borderBottomWidth: 1,
+        opacity: hidden ? 0.2 : 1,
       }}
     >
       <Text style={{ fontSize: 20, fontWeight: "bold" }}>
@@ -38,6 +50,11 @@ export const SuggestionElement = ({ suggestion }: Props) => {
           borderColor: transparentSecondaryColor,
           padding: 10,
           marginLeft: 20,
+        }}
+        onPress={() => {
+          matchingHabit.lastDone = new Date();
+          updateHabit(matchingHabit);
+          setHidden(true);
         }}
       >
         <Text>✅</Text>

@@ -1,14 +1,15 @@
 export default class Habit {
   id?: string;
   name: string;
+  creationDate: Date;
   lastDone?: Date;
+  lastRejected?: Date;
   minTime?: number;
   maxTime?: number;
   fun: number;
   benefits: number;
   energy: number;
   userId: string;
-  category?: string;
   tags?: string[];
 
   constructor(id: string, name: string) {
@@ -76,13 +77,13 @@ export class HabitBuilder {
     return this;
   }
 
-  setCategory(category: string) {
-    this._habit.category = category;
+  setTags(tags: string[]) {
+    this._habit.tags = tags;
     return this;
   }
 
-  setTags(tags: string[]) {
-    this._habit.tags = tags;
+  setCreationDate(creationDate: Date) {
+    this._habit.creationDate = creationDate;
     return this;
   }
 
@@ -95,6 +96,7 @@ export class HabitBuilder {
     this._habit.id = habit.id;
     this._habit.name = habit.name;
     this._habit.lastDone = habit.lastDone;
+    this._habit.creationDate = habit.creationDate;
     this._habit.minTime = habit.minTime;
     this._habit.maxTime = habit.maxTime;
     this._habit.energy = habit.energy;
