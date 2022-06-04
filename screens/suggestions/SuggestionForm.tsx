@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
 import { Text, TouchableOpacity, View } from "../../components/Themed";
@@ -13,7 +13,8 @@ import {
 } from "../../constants/Colors";
 import { RootTabScreenProps } from "../../types";
 import useUserId from "../../hooks/useUserId";
-import useUserHabitList from "../../hooks/useUserHabitList";
+import { Chip } from "react-native-paper";
+import useHabitTags from "../../hooks/useHabitTags";
 
 const energyTypeItems = [
   { label: "Tired", value: 2 },
@@ -29,27 +30,9 @@ export default function SuggestionForm({
   // Form state
   const [energy, setEnergy] = useState<number>(6);
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
-  const [category, setCategory] = useState<string>(null);
-
+  const {tags, selectedTags, toggleTagSelection} = useHabitTags();
   // UI state
   const [energyOpen, setEnergyOpen] = useState(false);
-  const [categoryOpen, setCategoryOpen] = useState(false);
-
-  // Data
-  const [habits] = useUserHabitList();
-  const [categories, setCategories] = useState<string[]>([]);
-
-  useEffect(() => {
-    setCategories(
-      Array.from(
-        new Set(
-          habits
-            .filter((habit) => habit.category !== null)
-            .map((habit) => habit.category)
-        )
-      )
-    );
-  }, [habits]);
 
   const handleTimeSlide = (value: number) => {
     const minutes = Math.round(value / 3);
@@ -65,7 +48,6 @@ export default function SuggestionForm({
       time: timeInMinutes,
       energy: energy,
       userId: userId,
-      category: category,
     };
     console.log(suggestionRequest);
     fetchSuggestions(suggestionRequest).then((suggestions) => {
@@ -94,25 +76,24 @@ export default function SuggestionForm({
           style={{ width: 150 }}
         />
       </View>
-      {/* Category */}
-      {categories.length > 0 && (
-        <View
-          style={{ alignItems: "center", justifyContent: "center", zIndex: -4 }}
-        >
-          <Text>I want to do something relating to</Text>
-          <DropDownPicker
-            open={categoryOpen}
-            value={category}
-            items={categories.map((category) => ({
-              label: category,
-              value: category,
-            }))}
-            setValue={setCategory}
-            setOpen={setCategoryOpen}
-            style={{ width: 150 }}
-          />
+      {/* Tags */}
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <Text>Tags </Text>
+        <View style={{ flexDirection: "row" }}>
+        {tags.map((tag) => (
+          <Chip
+            key={tag}
+            style={{ margin: 5, height: 30 }}
+            onPress={() => {
+              toggleTagSelection(tag);
+            }}
+            selected={selectedTags.includes(tag)}
+          >
+            {tag}
+          </Chip>
+        ))}
         </View>
-      )}
+      </View>
 
       {/* Line of empty text */}
       <View

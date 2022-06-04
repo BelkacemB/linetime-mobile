@@ -1,7 +1,7 @@
 import React from "react";
 
 import { TextInput } from "react-native-paper";
-import { StyleSheet } from "react-native";
+import { Button, StyleSheet } from "react-native";
 import { View, Text, TouchableOpacity } from "../../components/Themed";
 
 import { auth } from "../../firebase";
@@ -46,17 +46,14 @@ export const Login = ({ navigation }) => {
         onChangeText={(text) => setPassword(text)}
       />
       <Text style={{ color: "red" }}>{error}</Text>
-      <TouchableOpacity onPress={handleLogin}>
-        <Text>Login</Text>
-      </TouchableOpacity>
+      <Button onPress={handleLogin} title="Login" />
       <Text>Don't have an account? </Text>
-      <TouchableOpacity
+      <Button
         onPress={() => {
           navigation.navigate("SignUp");
         }}
-      >
-        <Text>Sign up</Text>
-      </TouchableOpacity>
+        title="Sign Up"
+      />
     </View>
   );
 };

@@ -18,6 +18,7 @@ export default function useUserHabitList() {
   }, [update]);
 
   const onUpdate = () => {
+    console.log("Custom hook: onUpdate");
     setUpdate(!update);
   };
 

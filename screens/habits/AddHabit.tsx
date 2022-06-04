@@ -1,5 +1,5 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, StyleSheet, TextInput } from "react-native";
 
 import { persistHabit } from "../../api/HabitService";
@@ -10,6 +10,7 @@ import { transparentSecondaryColor } from "../../constants/Colors";
 
 import Habit, { HabitBuilder } from "../../model/Habit";
 import useUserId from "../../hooks/useUserId";
+import useHabitTags from "../../hooks/useHabitTags";
 
 export const AddHabit = ({ navigation, route }) => {
   const { onAdd, availableTags } = route.params;
@@ -22,9 +23,7 @@ export const AddHabit = ({ navigation, route }) => {
   const [energy, setEnergy] = React.useState<number[]>([0]);
   const [fun, setFun] = React.useState<number[]>([0]);
 
-  const [tags, setTags] = React.useState<string[]>(availableTags);
-  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
-  const [newTag, setNewTag] = React.useState("");
+  const {tags, selectedTags, newTag, setNewTag, onAddTag, toggleTagSelection} = useHabitTags();
 
   const userId = useUserId();
 
@@ -45,14 +44,6 @@ export const AddHabit = ({ navigation, route }) => {
 
     navigation.navigate("HabitList");
   }
-
-  const toggleTagSelection = (tag: string) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags(selectedTags.filter((t) => t !== tag));
-    } else {
-      setSelectedTags([...selectedTags, tag]);
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -117,10 +108,7 @@ export const AddHabit = ({ navigation, route }) => {
         />
         <Button
           title="Add tag"
-          onPress={() => {
-            setTags([...tags, newTag]);
-            setNewTag("");
-          }}
+          onPress={onAddTag}
         />
       </View>
       {/* Display chips for tags */}
