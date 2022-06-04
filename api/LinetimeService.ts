@@ -10,7 +10,7 @@ export type SuggestionRequest = {
   time: number;
   energy: number;
   userId: string;
-  category?: string;
+  tags?: string[];
 };
 
 export function fetchSuggestions(
@@ -18,9 +18,9 @@ export function fetchSuggestions(
 ): Promise<Suggestion[]> {
   let targetUrl = `${API_URL}?time=${suggestionRequest.time}&energy=${
     suggestionRequest.energy
-  }&user-id=${suggestionRequest.userId}&category=${
-    suggestionRequest.category ?? "all"
-  }`;
+  }&user-id=${suggestionRequest.userId}
+  &tags=${suggestionRequest.tags ? suggestionRequest.tags.join(",") : ""}`;
+
   return fetch(targetUrl)
     .then((response) => response.json())
     .then((json) => json as Suggestion[])

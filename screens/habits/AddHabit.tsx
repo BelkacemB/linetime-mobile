@@ -7,45 +7,24 @@ import { Chip } from "react-native-paper";
 
 import { TouchableOpacity, View, Text } from "../../components/Themed";
 import { transparentSecondaryColor } from "../../constants/Colors";
-import DropDownPicker from "react-native-dropdown-picker";
 
 import Habit, { HabitBuilder } from "../../model/Habit";
 import useUserId from "../../hooks/useUserId";
 
 export const AddHabit = ({ navigation, route }) => {
-  const { onAdd, availableCategories } = route.params;
+  const { onAdd, availableTags } = route.params;
 
+  console.log("Available tags from Add habit");
+  console.log(availableTags);
   // Activity
   const [name, setName] = React.useState("");
   const [benefit, setBenefit] = React.useState<number[]>([0]);
   const [energy, setEnergy] = React.useState<number[]>([0]);
   const [fun, setFun] = React.useState<number[]>([0]);
-  const [category, setCategory] = React.useState<string>(null);
 
-  const [tags, setTags] = React.useState<string[]>([]);
+  const [tags, setTags] = React.useState<string[]>(availableTags);
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
   const [newTag, setNewTag] = React.useState("");
-
-  const [categories, setCategories] = React.useState<string[]>(
-    availableCategories ?? []
-  );
-
-  // UI
-  const [categoryOpen, setCategoryOpen] = React.useState(false);
-  const [newCategoryInputDisplayed, setNewCategoryInputDisplayed] =
-    React.useState(false);
-  const [newCategoryName, setNewCategoryName] = React.useState("");
-
-  useEffect(() => {
-    setTags(categories.map((category) => category.toLowerCase()));
-  }, [categories]);
-
-  const addCategory = (name: string) => {
-    setCategories([...categories, name]);
-    setCategory(name);
-    setCategoryOpen(false);
-    setNewCategoryInputDisplayed(false);
-  };
 
   const userId = useUserId();
 
@@ -58,7 +37,6 @@ export const AddHabit = ({ navigation, route }) => {
       .setMinTime(20)
       .setMaxTime(40)
       .setUserId(userId)
-      .setCategory(category)
       .setTags(selectedTags)
       .build();
 
@@ -113,79 +91,39 @@ export const AddHabit = ({ navigation, route }) => {
         onValuesChange={(values) => setEnergy(values)}
       />
 
-      <Text style={{ fontSize: 20 }}>Categorize this activity</Text>
-      {/* Create a dropdown and center it horizontally */}
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <DropDownPicker
-          open={categoryOpen}
-          value={category}
-          items={categories.map((category) => ({
-            value: category,
-            label: category,
-          }))}
-          setValue={setCategory}
-          setOpen={setCategoryOpen}
-          style={{ width: 150 }}
-        />
-      </View>
-
-      {/* Button to add category */}
-      <Button
-        title="+ Add category"
-        onPress={() => {
-          setNewCategoryInputDisplayed(true);
-        }}
-      />
-
-      {newCategoryInputDisplayed && (
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <TextInput
-            placeholder="New category"
-            style={styles.textInput}
-            onChangeText={(text) => {
-              setNewCategoryName(text);
-            }}
-          />
-          <Button
-            title="Add"
-            onPress={() => {
-              addCategory(newCategoryName);
-            }}
-          />
-        </View>
-      )}
-
       {/* Add tags */}
-      <Text style={{ fontSize: 20 }}>Add tags</Text>
-      <View style={styles.container}>
+      <Text style={{ fontSize: 20 }}>#tags</Text>
+      <View style={{ flexDirection: "row" }}>
+        {tags.map((tag) => (
+          <Chip
+            key={tag}
+            style={{ margin: 5, height: 30 }}
+            onPress={() => {
+              toggleTagSelection(tag);
+            }}
+            selected={selectedTags.includes(tag)}
+          >
+            {tag}
+          </Chip>
+        ))}
+
         <TextInput
           placeholder="Tag"
-          style={styles.textInput}
+          style={{ width: "20%" }}
+          value={newTag}
           onChangeText={(text) => {
             setNewTag(text);
           }}
         />
         <Button
-          title="Add"
+          title="Add tag"
           onPress={() => {
             setTags([...tags, newTag]);
+            setNewTag("");
           }}
         />
-              {tags.map((tag) => (
-        <Chip
-          key={tag}
-          style={{ margin: 2, height: 20}}
-          onPress={() => {
-            toggleTagSelection(tag);
-          }}
-          selected={selectedTags.includes(tag)}
-        >
-          {tag}
-        </Chip>
-      ))}
       </View>
       {/* Display chips for tags */}
-
 
       <TouchableOpacity
         onPress={() => {

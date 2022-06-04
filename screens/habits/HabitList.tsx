@@ -5,20 +5,21 @@ import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 
 import useUserHabitList from "../../hooks/useUserHabitList";
+import { extractTagsFromHabits } from "../../model/Util";
 
 export const HabitList = ({ navigation }) => {
   const [habits, loading, onUpdate] = useUserHabitList();
 
-  let categoriesSet = new Set(
-    habits
-      .filter((habit) => habit.category !== null)
-      .map((habit) => habit.category)
-  );
+  let tagsSet = extractTagsFromHabits(habits);
 
-  const sectionListData = [
-    ...[...categoriesSet].map((category) => ({
-      title: category ?? "Other",
-      data: habits.filter((habit) => habit.category === category),
+  const sectionsByTags = [
+    {
+      title: "All",
+      data: habits,
+    },
+    ...Array.from(tagsSet).map((tag) => ({
+      title: tag,
+      data: habits.filter((habit) => habit.tags?.includes(tag)),
     })),
   ];
 
@@ -28,7 +29,7 @@ export const HabitList = ({ navigation }) => {
         <Text>Loading... (replace this with a spinner or a skeleton)</Text>
       )}
       <SectionList
-        sections={sectionListData}
+        sections={sectionsByTags}
         renderItem={({ item }) => (
           <HabitElement
             habit={item}
@@ -47,7 +48,7 @@ export const HabitList = ({ navigation }) => {
           onPress={() => {
             navigation.navigate("AddHabit", {
               onAdd: onUpdate,
-              availableCategories: Array.from(categoriesSet),
+              availableTags: Array.from(tagsSet),
             });
           }}
         >
