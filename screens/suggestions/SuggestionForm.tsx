@@ -30,7 +30,7 @@ export default function SuggestionForm({
   // Form state
   const [energy, setEnergy] = useState<number>(6);
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
-  const {tags, selectedTags, toggleTagSelection} = useHabitTags();
+  const { tags, selectedTags, toggleTagSelection } = useHabitTags();
   // UI state
   const [energyOpen, setEnergyOpen] = useState(false);
 
@@ -48,8 +48,8 @@ export default function SuggestionForm({
       time: timeInMinutes,
       energy: energy,
       userId: userId,
+      tags: selectedTags,
     };
-    console.log(suggestionRequest);
     fetchSuggestions(suggestionRequest).then((suggestions) => {
       navigation.navigate("SuggestionList", { listOfSuggestions: suggestions });
     });
@@ -77,21 +77,29 @@ export default function SuggestionForm({
         />
       </View>
       {/* Tags */}
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <View
+        style={styles.blank}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
+
+      <View
+        style={{ alignItems: "center", justifyContent: "center", zIndex: -3 }}
+      >
         <Text>Tags </Text>
         <View style={{ flexDirection: "row" }}>
-        {tags.map((tag) => (
-          <Chip
-            key={tag}
-            style={{ margin: 5, height: 30 }}
-            onPress={() => {
-              toggleTagSelection(tag);
-            }}
-            selected={selectedTags.includes(tag)}
-          >
-            {tag}
-          </Chip>
-        ))}
+          {tags.map((tag) => (
+            <Chip
+              key={tag}
+              style={{ margin: 5, height: 30 }}
+              onPress={() => {
+                toggleTagSelection(tag);
+              }}
+              selected={selectedTags.includes(tag)}
+            >
+              {tag}
+            </Chip>
+          ))}
         </View>
       </View>
 

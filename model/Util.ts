@@ -9,3 +9,7 @@ export const extractTagsFromHabits = (habits: Habit[]): string[] => {
   );
   return Array.from(resultSet);
 };
+
+export const habitTagsReducer = (state, action) => {
+  // TODO Complete later
+};

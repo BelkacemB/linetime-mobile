@@ -13,17 +13,22 @@ import useUserId from "../../hooks/useUserId";
 import useHabitTags from "../../hooks/useHabitTags";
 
 export const AddHabit = ({ navigation, route }) => {
-  const { onAdd, availableTags } = route.params;
+  const { onAdd } = route.params;
 
-  console.log("Available tags from Add habit");
-  console.log(availableTags);
   // Activity
   const [name, setName] = React.useState("");
   const [benefit, setBenefit] = React.useState<number[]>([0]);
   const [energy, setEnergy] = React.useState<number[]>([0]);
   const [fun, setFun] = React.useState<number[]>([0]);
 
-  const {tags, selectedTags, newTag, setNewTag, onAddTag, toggleTagSelection} = useHabitTags();
+  const {
+    tags,
+    selectedTags,
+    newTag,
+    setNewTag,
+    onAddTag,
+    toggleTagSelection,
+  } = useHabitTags();
 
   const userId = useUserId();
 
@@ -37,6 +42,8 @@ export const AddHabit = ({ navigation, route }) => {
       .setMaxTime(40)
       .setUserId(userId)
       .setTags(selectedTags)
+      .setCreationDate(new Date())
+      .setLastDone(new Date())
       .build();
 
     persistHabit(habit);
@@ -106,10 +113,7 @@ export const AddHabit = ({ navigation, route }) => {
             setNewTag(text);
           }}
         />
-        <Button
-          title="Add tag"
-          onPress={onAddTag}
-        />
+        <Button title="Add tag" onPress={onAddTag} />
       </View>
       {/* Display chips for tags */}
 

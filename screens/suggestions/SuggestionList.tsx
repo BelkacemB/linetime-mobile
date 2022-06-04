@@ -5,7 +5,6 @@ import { View } from "../../components/Themed";
 
 export const SuggestionList = ({ route }) => {
   const { listOfSuggestions } = route.params;
-
   return (
     <View style={styles.container}>
       <FlatList

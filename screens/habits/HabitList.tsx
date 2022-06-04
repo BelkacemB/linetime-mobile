@@ -48,7 +48,6 @@ export const HabitList = ({ navigation }) => {
           onPress={() => {
             navigation.navigate("AddHabit", {
               onAdd: onUpdate,
-              availableTags: Array.from(tagsSet),
             });
           }}
         >
