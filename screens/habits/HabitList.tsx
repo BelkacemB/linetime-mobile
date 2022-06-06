@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SectionList, StyleSheet } from "react-native";
 
+import { Searchbar } from "react-native-paper";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 
@@ -9,22 +10,40 @@ import { extractTagsFromHabits } from "../../model/Util";
 
 export const HabitList = ({ navigation }) => {
   const [habits, loading, onUpdate] = useUserHabitList();
+  const [filteredHabits, setFilteredHabits] = React.useState(habits);
 
-  let tagsSet = extractTagsFromHabits(habits);
+  const [search, setSearch] = React.useState("");
+
+  // Update filteredHabits when search changes
+  useEffect(() => {
+    setFilteredHabits(
+      habits.filter((habit) => {
+        return habit.name.toLowerCase().includes(search.toLowerCase());
+      })
+    );
+  }, [habits, search]);
+
+  let tagsSet = extractTagsFromHabits(filteredHabits);
 
   const sectionsByTags = [
     {
       title: "All",
-      data: habits,
+      data: filteredHabits,
     },
     ...Array.from(tagsSet).map((tag) => ({
       title: tag,
-      data: habits.filter((habit) => habit.tags?.includes(tag)),
+      data: filteredHabits.filter((habit) => habit.tags?.includes(tag)),
     })),
   ];
 
   return (
     <View style={styles.container}>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={(text) => setSearch(text)}
+        value={search}
+      />
+
       {loading && (
         <Text>Loading... (replace this with a spinner or a skeleton)</Text>
       )}
@@ -63,8 +82,9 @@ export const HabitList = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
+    padding: 10,
+    margin: 5,
   },
   separator: {
     marginVertical: 30,

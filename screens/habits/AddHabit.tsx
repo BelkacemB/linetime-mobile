@@ -1,16 +1,23 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import React from "react";
-import { Button, StyleSheet, TextInput } from "react-native";
+import { Button, ScrollView, StyleSheet, TextInput } from "react-native";
 
 import { persistHabit } from "../../api/HabitService";
-import { Chip } from "react-native-paper";
+import { Chip, ToggleButton } from "react-native-paper";
 
 import { TouchableOpacity, View, Text } from "../../components/Themed";
 import { transparentSecondaryColor } from "../../constants/Colors";
 
-import Habit, { HabitBuilder } from "../../model/Habit";
+import Habit, { HabitBuilder, TimeOfDay } from "../../model/Habit";
 import useUserId from "../../hooks/useUserId";
 import useHabitTags from "../../hooks/useHabitTags";
+
+const TIMES_OF_DAY = ["Morning", "Afternoon", "Evening"];
+const ICONS_BY_TIMES_OF_DAY = {
+  Morning: "weather-sunset-up",
+  Afternoon: "weather-sunset-down",
+  Evening: "weather-night"
+};
 
 export const AddHabit = ({ navigation, route }) => {
   const { onAdd } = route.params;
@@ -19,7 +26,8 @@ export const AddHabit = ({ navigation, route }) => {
   const [name, setName] = React.useState("");
   const [benefit, setBenefit] = React.useState<number[]>([0]);
   const [energy, setEnergy] = React.useState<number[]>([0]);
-  const [fun, setFun] = React.useState<number[]>([0]);
+  const [minAndMax, setMinAndMax] = React.useState<number[]>([20, 40]);
+  const [timesOfDay, setTimesOfDay] = React.useState<string[]>(TIMES_OF_DAY);
 
   const {
     tags,
@@ -36,12 +44,12 @@ export const AddHabit = ({ navigation, route }) => {
     let habit: Habit = new HabitBuilder()
       .setName(name)
       .setBenefits(benefit[0])
-      .setFun(fun[0])
       .setEnergy(energy[0])
-      .setMinTime(20)
-      .setMaxTime(40)
+      .setMinTime(minAndMax[0])
+      .setMaxTime(minAndMax[1])
       .setUserId(userId)
       .setTags(selectedTags)
+      .setTimesOfDay(timesOfDay)
       .setCreationDate(new Date())
       .setLastDone(new Date())
       .build();
@@ -73,15 +81,7 @@ export const AddHabit = ({ navigation, route }) => {
         onValuesChange={(values) => setBenefit(values)}
       />
 
-      <Text style={{ fontSize: 20 }}>How fun is this activity to you?</Text>
-      <MultiSlider
-        values={fun}
-        min={0}
-        max={3}
-        onValuesChange={(values) => setFun(values)}
-      />
-
-      <Text style={{ fontSize: 20 }}>How tiring is this activity to you?</Text>
+      <Text style={{ fontSize: 20 }}>Energy requirement:</Text>
       <MultiSlider
         values={energy}
         min={0}
@@ -89,9 +89,37 @@ export const AddHabit = ({ navigation, route }) => {
         onValuesChange={(values) => setEnergy(values)}
       />
 
+      <Text style={{ fontSize: 20 }}>Min and max times</Text>
+      <MultiSlider
+        values={minAndMax}
+        min={10}
+        max={120}
+        onValuesChange={(values) => setMinAndMax(values)}
+        step={1}
+      />
+
+      <Text style={{ fontSize: 20 }}>Time of the day</Text>
+      <View style={{ flexDirection: "row" }}>
+        {TIMES_OF_DAY.map((key) => (
+          <ToggleButton
+            icon={ICONS_BY_TIMES_OF_DAY[key]}
+            value={key}
+            status={timesOfDay.includes(key) ? "checked" : "unchecked"}
+            onPress={() => {
+              if (timesOfDay.includes(key)) {
+                setTimesOfDay(timesOfDay.filter((t) => t !== key));
+              } else {
+                setTimesOfDay([...timesOfDay, key]);
+              }
+            }}
+            style={{ marginRight: 10, width: 40 }}
+          />
+        ))}
+      </View>
+
       {/* Add tags */}
       <Text style={{ fontSize: 20 }}>#tags</Text>
-      <View style={{ flexDirection: "row" }}>
+      <ScrollView>
         {tags.map((tag) => (
           <Chip
             key={tag}
@@ -107,14 +135,14 @@ export const AddHabit = ({ navigation, route }) => {
 
         <TextInput
           placeholder="Tag"
-          style={{ width: "20%" }}
+          style={{ height: 30, margin: 5 }}
           value={newTag}
           onChangeText={(text) => {
             setNewTag(text);
           }}
         />
-        <Button title="Add tag" onPress={onAddTag} />
-      </View>
+        <Button title="Add" onPress={onAddTag} />
+      </ScrollView>
       {/* Display chips for tags */}
 
       <TouchableOpacity
@@ -140,7 +168,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   textInput: {
-    width: "80%",
+    width: "40%",
+    height: 40,
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 5,

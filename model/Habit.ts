@@ -1,3 +1,5 @@
+export type TimeOfDay = "Morning" | "Afternoon" | "Evening" | "Night";
+
 export default class Habit {
   id?: string;
   name: string;
@@ -6,10 +8,10 @@ export default class Habit {
   lastRejected?: Date;
   minTime?: number;
   maxTime?: number;
-  fun: number;
   benefits: number;
   energy: number;
   userId: string;
+  timesOfDay: string[];
   tags?: string[];
 
   constructor(id: string, name: string) {
@@ -57,11 +59,6 @@ export class HabitBuilder {
     return this;
   }
 
-  setFun(fun: number) {
-    this._habit.fun = fun;
-    return this;
-  }
-
   setBenefits(benefits: number) {
     this._habit.benefits = benefits;
     return this;
@@ -87,11 +84,15 @@ export class HabitBuilder {
     return this;
   }
 
+  setTimesOfDay(timesOfDay: string[]) {
+    this._habit.timesOfDay = timesOfDay;
+    return this;
+  }
+
   build(): Habit {
     return this._habit;
   }
 
-  // Copy existing habit
   copy(habit: Habit) {
     this._habit.id = habit.id;
     this._habit.name = habit.name;
@@ -100,10 +101,10 @@ export class HabitBuilder {
     this._habit.minTime = habit.minTime;
     this._habit.maxTime = habit.maxTime;
     this._habit.energy = habit.energy;
-    this._habit.fun = habit.fun;
     this._habit.benefits = habit.benefits;
     this._habit.userId = habit.userId;
     this._habit.tags = habit.tags;
+    this._habit.timesOfDay = habit.timesOfDay;
     return this.build();
   }
 }
