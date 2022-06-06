@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { SectionList, StyleSheet } from "react-native";
 
-import { Searchbar } from "react-native-paper";
+import { SearchBar } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 
@@ -38,7 +38,7 @@ export const HabitList = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Searchbar
+      <SearchBar
         placeholder="Search"
         onChangeText={(text) => setSearch(text)}
         value={search}

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TextInput } from "react-native-paper";
+import { Input, Icon } from "@rneui/themed";
 import { Button, StyleSheet } from "react-native";
 import { View, Text, TouchableOpacity } from "../../components/Themed";
 
@@ -30,16 +30,14 @@ export const Login = ({ navigation }) => {
     <View style={styles.container}>
       <Text>Login</Text>
       {/* Login by email and password using firebase */}
-      <TextInput
+      <Input
         label="Email"
-        mode="outlined"
         style={styles.input}
         placeholder="Enter your email"
         onChangeText={(text) => setEmail(text)}
       />
-      <TextInput
+      <Input
         label="Password"
-        mode="outlined"
         style={styles.input}
         placeholder="Enter your password"
         secureTextEntry={true}

@@ -3,7 +3,7 @@ import { primaryColor, transparentSecondaryColor } from "../constants/Colors";
 import { Text, TouchableOpacity, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { Today } from "../components/Today";
-import { Avatar } from "react-native-paper";
+import { Avatar } from "@rneui/themed";
 import React from "react";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
@@ -13,8 +13,9 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
     <View style={styles.container}>
       <Today />
       <Text style={styles.welcome}>Hello, {user}</Text>
-      <Avatar.Image
+      <Avatar
         size={110}
+        rounded
         source={require("../assets/images/avatar.jpeg")}
       />
       <Text style={styles.title}>LineTime</Text>

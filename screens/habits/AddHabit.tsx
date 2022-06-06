@@ -3,21 +3,17 @@ import React from "react";
 import { Button, ScrollView, StyleSheet, TextInput } from "react-native";
 
 import { persistHabit } from "../../api/HabitService";
-import { Chip, ToggleButton } from "react-native-paper";
+import { ButtonGroup } from "@rneui/base";
 
 import { TouchableOpacity, View, Text } from "../../components/Themed";
 import { transparentSecondaryColor } from "../../constants/Colors";
 
-import Habit, { HabitBuilder, TimeOfDay } from "../../model/Habit";
+import Habit, { HabitBuilder } from "../../model/Habit";
 import useUserId from "../../hooks/useUserId";
 import useHabitTags from "../../hooks/useHabitTags";
+import { SelectChip } from "../../components/SelectChip";
 
 const TIMES_OF_DAY = ["Morning", "Afternoon", "Evening"];
-const ICONS_BY_TIMES_OF_DAY = {
-  Morning: "weather-sunset-up",
-  Afternoon: "weather-sunset-down",
-  Evening: "weather-night"
-};
 
 export const AddHabit = ({ navigation, route }) => {
   const { onAdd } = route.params;
@@ -27,7 +23,9 @@ export const AddHabit = ({ navigation, route }) => {
   const [benefit, setBenefit] = React.useState<number[]>([0]);
   const [energy, setEnergy] = React.useState<number[]>([0]);
   const [minAndMax, setMinAndMax] = React.useState<number[]>([20, 40]);
-  const [timesOfDay, setTimesOfDay] = React.useState<string[]>(TIMES_OF_DAY);
+  const [selectedIndexes, setSelectedIndexes] = React.useState<number[]>([
+    0, 1, 2,
+  ]);
 
   const {
     tags,
@@ -41,6 +39,11 @@ export const AddHabit = ({ navigation, route }) => {
   const userId = useUserId();
 
   function buildAndRegisterHabit() {
+    // Get times of day from selectedIndexes
+    const timesOfDay = TIMES_OF_DAY.filter((_, index) =>
+      selectedIndexes.includes(index)
+    );
+    console.log(timesOfDay);
     let habit: Habit = new HabitBuilder()
       .setName(name)
       .setBenefits(benefit[0])
@@ -99,38 +102,28 @@ export const AddHabit = ({ navigation, route }) => {
       />
 
       <Text style={{ fontSize: 20 }}>Time of the day</Text>
-      <View style={{ flexDirection: "row" }}>
-        {TIMES_OF_DAY.map((key) => (
-          <ToggleButton
-            icon={ICONS_BY_TIMES_OF_DAY[key]}
-            value={key}
-            status={timesOfDay.includes(key) ? "checked" : "unchecked"}
-            onPress={() => {
-              if (timesOfDay.includes(key)) {
-                setTimesOfDay(timesOfDay.filter((t) => t !== key));
-              } else {
-                setTimesOfDay([...timesOfDay, key]);
-              }
-            }}
-            style={{ marginRight: 10, width: 40 }}
-          />
-        ))}
-      </View>
+      <ButtonGroup
+        buttons={TIMES_OF_DAY}
+        selectMultiple
+        selectedIndexes={selectedIndexes}
+        onPress={(value) => {
+          setSelectedIndexes(value);
+        }}
+        containerStyle={{ marginBottom: 20 }}
+      />
 
       {/* Add tags */}
       <Text style={{ fontSize: 20 }}>#tags</Text>
       <ScrollView>
         {tags.map((tag) => (
-          <Chip
+          <SelectChip
             key={tag}
-            style={{ margin: 5, height: 30 }}
+            selected={selectedTags.includes(tag)}
+            label={tag}
             onPress={() => {
               toggleTagSelection(tag);
             }}
-            selected={selectedTags.includes(tag)}
-          >
-            {tag}
-          </Chip>
+          />
         ))}
 
         <TextInput

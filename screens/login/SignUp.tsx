@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, StyleSheet } from "react-native";
-import { TextInput } from "react-native-paper";
+import { Input } from "@rneui/themed";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -18,16 +18,14 @@ export const SignUp = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Sign up by email and password using firebase */}
-      <TextInput
+      <Input
         label="Email"
-        mode="outlined"
         style={styles.input}
         placeholder="Enter your email"
         onChangeText={(text) => setEmail(text)}
       />
-      <TextInput
+      <Input
         label="Password"
-        mode="outlined"
         style={styles.input}
         placeholder="Enter your password"
         secureTextEntry={true}

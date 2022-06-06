@@ -13,7 +13,7 @@ import {
 } from "../../constants/Colors";
 import { RootTabScreenProps } from "../../types";
 import useUserId from "../../hooks/useUserId";
-import { Chip } from "react-native-paper";
+import { Chip } from "@rneui/base";
 import useHabitTags from "../../hooks/useHabitTags";
 
 const energyTypeItems = [
@@ -95,7 +95,6 @@ export default function SuggestionForm({
               onPress={() => {
                 toggleTagSelection(tag);
               }}
-              selected={selectedTags.includes(tag)}
             >
               {tag}
             </Chip>
