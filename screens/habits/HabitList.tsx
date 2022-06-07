@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { SectionList, StyleSheet } from "react-native";
+import { Button, SectionList, StyleSheet } from "react-native";
 
 import { SearchBar } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
@@ -62,18 +62,16 @@ export const HabitList = ({ navigation }) => {
         )}
       />
       {/* Add a new habit */}
-      <View>
-        <TouchableOpacity
+      <View style={{ flexDirection: "row" }}>
+        <Button
+          title="➕ Add new habit"
           onPress={() => {
             navigation.navigate("AddHabit", {
               onAdd: onUpdate,
             });
           }}
-        >
-          <Text style={{ fontSize: 20, marginBottom: 10 }}>
-            ➕ Add new habit
-          </Text>
-        </TouchableOpacity>
+        />
+        <Button title="🔄 Refresh" onPress={onUpdate} />
       </View>
     </View>
   );

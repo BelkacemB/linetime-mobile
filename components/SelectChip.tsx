@@ -9,14 +9,13 @@ type SelectChipProps = {
 };
 
 export const SelectChip = ({ label, selected, onPress }: SelectChipProps) => {
-  const [chipText, setChipText] = React.useState(label);
-
   return (
     <Chip
       onPress={onPress}
-      style={{ marginRight: 8, elevation: selected ? 2 : 0 }}
+      buttonStyle={{ height: 30 }}
+      type={selected ? "solid" : "outline"}
     >
-      <Text>{selected ? label + " ✔️" : label}</Text>
+      <Text style={{ color: selected ? "white" : "gray" }}>{label}</Text>
     </Chip>
   );
 };

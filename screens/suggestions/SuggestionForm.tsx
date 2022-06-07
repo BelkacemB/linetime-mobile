@@ -14,8 +14,8 @@ import {
 } from "../../constants/Colors";
 import { RootTabScreenProps } from "../../types";
 import useUserId from "../../hooks/useUserId";
-import { Chip } from "@rneui/base";
 import useHabitTags from "../../hooks/useHabitTags";
+import { SelectChip } from "../../components/SelectChip";
 
 const energyTypeItems = [
   { label: "Tired", value: 2 },
@@ -107,15 +107,14 @@ export default function SuggestionForm({
         <Text>Tags </Text>
         <View style={{ flexDirection: "row" }}>
           {tags.map((tag) => (
-            <Chip
+            <SelectChip
+              label={tag}
               key={tag}
-              style={{ margin: 5, height: 30 }}
               onPress={() => {
                 toggleTagSelection(tag);
               }}
-            >
-              {tag}
-            </Chip>
+              selected={selectedTags.includes(tag)}
+            />
           ))}
         </View>
       </View>

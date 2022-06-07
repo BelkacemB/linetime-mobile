@@ -3,23 +3,42 @@ import { Button, StyleSheet, TextInput } from "react-native";
 
 import { Text, View } from "../../components/Themed";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import { SelectChip } from "../../components/SelectChip";
 import { transparentSecondaryColor } from "../../constants/Colors";
 
 import { updateHabit } from "../../api/HabitService";
 import useHabitTags from "../../hooks/useHabitTags";
-import { Chip } from "@rneui/themed";
+import { ButtonGroup } from "@rneui/base";
+
+import { TIMES_OF_DAY } from "../../model/constants";
 
 export const EditHabit = ({ navigation, route }) => {
   let { habit, onUpdate } = route.params;
+
+  const initSelectedIndexes = habit.timesOfDay
+    ? TIMES_OF_DAY.map((_, index) =>
+        habit.timesOfDay.includes(TIMES_OF_DAY[index]) ? index : -1
+      ).filter((index) => index !== -1)
+    : [0, 1, 2];
+  console.log(initSelectedIndexes);
 
   const { tags, newTag, setNewTag, onAddTag, toggleTagSelection } =
     useHabitTags();
 
   const [selectedTags, setSelectTags] = React.useState(habit.tags);
+  const [selectedTimeOfDayIndexes, setSelectedTimeOfDayIndexes] =
+    React.useState(initSelectedIndexes);
 
   useEffect(() => {
     setSelectTags(habit.tags);
   }, [habit]);
+
+  useEffect(() => {
+    let selectedTimesOfDay = selectedTimeOfDayIndexes.map(
+      (index) => TIMES_OF_DAY[index]
+    );
+    habit.timesOfDay = selectedTimesOfDay;
+  }, [selectedTimeOfDayIndexes]);
 
   const updateCurHabit = () => {
     updateHabit(habit);
@@ -74,13 +93,22 @@ export const EditHabit = ({ navigation, route }) => {
         max={3}
         onValuesChange={(values) => (habit.energy = values[0])}
       />
-
+      <Text style={{ fontSize: 20 }}>Time of the day</Text>
+      <ButtonGroup
+        buttons={TIMES_OF_DAY}
+        selectMultiple
+        selectedIndexes={selectedTimeOfDayIndexes}
+        onPress={(value) => {
+          setSelectedTimeOfDayIndexes(value);
+        }}
+        containerStyle={{ marginBottom: 20 }}
+      />
       <Text style={{ fontSize: 20 }}>#tags</Text>
       <View style={{ flexDirection: "row" }}>
         {tags.map((tag) => (
-          <Chip
+          <SelectChip
+            label={tag}
             key={tag}
-            style={{ margin: 5, height: 30 }}
             onPress={() => {
               toggleTagSelection(tag);
               if (habit.tags.includes(tag)) {
@@ -89,9 +117,8 @@ export const EditHabit = ({ navigation, route }) => {
                 habit.tags = [...habit.tags, tag];
               }
             }}
-          >
-            {tag}
-          </Chip>
+            selected={habit.tags.includes(tag)}
+          />
         ))}
 
         <TextInput

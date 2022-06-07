@@ -1,19 +1,18 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import React from "react";
-import { Button, ScrollView, StyleSheet, TextInput } from "react-native";
+import { ScrollView, StyleSheet, TextInput } from "react-native";
 
 import { persistHabit } from "../../api/HabitService";
-import { ButtonGroup } from "@rneui/base";
+import { ButtonGroup, Button } from "@rneui/base";
 
 import { TouchableOpacity, View, Text } from "../../components/Themed";
 import { transparentSecondaryColor } from "../../constants/Colors";
 
 import Habit, { HabitBuilder } from "../../model/Habit";
+import { TIMES_OF_DAY } from "../../model/constants";
 import useUserId from "../../hooks/useUserId";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
-
-const TIMES_OF_DAY = ["Morning", "Afternoon", "Evening"];
 
 export const AddHabit = ({ navigation, route }) => {
   const { onAdd } = route.params;
@@ -113,8 +112,8 @@ export const AddHabit = ({ navigation, route }) => {
       />
 
       {/* Add tags */}
-      <Text style={{ fontSize: 20 }}>#tags</Text>
-      <ScrollView>
+      <Text style={{ fontSize: 15 }}>#tags</Text>
+      <ScrollView horizontal style={{ height: 30 }}>
         {tags.map((tag) => (
           <SelectChip
             key={tag}
