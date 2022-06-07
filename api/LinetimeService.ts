@@ -11,15 +11,19 @@ export type SuggestionRequest = {
   energy: number;
   userId: string;
   tags?: string[];
+  localTime?: string;
 };
 
 export function fetchSuggestions(
   suggestionRequest: SuggestionRequest
 ): Promise<Suggestion[]> {
+  const tagsStr = suggestionRequest.tags
+    ? suggestionRequest.tags.join(",")
+    : "";
   let targetUrl = `${API_URL}?time=${suggestionRequest.time}&energy=${
     suggestionRequest.energy
-  }&user-id=${suggestionRequest.userId}&tags=${
-    suggestionRequest.tags ? suggestionRequest.tags.join(",") : ""
+  }&user-id=${suggestionRequest.userId}&tags=${tagsStr}&local-time=${
+    suggestionRequest.localTime ? suggestionRequest.localTime : ""
   }`;
   console.log(targetUrl);
   return fetch(targetUrl)

@@ -7,7 +7,7 @@ import { transparentSecondaryColor } from "../../constants/Colors";
 
 import { updateHabit } from "../../api/HabitService";
 import useHabitTags from "../../hooks/useHabitTags";
-import { Chip } from "react-native-paper";
+import { Chip } from "@rneui/themed";
 
 export const EditHabit = ({ navigation, route }) => {
   let { habit, onUpdate } = route.params;
@@ -89,7 +89,6 @@ export const EditHabit = ({ navigation, route }) => {
                 habit.tags = [...habit.tags, tag];
               }
             }}
-            selected={habit.tags?.includes(tag)}
           >
             {tag}
           </Chip>

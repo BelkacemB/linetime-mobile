@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import DropDownPicker from "react-native-dropdown-picker";
 import CircleSlider from "../../components/CircleSlider";
+import { Switch } from "@rneui/base";
 
 import { fetchSuggestions, SuggestionRequest } from "../../api/LinetimeService";
 
@@ -33,6 +34,7 @@ export default function SuggestionForm({
   const { tags, selectedTags, toggleTagSelection } = useHabitTags();
   // UI state
   const [energyOpen, setEnergyOpen] = useState(false);
+  const [timeSpecific, setTimeSpecific] = useState(false);
 
   const handleTimeSlide = (value: number) => {
     const minutes = Math.round(value / 3);
@@ -44,12 +46,28 @@ export default function SuggestionForm({
   };
 
   const onSubmit = () => {
+    // Get local time in hh:mm format withouth seconds
+    const time = new Date()
+      .toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+      .substring(0, 5);
+
+    console.log(time);
+
     const suggestionRequest: SuggestionRequest = {
       time: timeInMinutes,
       energy: energy,
       userId: userId,
       tags: selectedTags,
     };
+
+    if (timeSpecific) {
+      suggestionRequest.localTime = time;
+    }
+
     fetchSuggestions(suggestionRequest).then((suggestions) => {
       navigation.navigate("SuggestionList", { listOfSuggestions: suggestions });
     });
@@ -100,6 +118,16 @@ export default function SuggestionForm({
             </Chip>
           ))}
         </View>
+      </View>
+
+      <View style={{ flexDirection: "row" }}>
+        <View style={{ justifyContent: "center" }}>
+          <Text>Time specific activities </Text>
+        </View>
+        <Switch
+          value={timeSpecific}
+          onValueChange={(value) => setTimeSpecific(value)}
+        />
       </View>
 
       {/* Line of empty text */}
