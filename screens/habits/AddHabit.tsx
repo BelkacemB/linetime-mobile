@@ -3,7 +3,7 @@ import React from "react";
 import { ScrollView, StyleSheet, TextInput } from "react-native";
 
 import { persistHabit } from "../../api/HabitService";
-import { ButtonGroup, Button, Input } from "@rneui/base";
+import { ButtonGroup, Button, AirbnbRating } from "@rneui/base";
 
 import { View, Text } from "../../components/Themed";
 
@@ -20,7 +20,7 @@ export const AddHabit = ({ navigation, route }) => {
   const [name, setName] = React.useState("");
   const [benefit, setBenefit] = React.useState<number[]>([0]);
   const [energy, setEnergy] = React.useState<number[]>([0]);
-  const [minAndMax, setMinAndMax] = React.useState<number[]>([20, 40]);
+  const [minAndMax, setMinAndMax] = React.useState<number[]>([5, 15]);
   const [selectedIndexes, setSelectedIndexes] = React.useState<number[]>([
     0, 1, 2,
   ]);
@@ -66,32 +66,52 @@ export const AddHabit = ({ navigation, route }) => {
       />
       {/* Add tags */}
 
-      <Text style={{ fontSize: 20 }}>
-        How beneficial is this activity to you?
-      </Text>
-      <MultiSlider
-        values={benefit}
-        min={0}
-        max={3}
-        onValuesChange={(values) => setBenefit(values)}
+      <Text style={{ fontSize: 20 }}>How important is this habit to you?</Text>
+      <AirbnbRating
+        count={5}
+        defaultRating={3}
+        size={20}
+        onFinishRating={(rating) => {
+          setBenefit([(rating * 3) / 5]);
+        }}
+        reviews={[
+          "Don't care",
+          "Not important",
+          "Moderately important",
+          "Important",
+          "Cornerstone habit",
+        ]}
       />
 
       <Text style={{ fontSize: 20 }}>Energy requirement:</Text>
-      <MultiSlider
-        values={energy}
-        min={0}
-        max={3}
-        onValuesChange={(values) => setEnergy(values)}
-      />
+      <View style={{ flexDirection: "row" }}>
+        <MultiSlider
+          values={energy}
+          min={0}
+          max={3}
+          onValuesChange={(values) => setEnergy(values)}
+          sliderLength={150}
+          step={0.1} 
+        />
+        <Text style={{ fontSize: 20 }}>
+          {Math.round((energy[0] * 100) / 3)} %
+        </Text>
+      </View>
 
       <Text style={{ fontSize: 20 }}>Min and max times</Text>
-      <MultiSlider
-        values={minAndMax}
-        min={10}
-        max={120}
-        onValuesChange={(values) => setMinAndMax(values)}
-        step={1}
-      />
+      <View style={{ flexDirection: "row" }}>
+        <MultiSlider
+          values={minAndMax}
+          min={5}
+          max={120}
+          onValuesChange={(values) => setMinAndMax(values)}
+          step={1}
+          sliderLength={150}
+        />
+        <Text style={{ fontSize: 20 }}>
+          From {Math.round(minAndMax[0])} to {Math.round(minAndMax[1])} minutes
+        </Text>
+      </View>
 
       <Text style={{ fontSize: 20 }}>Time of the day</Text>
       <ButtonGroup
