@@ -5,8 +5,7 @@ import { ScrollView, StyleSheet, TextInput } from "react-native";
 import { persistHabit } from "../../api/HabitService";
 import { ButtonGroup, Button, Input } from "@rneui/base";
 
-import { TouchableOpacity, View, Text } from "../../components/Themed";
-import { transparentSecondaryColor } from "../../constants/Colors";
+import { View, Text } from "../../components/Themed";
 
 import Habit, { HabitBuilder } from "../../model/Habit";
 import { TIMES_OF_DAY } from "../../model/constants";
@@ -26,14 +25,8 @@ export const AddHabit = ({ navigation, route }) => {
     0, 1, 2,
   ]);
 
-  const {
-    tags,
-    selectedTags,
-    newTag,
-    setNewTag,
-    onAddTag,
-    toggleTagSelection,
-  } = useHabitTags();
+  const { tags, selectedTags, setNewTag, onAddTag, toggleTagSelection } =
+    useHabitTags();
 
   const userId = useUserId();
 
@@ -71,6 +64,7 @@ export const AddHabit = ({ navigation, route }) => {
         }}
         style={styles.textInput}
       />
+      {/* Add tags */}
 
       <Text style={{ fontSize: 20 }}>
         How beneficial is this activity to you?
@@ -110,45 +104,38 @@ export const AddHabit = ({ navigation, route }) => {
         containerStyle={{ marginBottom: 20 }}
       />
 
-      {/* Add tags */}
-      <Text style={{ fontSize: 15 }}>#tags</Text>
-      <ScrollView horizontal style={{ height: 50, width: "100%" }}>
+      {/* Display chips for tags */}
+      <Text style={{ fontSize: 20 }}>#tags</Text>
+
+      <ScrollView horizontal>
         {tags.map((tag) => (
           <SelectChip
-            key={tag}
-            selected={selectedTags.includes(tag)}
             label={tag}
+            key={tag}
             onPress={() => {
               toggleTagSelection(tag);
             }}
+            selected={selectedTags.includes(tag)}
           />
         ))}
 
-        <Input
-          placeholder="Tag"
-          value={newTag}
-          style={{ height: 30, margin: 5, width: 10 }}
+        <TextInput
+          placeholder="New tag"
           onChangeText={(text) => {
             setNewTag(text);
           }}
+          style={styles.textInput}
         />
+        <Button title="Add tag" onPress={onAddTag} style={{ maxHeight: 40 }} />
+      </ScrollView>
+
+      <ScrollView keyboardDismissMode="none">
         <Button
-          title="Add tag"
-          onPress={onAddTag}
-          style={{ width: 80 }}
-          type="outline"
+          onPress={buildAndRegisterHabit}
+          title={"Save habit"}
+          buttonStyle={styles.button}
         />
       </ScrollView>
-      {/* Display chips for tags */}
-
-      <TouchableOpacity
-        onPress={() => {
-          buildAndRegisterHabit();
-        }}
-        style={styles.button}
-      >
-        <Text>Add</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -164,7 +151,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   textInput: {
-    width: "40%",
+    width: "20%",
     height: 40,
     marginLeft: 10,
     marginRight: 10,
@@ -174,7 +161,7 @@ const styles = StyleSheet.create({
     borderColor: "#eee",
   },
   button: {
-    backgroundColor: transparentSecondaryColor,
+    marginHorizontal: 10,
     marginTop: 30,
     borderWidth: 1,
     borderRadius: 10,

@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { Button, SectionList, StyleSheet } from "react-native";
+import { SectionList, StyleSheet } from "react-native";
+import { Button } from "@rneui/base";
 
 import { SearchBar } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
-import { Text, TouchableOpacity, View } from "../../components/Themed";
+import { Text, View } from "../../components/Themed";
 
 import useUserHabitList from "../../hooks/useUserHabitList";
 import { extractTagsFromHabits } from "../../model/Util";
@@ -67,14 +68,21 @@ export const HabitList = ({ navigation }) => {
       {/* Add a new habit */}
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <Button
+          style={styles.button}
           title="➕ Add new habit"
           onPress={() => {
             navigation.navigate("AddHabit", {
               onAdd: onUpdate,
             });
           }}
+          type="clear"
         />
-        <Button title="🔄 Refresh" onPress={onUpdate} />
+        <Button
+          title="🔄 Refresh"
+          onPress={onUpdate}
+          style={styles.button}
+          type="clear"
+        />
       </View>
     </View>
   );
@@ -97,5 +105,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     borderBottomColor: "#ccc",
+  },
+  button: {
+    marginHorizontal: 10,
+    marginTop: 30,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    bottom: 20,
   },
 });

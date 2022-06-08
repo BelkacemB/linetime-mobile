@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { extractTagsFromHabits } from "../model/Util";
 import useUserHabitList from "./useUserHabitList";
 
+// TODO Split in two hooks: one for selection and one for reading the list
 export default function useHabitTags() {
   const [habits] = useUserHabitList();
   const [tags, setTags] = React.useState<string[]>([]);

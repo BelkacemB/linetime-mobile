@@ -21,7 +21,6 @@ export const EditHabit = ({ navigation, route }) => {
         habit.timesOfDay.includes(TIMES_OF_DAY[index]) ? index : -1
       ).filter((index) => index !== -1)
     : [0, 1, 2];
-  console.log(initSelectedIndexes);
 
   const { tags, newTag, setNewTag, onAddTag, toggleTagSelection } =
     useHabitTags();
