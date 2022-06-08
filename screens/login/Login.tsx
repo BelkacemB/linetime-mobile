@@ -1,8 +1,8 @@
 import React from "react";
 
-import { Input, Icon } from "@rneui/themed";
+import { Input } from "@rneui/themed";
 import { Button, StyleSheet } from "react-native";
-import { View, Text, TouchableOpacity } from "../../components/Themed";
+import { View, Text } from "../../components/Themed";
 
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";

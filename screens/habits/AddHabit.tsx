@@ -3,7 +3,7 @@ import React from "react";
 import { ScrollView, StyleSheet, TextInput } from "react-native";
 
 import { persistHabit } from "../../api/HabitService";
-import { ButtonGroup, Button } from "@rneui/base";
+import { ButtonGroup, Button, Input } from "@rneui/base";
 
 import { TouchableOpacity, View, Text } from "../../components/Themed";
 import { transparentSecondaryColor } from "../../constants/Colors";
@@ -42,7 +42,6 @@ export const AddHabit = ({ navigation, route }) => {
     const timesOfDay = TIMES_OF_DAY.filter((_, index) =>
       selectedIndexes.includes(index)
     );
-    console.log(timesOfDay);
     let habit: Habit = new HabitBuilder()
       .setName(name)
       .setBenefits(benefit[0])
@@ -113,7 +112,7 @@ export const AddHabit = ({ navigation, route }) => {
 
       {/* Add tags */}
       <Text style={{ fontSize: 15 }}>#tags</Text>
-      <ScrollView horizontal style={{ height: 30 }}>
+      <ScrollView horizontal style={{ height: 50, width: "100%" }}>
         {tags.map((tag) => (
           <SelectChip
             key={tag}
@@ -125,15 +124,20 @@ export const AddHabit = ({ navigation, route }) => {
           />
         ))}
 
-        <TextInput
+        <Input
           placeholder="Tag"
-          style={{ height: 30, margin: 5 }}
           value={newTag}
+          style={{ height: 30, margin: 5, width: 10 }}
           onChangeText={(text) => {
             setNewTag(text);
           }}
         />
-        <Button title="Add" onPress={onAddTag} />
+        <Button
+          title="Add tag"
+          onPress={onAddTag}
+          style={{ width: 80 }}
+          type="outline"
+        />
       </ScrollView>
       {/* Display chips for tags */}
 

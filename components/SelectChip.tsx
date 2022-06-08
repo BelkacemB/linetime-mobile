@@ -12,7 +12,7 @@ export const SelectChip = ({ label, selected, onPress }: SelectChipProps) => {
   return (
     <Chip
       onPress={onPress}
-      buttonStyle={{ height: 30 }}
+      buttonStyle={{ maxHeight: 50, maxWidth: 100 }}
       type={selected ? "solid" : "outline"}
     >
       <Text style={{ color: selected ? "white" : "gray" }}>{label}</Text>

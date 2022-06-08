@@ -39,9 +39,12 @@ export const HabitList = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <SearchBar
+        lightTheme
+        round
         placeholder="Search"
         onChangeText={(text) => setSearch(text)}
         value={search}
+        style={{ width: "100%" }}
       />
 
       {loading && (
@@ -62,7 +65,7 @@ export const HabitList = ({ navigation }) => {
         )}
       />
       {/* Add a new habit */}
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <Button
           title="➕ Add new habit"
           onPress={() => {
@@ -81,7 +84,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 10,
     margin: 5,
   },
   separator: {

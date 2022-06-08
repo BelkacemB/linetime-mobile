@@ -5,12 +5,29 @@ import { RootTabScreenProps } from "../types";
 import { Today } from "../components/Today";
 import { Avatar } from "@rneui/themed";
 import React from "react";
+import { Button } from "@rneui/base";
+
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+import useUserId from "../hooks/useUserId";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
-  const user = "Belkacem";
+  const user = useUserId().slice(0, 8);
+
+  const userSignOut = () => {
+    signOut(auth);
+  };
 
   return (
     <View style={styles.container}>
+      <Button
+        onPress={() => userSignOut()}
+        title="Sign Out"
+        type="outline"
+        style={{
+          marginBottom: 10,
+        }}
+      />
       <Today />
       <Text style={styles.welcome}>Hello, {user}</Text>
       <Avatar
@@ -28,13 +45,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         style={styles.button}
         onPress={() => navigation.navigate("SuggestionForm")}
       >
-        <Text>Suggest activities</Text>
+        <Text>Play ▶️</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("HabitList")}
       >
-        <Text>Habit list</Text>
+        <Text>Playlist 📜</Text>
       </TouchableOpacity>
     </View>
   );
@@ -67,5 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     backgroundColor: transparentSecondaryColor,
+    width: "40%",
+    alignItems: "center",
   },
 });

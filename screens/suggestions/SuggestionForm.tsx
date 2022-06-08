@@ -54,9 +54,6 @@ export default function SuggestionForm({
         minute: "2-digit",
       })
       .substring(0, 5);
-
-    console.log(time);
-
     const suggestionRequest: SuggestionRequest = {
       time: timeInMinutes,
       energy: energy,

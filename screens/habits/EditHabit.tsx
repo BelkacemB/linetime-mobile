@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { Button, StyleSheet, TextInput } from "react-native";
+import { ScrollView, StyleSheet, TextInput } from "react-native";
 
 import { Text, View } from "../../components/Themed";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { SelectChip } from "../../components/SelectChip";
 import { transparentSecondaryColor } from "../../constants/Colors";
+import { Button } from "@rneui/base";
 
 import { updateHabit } from "../../api/HabitService";
 import useHabitTags from "../../hooks/useHabitTags";
@@ -77,15 +78,6 @@ export const EditHabit = ({ navigation, route }) => {
         step={0.1}
       />
 
-      <Text style={{ fontSize: 20 }}>How fun is this activity to you?</Text>
-      <MultiSlider
-        values={[habit.fun ?? 0]}
-        min={0}
-        max={3}
-        onValuesChange={(values) => (habit.fun = values[0])}
-        step={0.1}
-      />
-
       <Text style={{ fontSize: 20 }}>How tiring is this activity to you?</Text>
       <MultiSlider
         values={[habit.energy ?? 0]}
@@ -104,7 +96,7 @@ export const EditHabit = ({ navigation, route }) => {
         containerStyle={{ marginBottom: 20 }}
       />
       <Text style={{ fontSize: 20 }}>#tags</Text>
-      <View style={{ flexDirection: "row" }}>
+      <ScrollView horizontal>
         {tags.map((tag) => (
           <SelectChip
             label={tag}
@@ -123,11 +115,11 @@ export const EditHabit = ({ navigation, route }) => {
 
         <TextInput
           placeholder="Tag"
-          style={{ width: "20%" }}
           value={newTag}
           onChangeText={(text) => {
             setNewTag(text);
           }}
+          style={{ maxHeight: 40, margin: 10 }}
         />
         <Button
           title="Add tag"
@@ -135,16 +127,18 @@ export const EditHabit = ({ navigation, route }) => {
             onAddTag();
             setSelectTags([...selectedTags, newTag]);
           }}
+          style={{ maxHeight: 40 }}
         />
-      </View>
+      </ScrollView>
 
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Button title="Update" onPress={updateCurHabit} />
+        <Button title="Update" onPress={updateCurHabit} style={{ margin: 5 }} />
         <Button
           title="Cancel"
           onPress={() => {
             cancelUpdate();
           }}
+          style={{ margin: 5 }}
         />
       </View>
     </View>
