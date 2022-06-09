@@ -10,6 +10,7 @@ import { View, Text } from "../../components/Themed";
 import Habit, { HabitBuilder } from "../../model/Habit";
 import { TIMES_OF_DAY } from "../../model/constants";
 import useUserId from "../../hooks/useUserId";
+import useUserToken from "../../hooks/useUserToken";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
 
@@ -29,6 +30,7 @@ export const AddHabit = ({ navigation, route }) => {
     useHabitTags();
 
   const userId = useUserId();
+  const userToken = useUserToken();
 
   function buildAndRegisterHabit() {
     // Get times of day from selectedIndexes
@@ -48,7 +50,7 @@ export const AddHabit = ({ navigation, route }) => {
       .setLastDone(new Date())
       .build();
 
-    persistHabit(habit);
+    persistHabit(habit, userToken);
     onAdd();
 
     navigation.navigate("HabitList");
@@ -91,7 +93,7 @@ export const AddHabit = ({ navigation, route }) => {
           max={3}
           onValuesChange={(values) => setEnergy(values)}
           sliderLength={150}
-          step={0.1} 
+          step={0.1}
         />
         <Text style={{ fontSize: 20 }}>
           {Math.round((energy[0] * 100) / 3)} %

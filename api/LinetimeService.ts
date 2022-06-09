@@ -9,9 +9,9 @@ const API_URL = `http://${IP_ADDRESS}:${PORT}/opt`;
 export type SuggestionRequest = {
   time: number;
   energy: number;
-  userId: string;
   tags?: string[];
   localTime?: string;
+  token: string;
 };
 
 export function fetchSuggestions(
@@ -22,11 +22,16 @@ export function fetchSuggestions(
     : "";
   let targetUrl = `${API_URL}?time=${suggestionRequest.time}&energy=${
     suggestionRequest.energy
-  }&user-id=${suggestionRequest.userId}&tags=${tagsStr}&local-time=${
+  }&tags=${tagsStr}&local-time=${
     suggestionRequest.localTime ? suggestionRequest.localTime : ""
   }`;
   console.log(targetUrl);
-  return fetch(targetUrl)
+  return fetch(targetUrl, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${suggestionRequest.token}`,
+    },
+  })
     .then((response) => response.json())
     .then((json) => json as Suggestion[])
     .catch((error) => {

@@ -9,12 +9,14 @@ import { Button } from "@rneui/base";
 
 import { updateHabit } from "../../api/HabitService";
 import useHabitTags from "../../hooks/useHabitTags";
+import useUserToken from "../../hooks/useUserToken";
 import { ButtonGroup } from "@rneui/base";
 
 import { TIMES_OF_DAY } from "../../model/constants";
 
 export const EditHabit = ({ navigation, route }) => {
   let { habit, onUpdate } = route.params;
+  const userToken = useUserToken();
 
   const initSelectedIndexes = habit.timesOfDay
     ? TIMES_OF_DAY.map((_, index) =>
@@ -41,7 +43,7 @@ export const EditHabit = ({ navigation, route }) => {
   }, [selectedTimeOfDayIndexes]);
 
   const updateCurHabit = () => {
-    updateHabit(habit);
+    updateHabit(habit, userToken);
     refreshListAndGoBack();
   };
 

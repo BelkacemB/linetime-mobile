@@ -2,6 +2,7 @@ import React from "react";
 import Habit from "../model/Habit";
 import { Text, View, TouchableOpacity } from "./Themed";
 import { deleteHabit } from "../api/HabitService";
+import useUserToken from "../hooks/useUserToken";
 
 type HabitProps = {
   habit: Habit;
@@ -15,6 +16,8 @@ export const HabitElement = ({
   navigation,
   onUpdateOrDelete,
 }: HabitProps) => {
+  const userToken = useUserToken();
+
   const edit = () => {
     navigation.navigate("EditHabit", {
       habit: habit,
@@ -23,7 +26,7 @@ export const HabitElement = ({
   };
 
   function remove() {
-    deleteHabit(habit);
+    deleteHabit(habit, userToken);
     onUpdateOrDelete();
   }
 

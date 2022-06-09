@@ -5,6 +5,7 @@ import Habit from "../model/Habit";
 import { Suggestion } from "../model/LinetimeTypes";
 
 import { updateHabit } from "../api/HabitService";
+import useUserToken from "../hooks/useUserToken";
 
 import { View, Text } from "./Themed";
 import { TouchableOpacity } from "./Themed";
@@ -16,6 +17,7 @@ type Props = {
 export const SuggestionElement = ({ suggestion }: Props) => {
   const [habits] = useUserHabitList();
   const [hidden, setHidden] = React.useState(false);
+  const userToken = useUserToken();
 
   const matchingHabit: Habit = habits.find(
     (habit) => habit.id === suggestion.id
@@ -53,7 +55,7 @@ export const SuggestionElement = ({ suggestion }: Props) => {
         }}
         onPress={() => {
           matchingHabit.lastDone = new Date();
-          updateHabit(matchingHabit);
+          updateHabit(matchingHabit, userToken);
           setHidden(true);
         }}
       >

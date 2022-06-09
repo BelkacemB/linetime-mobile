@@ -13,7 +13,7 @@ import {
   transparentSecondaryColor,
 } from "../../constants/Colors";
 import { RootTabScreenProps } from "../../types";
-import useUserId from "../../hooks/useUserId";
+import useUserToken from "../../hooks/useUserToken";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
 
@@ -26,7 +26,7 @@ const energyTypeItems = [
 export default function SuggestionForm({
   navigation,
 }: RootTabScreenProps<"SuggestionForm">) {
-  const userId = useUserId();
+  const userToken = useUserToken();
 
   // Form state
   const [energy, setEnergy] = useState<number>(6);
@@ -57,7 +57,7 @@ export default function SuggestionForm({
     const suggestionRequest: SuggestionRequest = {
       time: timeInMinutes,
       energy: energy,
-      userId: userId,
+      token: userToken,
       tags: selectedTags,
     };
 
