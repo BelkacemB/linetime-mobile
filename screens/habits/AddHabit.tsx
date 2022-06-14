@@ -129,7 +129,7 @@ export const AddHabit = ({ navigation, route }) => {
       {/* Display chips for tags */}
       <Text style={{ fontSize: 20 }}>#tags</Text>
 
-      <ScrollView horizontal>
+      <View style={{flexDirection: "row", flexWrap: "wrap"}}>
         {tags.map((tag) => (
           <SelectChip
             label={tag}
@@ -149,7 +149,7 @@ export const AddHabit = ({ navigation, route }) => {
           style={styles.textInput}
         />
         <Button title="Add tag" onPress={onAddTag} style={{ maxHeight: 40 }} />
-      </ScrollView>
+      </View>
 
       <ScrollView keyboardDismissMode="none">
         <Button
