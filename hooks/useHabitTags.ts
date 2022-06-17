@@ -32,6 +32,7 @@ export default function useHabitTags() {
   return {
     tags,
     selectedTags,
+    setSelectedTags,
     newTag,
     setNewTag,
     onAddTag,

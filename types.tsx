@@ -23,8 +23,7 @@ export type RootStackParamList = {
   SuggestionForm: undefined;
   SuggestionList: { listOfSuggestions: Suggestion[] };
   HabitList: undefined;
-  AddHabit: undefined;
-  EditHabit: { habit: Habit };
+  AddEditHabit: undefined;
 };
 
 export type RootLoginParamList = {

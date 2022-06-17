@@ -1,6 +1,5 @@
 import { Platform } from "react-native";
 import Habit from "../model/Habit";
-import useUserToken from "../hooks/useUserToken";
 
 const IP_ADDRESS = Platform.OS === "android" ? "10.0.2.2" : "localhost";
 const PORT = 8000;

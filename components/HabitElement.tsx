@@ -6,7 +6,6 @@ import useUserToken from "../hooks/useUserToken";
 
 type HabitProps = {
   habit: Habit;
-  // Provide type for navigation prop
   navigation: any;
   onUpdateOrDelete: () => void;
 };
@@ -19,7 +18,7 @@ export const HabitElement = ({
   const userToken = useUserToken();
 
   const edit = () => {
-    navigation.navigate("EditHabit", {
+    navigation.navigate("AddEditHabit", {
       habit: habit,
       onUpdate: onUpdateOrDelete,
     });

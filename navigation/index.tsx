@@ -13,12 +13,11 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import SuggestionForm from "../screens/suggestions/SuggestionForm";
 import { SuggestionList } from "../screens/suggestions/SuggestionList";
 import { HabitList } from "../screens/habits/HabitList";
-import { AddHabit } from "../screens/habits/AddHabit";
-import { EditHabit } from "../screens/habits/EditHabit";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import { Login } from "../screens/login/Login";
 import { SignUp } from "../screens/login/SignUp";
+import { AddEditHabit } from "../screens/habits/AddEditHabit";
 
 export default function Navigation({
   colorScheme,
@@ -70,14 +69,9 @@ function RootNavigator() {
         options={{ title: "Habit list" }}
       />
       <HomeStack.Screen
-        name="AddHabit"
-        component={AddHabit}
+        name="AddEditHabit"
+        component={AddEditHabit}
         options={{ title: "Add a new habit" }}
-      />
-      <HomeStack.Screen
-        name="EditHabit"
-        component={EditHabit}
-        options={{ title: "View habit" }}
       />
     </HomeStack.Navigator>
   );
