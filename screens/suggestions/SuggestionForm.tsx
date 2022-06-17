@@ -116,7 +116,7 @@ export default function SuggestionForm({
         </View>
       </View>
 
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "row", zIndex: -3 }}>
         <View style={{ justifyContent: "center" }}>
           <Text>Time specific activities </Text>
         </View>
