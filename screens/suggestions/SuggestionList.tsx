@@ -11,7 +11,7 @@ export const SuggestionList = ({ route }) => {
         <Text>No suggestions for now! Try to add new habits</Text>
       )}
       {listOfSuggestions.map((suggestion) => (
-        <SuggestionElement suggestion={suggestion} />
+        <SuggestionElement suggestion={suggestion} key={suggestion.name} />
       ))}
     </View>
   );

@@ -52,7 +52,6 @@ export const SuggestionElement = ({ suggestion }: Props) => {
           buttonStyle={{ minHeight: '100%', backgroundColor: 'green' }}
         />
       }
-      key={suggestion.name}
     >
       <ListItem.Content>
         <ListItem.Title>{suggestion.name} for {suggestion.suggestedTime} minutes.</ListItem.Title>

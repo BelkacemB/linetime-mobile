@@ -3,6 +3,7 @@ import {
   DefaultTheme,
   DarkTheme,
 } from "@react-navigation/native";
+import { registerRootComponent } from "expo";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { Text, ColorSchemeName } from "react-native";
@@ -18,6 +19,7 @@ import { auth } from "../firebase";
 import { Login } from "../screens/login/Login";
 import { SignUp } from "../screens/login/SignUp";
 import { AddEditHabit } from "../screens/habits/AddEditHabit";
+import App from "../App";
 
 export default function Navigation({
   colorScheme,
@@ -95,3 +97,5 @@ function LoginNavigator() {
     </LoginStack.Navigator>
   );
 }
+
+registerRootComponent(App);
