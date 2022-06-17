@@ -71,8 +71,9 @@ export const HabitList = ({ navigation }) => {
           style={styles.button}
           title="➕ Add new habit"
           onPress={() => {
-            navigation.navigate("AddHabit", {
+            navigation.navigate("AddEditHabit", {
               onAdd: onUpdate,
+              onUpdate: onUpdate
             });
           }}
           type="clear"
