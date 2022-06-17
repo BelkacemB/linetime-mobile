@@ -6,14 +6,13 @@ import { Text, View } from "../../components/Themed";
 export const SuggestionList = ({ route }) => {
   const { listOfSuggestions } = route.params;
   return (
-    <View style={styles.container}>
+    <View>
       {listOfSuggestions.length == 0 && (
         <Text>No suggestions for now! Try to add new habits</Text>
       )}
-      <FlatList
-        data={listOfSuggestions}
-        renderItem={({ item }) => <SuggestionElement suggestion={item} />}
-      />
+      {listOfSuggestions.map((suggestion) => (
+        <SuggestionElement suggestion={suggestion} />
+      ))}
     </View>
   );
 };
