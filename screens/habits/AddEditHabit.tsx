@@ -152,7 +152,7 @@ export const AddEditHabit = ({ navigation, route }) => {
             {/* Display chips for tags */}
             <Text style={{ fontSize: 20 }}>#tags</Text>
 
-            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", margin: 2, alignItems: "center", justifyContent: "center"}}>
                 {tags.map((tag) => (
                     <SelectChip
                         label={tag}
