@@ -1,6 +1,6 @@
 import React from "react";
 import Habit from "../model/Habit";
-import { deleteHabit } from "../api/HabitService";
+import { deleteHabit, updateHabit } from "../api/HabitService";
 import useUserToken from "../hooks/useUserToken";
 import { Button, ListItem } from "@rneui/base";
 
@@ -28,27 +28,47 @@ export const HabitElement = ({
     deleteHabit(habit, userToken);
     onUpdateOrDelete();
   }
-
+  const onHabitCheck = () => {
+    habit.lastDone = new Date();
+    updateHabit(habit, userToken);
+    onUpdateOrDelete();
+  }
+  
   return (
     <ListItem.Swipeable
-      leftContent={ (reset) => 
-        <Button
-          title="Edit"
-          onPress={() => {
-            reset();
-            edit();}
-          }
-          icon={{ name: 'settings', color: 'white' }}
-          buttonStyle={{ minHeight: '100%' }}
-        />
+      leftWidth={250}
+      leftStyle={{ flexDirection: 'row' }}
+      leftContent={(reset) =>
+        <>
+          <Button
+            title="Edit"
+            onPress={() => {
+              reset();
+              edit();
+            }
+            }
+            icon={{ name: 'settings', color: 'white' }}
+            buttonStyle={{ minHeight: '100%' }}
+          />
+          <Button
+            title="Check in"
+            onPress={() => {
+              reset();
+              onHabitCheck();
+            }
+            }
+            icon={{ name: 'check', color: 'white' }}
+            buttonStyle={{ minHeight: '100%', backgroundColor: 'green' }}
+          />
+        </>
       }
-      rightContent={(reset) => 
+      rightContent={(reset) =>
         <Button
           title="Delete"
           onPress={() => {
             reset();
             remove();
-            }
+          }
           }
           icon={{ name: 'delete', color: 'white' }}
           buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}

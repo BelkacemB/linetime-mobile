@@ -20,6 +20,7 @@ import { Login } from "../screens/login/Login";
 import { SignUp } from "../screens/login/SignUp";
 import { AddEditHabit } from "../screens/habits/AddEditHabit";
 import App from "../App";
+import { Skeleton } from "@rneui/base";
 
 export default function Navigation({
   colorScheme,
@@ -33,7 +34,7 @@ export default function Navigation({
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      {loading && <Text> loading ... </Text>}
+      {loading && <Skeleton style={{ width: "100%", height: "100%" }} />}
       {error && <Text> {error.message} </Text>}
       {user ? <RootNavigator /> : <LoginNavigator />}
     </NavigationContainer>

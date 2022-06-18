@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { SectionList, StyleSheet } from "react-native";
-import { Button } from "@rneui/base";
+import { Button, Skeleton } from "@rneui/base";
 
 import { SearchBar } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
@@ -49,7 +49,7 @@ export const HabitList = ({ navigation }) => {
       />
 
       {loading && (
-        <Text>Loading... (replace this with a spinner or a skeleton)</Text>
+        <Skeleton style={{ width: "100%", height: "100%" }} />
       )}
       <SectionList
         sections={sectionsByTags}
