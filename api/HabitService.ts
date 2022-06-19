@@ -1,7 +1,7 @@
 import Habit from "../model/Habit";
-import { IP_ADDRESS, PORT } from "./constants";
+import { API_ADDRESS } from "./constants";
 
-const API_URL = `http://${IP_ADDRESS}:${PORT}/habits`;
+const API_URL = `${API_ADDRESS}/habits`;
 
 export function persistHabit(habit: Habit, token: string) {
   fetch(API_URL, {
@@ -45,6 +45,12 @@ export async function getUserHabits(
   userId: string,
   token: string
 ): Promise<Habit[]> {
+  console.log(`Address: ${API_URL}/${userId}`);
+
+  console.log({
+    Authorization: `Bearer ${token}`,
+  });
+
   return fetch(`${API_URL}/${userId}`, {
     method: "GET",
     headers: {

@@ -1,7 +1,7 @@
 import { Suggestion } from "../model/LinetimeTypes";
-import { IP_ADDRESS, PORT } from "./constants";
+import { API_ADDRESS } from "./constants";
 
-const API_URL = `http://${IP_ADDRESS}:${PORT}/opt`;
+const API_URL = `${API_ADDRESS}/opt`;
 export type SuggestionRequest = {
   time: number;
   energy: number;
@@ -21,7 +21,6 @@ export function fetchSuggestions(
   }&tags=${tagsStr}&local-time=${
     suggestionRequest.localTime ? suggestionRequest.localTime : ""
   }`;
-  console.log(targetUrl);
   return fetch(targetUrl, {
     method: "GET",
     headers: {

@@ -51,7 +51,7 @@ export const AddEditHabit = ({ navigation, route }) => {
       );
       setSelectedTags(typedHabit.tags);
     }
-  }, [isEditMode]);
+  }, []);
 
   const userId = useUserId();
   const userToken = useUserToken();
