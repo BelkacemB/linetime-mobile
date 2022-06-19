@@ -48,9 +48,7 @@ export const HabitList = ({ navigation }) => {
         style={{ width: "100%" }}
       />
 
-      {loading && (
-        <Skeleton style={{ width: "100%", height: "100%" }} />
-      )}
+      {loading && <Skeleton style={{ width: "100%", height: "100%" }} />}
       <SectionList
         sections={sectionsByTags}
         renderItem={({ item }) => (
@@ -73,7 +71,7 @@ export const HabitList = ({ navigation }) => {
           onPress={() => {
             navigation.navigate("AddEditHabit", {
               onAdd: onUpdate,
-              onUpdate: onUpdate
+              onUpdate: onUpdate,
             });
           }}
           type="clear"

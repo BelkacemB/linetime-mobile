@@ -1,8 +1,5 @@
-import { Platform } from "react-native";
 import Habit from "../model/Habit";
-
-const IP_ADDRESS = "192.168.1.44" // = Platform.OS === "android" ? "10.0.2.2" : "localhost";
-const PORT = 8080;
+import { IP_ADDRESS, PORT } from "./constants";
 
 const API_URL = `http://${IP_ADDRESS}:${PORT}/habits`;
 

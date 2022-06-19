@@ -24,41 +24,42 @@ export const SuggestionElement = ({ suggestion }: Props) => {
     matchingHabit.lastDone = new Date();
     updateHabit(matchingHabit, userToken);
     setHidden(true);
-  }
+  };
 
   return (
     <ListItem.Swipeable
-      leftContent={ (reset) =>
+      leftContent={(reset) => (
         <Button
           title="Reject"
           onPress={() => {
             reset();
             setHidden(true);
-          }
-          }
-          icon={{ name: 'close', color: 'white' }}
-          buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
+          }}
+          icon={{ name: "close", color: "white" }}
+          buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
         />
-      }
-      rightContent={(reset) =>
+      )}
+      rightContent={(reset) => (
         <Button
           title="Accept"
           onPress={() => {
             reset();
             onHabitClick();
-          }
-          }
-          icon={{ name: 'check', color: 'white' }}
-          buttonStyle={{ minHeight: '100%', backgroundColor: 'green' }}
+          }}
+          icon={{ name: "check", color: "white" }}
+          buttonStyle={{ minHeight: "100%", backgroundColor: "green" }}
         />
-      }
+      )}
     >
       <ListItem.Content>
-        <ListItem.Title>{suggestion.name} for {suggestion.suggestedTime} minutes.</ListItem.Title>
-        <ListItem.Subtitle>{hidden ? "Done" : "Active suggestion"}</ListItem.Subtitle>
+        <ListItem.Title>
+          {suggestion.name} for {suggestion.suggestedTime} minutes.
+        </ListItem.Title>
+        <ListItem.Subtitle>
+          {hidden ? "Done" : "Active suggestion"}
+        </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Chevron />
     </ListItem.Swipeable>
-    )}
-
-
+  );
+};

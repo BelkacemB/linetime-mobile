@@ -32,48 +32,45 @@ export const HabitElement = ({
     habit.lastDone = new Date();
     updateHabit(habit, userToken);
     onUpdateOrDelete();
-  }
-  
+  };
+
   return (
     <ListItem.Swipeable
       leftWidth={250}
-      leftStyle={{ flexDirection: 'row' }}
-      leftContent={(reset) =>
+      leftStyle={{ flexDirection: "row" }}
+      leftContent={(reset) => (
         <>
           <Button
             title="Edit"
             onPress={() => {
               reset();
               edit();
-            }
-            }
-            icon={{ name: 'settings', color: 'white' }}
-            buttonStyle={{ minHeight: '100%' }}
+            }}
+            icon={{ name: "settings", color: "white" }}
+            buttonStyle={{ minHeight: "100%" }}
           />
           <Button
             title="Check in"
             onPress={() => {
               reset();
               onHabitCheck();
-            }
-            }
-            icon={{ name: 'check', color: 'white' }}
-            buttonStyle={{ minHeight: '100%', backgroundColor: 'green' }}
+            }}
+            icon={{ name: "check", color: "white" }}
+            buttonStyle={{ minHeight: "100%", backgroundColor: "green" }}
           />
         </>
-      }
-      rightContent={(reset) =>
+      )}
+      rightContent={(reset) => (
         <Button
           title="Delete"
           onPress={() => {
             reset();
             remove();
-          }
-          }
-          icon={{ name: 'delete', color: 'white' }}
-          buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
+          }}
+          icon={{ name: "delete", color: "white" }}
+          buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
         />
-      }
+      )}
     >
       <ListItem.Content>
         <ListItem.Title>{habit.name}</ListItem.Title>
