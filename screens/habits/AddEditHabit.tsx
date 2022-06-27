@@ -2,17 +2,19 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import React, { useEffect } from "react";
 import { ScrollView, StyleSheet, TextInput } from "react-native";
 
+import { AirbnbRating, Button, ButtonGroup } from "@rneui/base";
 import { persistHabit, updateHabit } from "../../api/HabitService";
-import { ButtonGroup, Button, AirbnbRating } from "@rneui/base";
 
-import { View, Text } from "../../components/Themed";
+import { Text, View } from "../../components/Themed";
 
-import Habit, { HabitBuilder } from "../../model/Habit";
-import { TIMES_OF_DAY } from "../../model/constants";
+import { AntDesign, MaterialIcons, SimpleLineIcons } from "@expo/vector-icons";
+import { SelectChip } from "../../components/SelectChip";
+import { secondaryColor } from "../../constants/Colors";
+import useHabitTags from "../../hooks/useHabitTags";
 import useUserId from "../../hooks/useUserId";
 import useUserToken from "../../hooks/useUserToken";
-import useHabitTags from "../../hooks/useHabitTags";
-import { SelectChip } from "../../components/SelectChip";
+import { TIMES_OF_DAY } from "../../model/constants";
+import Habit, { HabitBuilder } from "../../model/Habit";
 
 export const AddEditHabit = ({ navigation, route }) => {
   const { onAdd, onUpdate, habit } = route.params;
@@ -57,7 +59,6 @@ export const AddEditHabit = ({ navigation, route }) => {
   const userToken = useUserToken();
 
   function buildAndRegisterHabit() {
-    // Get times of day from selectedIndexes
     const timesOfDay = TIMES_OF_DAY.filter((_, index) =>
       selectedIndexes.includes(index)
     );
@@ -89,61 +90,81 @@ export const AddEditHabit = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {isEditMode ? "Edit " : "Add new "} habit
+        {isEditMode ? "Edit" : "Add new"} habit
       </Text>
-      <TextInput
-        placeholder="Habit name"
-        onChangeText={(text) => {
-          setName(text);
-        }}
-        style={styles.textInput}
-        value={name}
-      />
-      <Text style={{ fontSize: 20 }}>How important is this habit to you?</Text>
-      <AirbnbRating
-        count={5}
-        defaultRating={(benefit[0] * 5) / 3}
-        size={20}
-        onFinishRating={(rating) => {
-          setBenefit([(rating * 3) / 5]);
-        }}
-        reviews={[
-          "Don't care",
-          "Not important",
-          "Moderately important",
-          "Important",
-          "Cornerstone habit",
-        ]}
-      />
-
-      <Text style={{ fontSize: 20 }}>Energy requirement:</Text>
-      <View style={{ flexDirection: "row" }}>
-        <MultiSlider
-          values={energy}
-          min={0}
-          max={3}
-          onValuesChange={(values) => setEnergy(values)}
-          sliderLength={150}
-          step={0.1}
-        />
-        <Text style={{ fontSize: 20 }}>
-          {Math.round((energy[0] * 100) / 3)} %
+      <View style={styles.formLine}>
+        <Text style={styles.formLineText}>
+          <MaterialIcons name="title" size={24} color={secondaryColor} />
+          Title
         </Text>
+        <TextInput
+          placeholder="Habit name"
+          onChangeText={(text) => {
+            setName(text);
+          }}
+          style={styles.textInput}
+          value={name}
+        />
       </View>
 
-      <Text style={{ fontSize: 20 }}>Min and max times</Text>
-      <View style={{ flexDirection: "row" }}>
-        <MultiSlider
-          values={minAndMax}
-          min={5}
-          max={120}
-          onValuesChange={(values) => setMinAndMax(values)}
-          step={1}
-          sliderLength={150}
+      <View style={styles.formLine}>
+
+        <Text style={styles.formLineText}>
+          <MaterialIcons name="priority-high" size={24} color={secondaryColor} />
+          Habit importance</Text>
+        <AirbnbRating
+          count={3}
+          defaultRating={benefit[0]}
+          size={20}
+          onFinishRating={(rating) => {
+            setBenefit([rating]);
+          }}
+          showRating={false}
         />
-        <Text style={{ fontSize: 20 }}>
-          From {Math.round(minAndMax[0])} to {Math.round(minAndMax[1])} minutes
-        </Text>
+      </View>
+
+      <View style={styles.formLine}>
+        <Text style={{fontSize: 18}}>
+        <SimpleLineIcons name="energy" size={24} color={secondaryColor} />
+          Energy requirement</Text>
+        <View style={{ flexDirection: "column", width: '20%', alignItems: "center"}}>
+          <MultiSlider
+            values={energy}
+            min={0}
+            max={3}
+            onValuesChange={(values) => setEnergy(values)}
+            sliderLength={60}
+            step={0.1}
+            
+          />
+          <Text style={{ fontSize: 15 }}>
+            {Math.round((energy[0] * 100) / 3)} %
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.formLine} >
+      <Text style={styles.formLineText}>
+      <AntDesign name="clockcircle" size={20} color={secondaryColor} />
+        Min & max times</Text>
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
+      <TextInput
+          onChangeText={(text) => {
+            setMinAndMax([+text, minAndMax[1]]);
+          }}
+          style={styles.textInput}
+          value={minAndMax[0].toString()}
+        />
+        <Text> to </Text> 
+        <TextInput
+          onChangeText={(text) => {
+            setMinAndMax([minAndMax[0], +text]);
+          }}
+          style={styles.textInput}
+          value={minAndMax[1].toString()}
+        />
+        <Text> minutes.</Text> 
+      </View>
       </View>
 
       <Text style={{ fontSize: 20 }}>Time of the day</Text>
@@ -154,7 +175,7 @@ export const AddEditHabit = ({ navigation, route }) => {
         onPress={(value) => {
           setSelectedIndexes(value);
         }}
-        containerStyle={{ marginBottom: 20 }}
+        containerStyle={{ marginBottom: 20}}
       />
 
       {/* Display chips for tags */}
@@ -204,22 +225,34 @@ export const AddEditHabit = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    margin:5
+  },
+  formLine: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignContent: "center",
+    marginVertical: 10,
+    marginHorizontal: 5
+  },
+  formLineText: {
+    fontSize: 18
   },
   textInput: {
-    width: "20%",
     height: 40,
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 5,
     borderWidth: 2,
+    borderStyle: "dashed",
     borderRadius: 8,
     borderColor: "#eee",
+    fontWeight: "bold"
   },
   button: {
     marginHorizontal: 10,

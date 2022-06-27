@@ -69,7 +69,7 @@ export const HabitList = ({ navigation }) => {
           placeholder="Search"
           onChangeText={(text) => setSearch(text)}
           value={search}
-          containerStyle={{width: '60%', backgroundColor: 'white'}}
+          containerStyle={{ width: "60%", backgroundColor: "white" }}
         />
         <Button
           title={<Feather name="refresh-ccw" size={20} color="black" />}

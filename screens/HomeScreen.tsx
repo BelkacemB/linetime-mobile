@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { primaryColor, transparentSecondaryColor } from "../constants/Colors";
+import { primaryColor, secondaryColor, transparentSecondaryColor } from "../constants/Colors";
 import { Text, TouchableOpacity, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { Today } from "../components/Today";
@@ -46,13 +46,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         style={styles.button}
         onPress={() => navigation.navigate("SuggestionForm")}
       >
-        <AntDesign name="playcircleo" size={30} color="black" />
+        <AntDesign name="playcircleo" size={30} color={secondaryColor} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("HabitList")}
       >
-        <MaterialCommunityIcons name="playlist-edit" size={30} color="black" />
+        <MaterialCommunityIcons name="playlist-edit" size={30} color={secondaryColor} />
       </TouchableOpacity>
     </View>
   );

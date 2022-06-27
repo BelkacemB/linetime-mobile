@@ -74,7 +74,7 @@ function RootNavigator() {
       <HomeStack.Screen
         name="AddEditHabit"
         component={AddEditHabit}
-        options={{ title: "Add a new habit" }}
+        options={{ title: "Add/edit habit" }}
       />
     </HomeStack.Navigator>
   );
