@@ -11,16 +11,18 @@ type SelectChipProps = {
 
 const styles = StyleSheet.create({
   default: {
-    backgroundColor: 'white',
-    color: 'black',
-    margin: 1
+    backgroundColor: "white",
+    color: "black",
+    margin: 1,
+    borderColor: secondaryColor,
+    borderWidth: 1,
   },
-  selected: { 
+  selected: {
     backgroundColor: secondaryColor,
-    color: 'white',
-    margin: 1
-  }
-})
+    color: "white",
+    margin: 1,
+  },
+});
 
 export const SelectChip = ({ label, selected, onPress }: SelectChipProps) => {
   return (

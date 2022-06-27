@@ -7,7 +7,12 @@ import { persistHabit, updateHabit } from "../../api/HabitService";
 
 import { Text, View } from "../../components/Themed";
 
-import { AntDesign, Entypo, Feather, MaterialIcons, SimpleLineIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Feather,
+  MaterialIcons,
+  SimpleLineIcons,
+} from "@expo/vector-icons";
 import { SelectChip } from "../../components/SelectChip";
 import { primaryColor, secondaryColor } from "../../constants/Colors";
 import useHabitTags from "../../hooks/useHabitTags";
@@ -71,8 +76,8 @@ export const AddEditHabit = ({ navigation, route }) => {
       .setUserId(userId)
       .setTags(selectedTags)
       .setTimesOfDay(timesOfDay)
-      .setCreationDate(new Date())
-      .setLastDone(new Date())
+      .setCreationDate(isEditMode ? typedHabit.creationDate : new Date())
+      .setLastDone(isEditMode ? typedHabit.lastDone : new Date())
       .build();
 
     if (isEditMode) {
@@ -87,11 +92,25 @@ export const AddEditHabit = ({ navigation, route }) => {
     navigation.navigate("HabitList");
   }
 
+  const setMin = (min: string) => {
+    // If the min is not a number, do nothing
+    if (isNaN(Number(min))) {
+      return;
+    }
+    setMinAndMax([parseInt(min, 10), minAndMax[1]]);
+  };
+
+  const setMax = (max: string) => {
+    // If the min is not a number, do nothing
+    if (isNaN(Number(max))) {
+      return;
+    }
+    setMinAndMax([minAndMax[0], parseInt(max, 10)]);
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {isEditMode ? "Edit" : "Add new"} habit
-      </Text>
+      <Text style={styles.title}>{isEditMode ? "Edit" : "Add new"} habit</Text>
       <View style={styles.formLine}>
         <Text style={styles.formLineText}>
           <MaterialIcons name="title" size={24} color={secondaryColor} />
@@ -108,10 +127,14 @@ export const AddEditHabit = ({ navigation, route }) => {
       </View>
 
       <View style={styles.formLine}>
-
         <Text style={styles.formLineText}>
-          <MaterialIcons name="priority-high" size={24} color={secondaryColor} />
-          Habit importance</Text>
+          <MaterialIcons
+            name="priority-high"
+            size={24}
+            color={secondaryColor}
+          />
+          Habit importance
+        </Text>
         <AirbnbRating
           count={3}
           defaultRating={benefit[0]}
@@ -126,8 +149,15 @@ export const AddEditHabit = ({ navigation, route }) => {
       <View style={styles.formLine}>
         <Text style={{ fontSize: 18 }}>
           <SimpleLineIcons name="energy" size={24} color={secondaryColor} />
-          Energy requirement</Text>
-        <View style={{ flexDirection: "column", width: '20%', alignItems: "center" }}>
+          Energy requirement
+        </Text>
+        <View
+          style={{
+            flexDirection: "column",
+            width: "20%",
+            alignItems: "center",
+          }}
+        >
           <MultiSlider
             values={energy}
             min={0}
@@ -135,7 +165,7 @@ export const AddEditHabit = ({ navigation, route }) => {
             onValuesChange={(values) => setEnergy(values)}
             sliderLength={80}
             step={0.1}
-            selectedStyle={{backgroundColor: secondaryColor}}
+            selectedStyle={{ backgroundColor: secondaryColor }}
           />
           <Text style={{ fontSize: 15 }}>
             {Math.round((energy[0] * 100) / 3)} %
@@ -143,23 +173,26 @@ export const AddEditHabit = ({ navigation, route }) => {
         </View>
       </View>
 
-      <View style={styles.formLine} >
+      <View style={styles.formLine}>
         <Text style={styles.formLineText}>
           <AntDesign name="clockcircle" size={20} color={secondaryColor} />
-          Min & max times</Text>
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
+          Min & max times
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
           <TextInput
-            onChangeText={(text) => {
-              setMinAndMax([+text, minAndMax[1]]);
-            }}
+            onChangeText={setMin}
             style={styles.textInput}
             value={minAndMax[0].toString()}
           />
           <Text> to </Text>
           <TextInput
-            onChangeText={(text) => {
-              setMinAndMax([minAndMax[0], +text]);
-            }}
+            onChangeText={setMax}
             style={styles.textInput}
             value={minAndMax[1].toString()}
           />
@@ -171,11 +204,12 @@ export const AddEditHabit = ({ navigation, route }) => {
         lightColor={primaryColor}
         darkColor="rgba(255,255,255,0.1)"
       />
-      <View style={{flexDirection: 'row', justifyContent: 'center'}} >
-      <Text style={styles.formLineText}>
-        <Feather name="sun" size={24} color={secondaryColor} />
-        Time of the day</Text>
-        </View>
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <Text style={styles.formLineText}>
+          <Feather name="sun" size={24} color={secondaryColor} />
+          Time of the day
+        </Text>
+      </View>
       <ButtonGroup
         buttons={TIMES_OF_DAY}
         selectMultiple
@@ -183,16 +217,18 @@ export const AddEditHabit = ({ navigation, route }) => {
         onPress={(value) => {
           setSelectedIndexes(value);
         }}
-        textStyle={{ color: 'black' }}
-        containerStyle={{ backgroundColor: 'white', borderColor: secondaryColor, borderWidth: 1 }}
+        textStyle={{ color: "black" }}
+        containerStyle={{
+          backgroundColor: "white",
+          borderColor: secondaryColor,
+          borderWidth: 1,
+        }}
         selectedButtonStyle={{ backgroundColor: secondaryColor }}
-        selectedTextStyle={{ color: 'white' }}
-
+        selectedTextStyle={{ color: "white" }}
       />
 
       {/* Display chips for tags */}
-      <Text style={{ fontSize: 20 }}>
-        #tags</Text>
+      <Text style={{ fontSize: 20 }}>#tags</Text>
 
       <View
         style={{
@@ -221,10 +257,18 @@ export const AddEditHabit = ({ navigation, route }) => {
           }}
           style={styles.textInput}
         />
-        <AntDesign name="pluscircleo" size={20} color={secondaryColor} onPress={onAddTag} />
+        <AntDesign
+          name="pluscircleo"
+          size={20}
+          color={secondaryColor}
+          onPress={onAddTag}
+        />
       </View>
 
-      <ScrollView keyboardDismissMode="none" contentContainerStyle={{justifyContent: "flex-end"}}>
+      <ScrollView
+        keyboardDismissMode="none"
+        contentContainerStyle={{ justifyContent: "flex-end" }}
+      >
         <Button
           onPress={buildAndRegisterHabit}
           title={"Save"}
@@ -244,7 +288,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    margin: 5
+    margin: 5,
   },
   formLine: {
     flexDirection: "row",
@@ -253,11 +297,11 @@ const styles = StyleSheet.create({
     alignContent: "center",
     marginVertical: 10,
     marginHorizontal: 5,
-    width: '95%'
+    width: "95%",
   },
   formLineText: {
     fontSize: 18,
-    marginHorizontal: 2
+    marginHorizontal: 2,
   },
   textInput: {
     height: 40,
@@ -268,7 +312,7 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     borderRadius: 8,
     borderColor: "#eee",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   button: {
     backgroundColor: secondaryColor,

@@ -50,6 +50,8 @@ export const HabitList = ({ navigation }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          alignContent: "center",
+          width: "100%",
         }}
       >
         <Button

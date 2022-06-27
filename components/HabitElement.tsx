@@ -6,8 +6,8 @@ import { AirbnbRating, Button, ListItem } from "@rneui/base";
 import { Text, View } from "./Themed";
 
 const formatDate = (date: Date): string => {
-  return "27-02-22"
-}
+  return new Date(date).toLocaleDateString("fr-FR");
+};
 
 type HabitProps = {
   habit: Habit;
@@ -78,21 +78,32 @@ export const HabitElement = ({
       )}
     >
       <ListItem.Content>
-        <View style={{ flexDirection: 'row', justifyContent: "space-between", width: '100%'}}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
           <View>
-            <ListItem.Title style={{ fontSize: 20, fontWeight: "500" }}>{habit.name}</ListItem.Title>
-            <ListItem.Subtitle>Last done: {formatDate(habit.lastDone)}</ListItem.Subtitle>
+            <ListItem.Title style={{ fontSize: 20, fontWeight: "500" }}>
+              {habit.name}
+            </ListItem.Title>
+            <ListItem.Subtitle>
+              Last done: {formatDate(habit.lastDone)}
+            </ListItem.Subtitle>
           </View>
           <View>
-          <AirbnbRating
-          count={3}
-          defaultRating={habit.benefits}
-          size={15}
-          showRating={false}
-          
-        />
-        <Text style={{fontStyle: "italic", fontSize: 13}}>{habit.tags.map(tag => tag.toLowerCase()).join(", ")}</Text>
-        </View>
+            <AirbnbRating
+              count={3}
+              defaultRating={habit.benefits}
+              size={15}
+              showRating={false}
+            />
+            <Text style={{ fontStyle: "italic", fontSize: 13 }}>
+              {habit.tags.map((tag) => tag.toLowerCase()).join(", ")}
+            </Text>
+          </View>
         </View>
       </ListItem.Content>
       <ListItem.Chevron />
