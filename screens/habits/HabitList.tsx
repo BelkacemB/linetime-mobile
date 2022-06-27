@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { SectionList, StyleSheet } from "react-native";
-import { Button, Skeleton } from "@rneui/base";
+import { Button, Dialog } from "@rneui/base";
 
 import { SearchBar } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, View } from "../../components/Themed";
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 import useUserHabitList from "../../hooks/useUserHabitList";
 import { extractTagsFromHabits } from "../../model/Util";
@@ -12,6 +13,11 @@ import { extractTagsFromHabits } from "../../model/Util";
 export const HabitList = ({ navigation }) => {
   const [habits, loading, onUpdate] = useUserHabitList();
   const [filteredHabits, setFilteredHabits] = React.useState(habits);
+
+  const [visibleSpinner, setVisibleSpinner] = React.useState(loading);
+  useEffect(() => {
+    setVisibleSpinner(loading);
+  }, [loading]);
 
   const [search, setSearch] = React.useState("");
 
@@ -39,16 +45,48 @@ export const HabitList = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <SearchBar
-        lightTheme
-        round
-        placeholder="Search"
-        onChangeText={(text) => setSearch(text)}
-        value={search}
-        style={{ width: "100%" }}
-      />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Button
+          style={styles.button}
+          title={<AntDesign name="pluscircleo" size={20} color="black" />}
+          onPress={() => {
+            navigation.navigate("AddEditHabit", {
+              onAdd: onUpdate,
+              onUpdate: onUpdate,
+            });
+          }}
+          type="clear"
+        />
+        <SearchBar
+          lightTheme
+          round
+          placeholder="Search"
+          onChangeText={(text) => setSearch(text)}
+          value={search}
+          containerStyle={{width: '60%', backgroundColor: 'white'}}
+        />
+        <Button
+          title={<Feather name="refresh-ccw" size={20} color="black" />}
+          onPress={onUpdate}
+          style={styles.button}
+          type="clear"
+        />
+      </View>
 
-      {loading && <Skeleton style={{ width: "100%", height: "100%" }} />}
+      <Dialog
+        isVisible={visibleSpinner}
+        onBackdropPress={() => setVisibleSpinner(false)}
+        overlayStyle={{ backgroundColor: "white" }}
+      >
+        <Dialog.Loading />
+      </Dialog>
+
       <SectionList
         sections={sectionsByTags}
         renderItem={({ item }) => (
@@ -64,25 +102,6 @@ export const HabitList = ({ navigation }) => {
         )}
       />
       {/* Add a new habit */}
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        <Button
-          style={styles.button}
-          title="➕ Add new habit"
-          onPress={() => {
-            navigation.navigate("AddEditHabit", {
-              onAdd: onUpdate,
-              onUpdate: onUpdate,
-            });
-          }}
-          type="clear"
-        />
-        <Button
-          title="🔄 Refresh"
-          onPress={onUpdate}
-          style={styles.button}
-          type="clear"
-        />
-      </View>
     </View>
   );
 };
@@ -108,8 +127,6 @@ const styles = StyleSheet.create({
   button: {
     marginHorizontal: 10,
     marginTop: 30,
-    borderWidth: 1,
-    borderRadius: 10,
     padding: 10,
     bottom: 20,
   },

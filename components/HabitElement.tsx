@@ -36,7 +36,7 @@ export const HabitElement = ({
 
   return (
     <ListItem.Swipeable
-      leftWidth={250}
+      leftWidth={220}
       leftStyle={{ flexDirection: "row" }}
       leftContent={(reset) => (
         <>
@@ -50,7 +50,7 @@ export const HabitElement = ({
             buttonStyle={{ minHeight: "100%" }}
           />
           <Button
-            title="Check in"
+            title="Clock in"
             onPress={() => {
               reset();
               onHabitCheck();

@@ -45,12 +45,6 @@ export async function getUserHabits(
   userId: string,
   token: string
 ): Promise<Habit[]> {
-  console.log(`Address: ${API_URL}/${userId}`);
-
-  console.log({
-    Authorization: `Bearer ${token}`,
-  });
-
   return fetch(`${API_URL}/${userId}`, {
     method: "GET",
     headers: {

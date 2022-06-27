@@ -6,6 +6,7 @@ import { Today } from "../components/Today";
 import { Avatar } from "@rneui/themed";
 import React from "react";
 import { Button } from "@rneui/base";
+import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
@@ -45,13 +46,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         style={styles.button}
         onPress={() => navigation.navigate("SuggestionForm")}
       >
-        <Text>Play ▶️</Text>
+        <AntDesign name="playcircleo" size={30} color="black" />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("HabitList")}
       >
-        <Text>Playlist 📜</Text>
+        <MaterialCommunityIcons name="playlist-edit" size={30} color="black" />
       </TouchableOpacity>
     </View>
   );
@@ -83,8 +84,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-    backgroundColor: transparentSecondaryColor,
-    width: "40%",
+    width: "30%",
     alignItems: "center",
   },
 });
