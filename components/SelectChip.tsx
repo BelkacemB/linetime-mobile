@@ -1,6 +1,7 @@
 import React from "react";
 import { Chip } from "@rneui/base";
-import { Text, View } from "react-native";
+import { Text, StyleSheet } from "react-native";
+import { secondaryColor } from "../constants/Colors";
 
 type SelectChipProps = {
   label: string;
@@ -8,14 +9,26 @@ type SelectChipProps = {
   onPress: () => void;
 };
 
+const styles = StyleSheet.create({
+  default: {
+    backgroundColor: 'white',
+    color: 'black',
+    margin: 1
+  },
+  selected: { 
+    backgroundColor: secondaryColor,
+    color: 'white',
+    margin: 1
+  }
+})
+
 export const SelectChip = ({ label, selected, onPress }: SelectChipProps) => {
   return (
     <Chip
       onPress={onPress}
-      buttonStyle={{ margin: 1 }}
-      type={selected ? "solid" : "outline"}
+      buttonStyle={selected ? styles.selected : styles.default}
     >
-      <Text style={{ color: selected ? "white" : "gray" }}>{label}</Text>
+      <Text style={{ color: selected ? "white" : "black" }}>{label}</Text>
     </Chip>
   );
 };
