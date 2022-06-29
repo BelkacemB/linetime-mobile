@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -71,7 +71,7 @@ export default function SuggestionForm({
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollView}>
       <Text style={styles.title}>Describe your current state</Text>
       <View
         style={styles.separator}
@@ -156,15 +156,15 @@ export default function SuggestionForm({
       <TouchableOpacity style={styles.button} onPress={onSubmit}>
         <Text>LineTime 🚀</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollView: {
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "white"
   },
   title: {
     fontSize: 20,

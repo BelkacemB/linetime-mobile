@@ -102,6 +102,7 @@ export const AddEditHabit = ({ navigation, route }) => {
 
   const setMax = (max: string) => {
     // If the min is not a number, do nothing
+    console.log(max)
     if (isNaN(Number(max))) {
       return;
     }
@@ -109,7 +110,7 @@ export const AddEditHabit = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollView}>
       <Text style={styles.title}>{isEditMode ? "Edit" : "Add new"} habit</Text>
       <View style={styles.formLine}>
         <Text style={styles.formLineText}>
@@ -275,15 +276,15 @@ export const AddEditHabit = ({ navigation, route }) => {
           buttonStyle={styles.button}
         />
       </ScrollView>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollView: { 
+    backgroundColor: "white",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   title: {
     fontSize: 20,
