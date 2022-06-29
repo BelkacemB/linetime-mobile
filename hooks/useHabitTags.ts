@@ -14,7 +14,7 @@ export default function useHabitTags() {
   }, [habits]);
 
   const toggleTagSelection = (tag: string) => {
-    if (selectedTags.includes(tag)) {
+    if (selectedTags?.includes(tag)) {
       setSelectedTags(selectedTags.filter((t) => t !== tag));
     } else {
       setSelectedTags([...selectedTags, tag]);

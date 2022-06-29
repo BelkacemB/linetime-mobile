@@ -56,7 +56,7 @@ export const AddEditHabit = ({ navigation, route }) => {
           TIMES_OF_DAY.indexOf(timeOfDay)
         )
       );
-      setSelectedTags(typedHabit.tags);
+      setSelectedTags(typedHabit.tags ?? []);
     }
   }, []);
 
@@ -93,7 +93,6 @@ export const AddEditHabit = ({ navigation, route }) => {
   }
 
   const setMin = (min: string) => {
-    // If the min is not a number, do nothing
     if (isNaN(Number(min))) {
       return;
     }
@@ -101,8 +100,6 @@ export const AddEditHabit = ({ navigation, route }) => {
   };
 
   const setMax = (max: string) => {
-    // If the min is not a number, do nothing
-    console.log(max)
     if (isNaN(Number(max))) {
       return;
     }
@@ -247,7 +244,7 @@ export const AddEditHabit = ({ navigation, route }) => {
             onPress={() => {
               toggleTagSelection(tag);
             }}
-            selected={selectedTags.includes(tag)}
+            selected={selectedTags?.includes(tag)}
           />
         ))}
 

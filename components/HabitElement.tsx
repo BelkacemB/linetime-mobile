@@ -101,7 +101,7 @@ export const HabitElement = ({
               showRating={false}
             />
             <Text style={{ fontStyle: "italic", fontSize: 13 }}>
-              {habit.tags.map((tag) => tag.toLowerCase()).join(", ")}
+              {habit.tags?.map((tag) => tag.toLowerCase()).join(", ")}
             </Text>
           </View>
         </View>
