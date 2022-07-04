@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
 import { Text, TouchableOpacity, View } from "../../components/Themed";
-import DropDownPicker from "react-native-dropdown-picker";
+import RNPickerSelect from 'react-native-picker-select';
 import CircleSlider from "../../components/CircleSlider";
 import { Switch } from "@rneui/base";
 
@@ -10,7 +10,6 @@ import { fetchSuggestions, SuggestionRequest } from "../../api/LinetimeService";
 
 import {
   secondaryColor,
-  transparentSecondaryColor,
 } from "../../constants/Colors";
 import { RootTabScreenProps } from "../../types";
 import useUserToken from "../../hooks/useUserToken";
@@ -18,9 +17,9 @@ import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
 
 const energyTypeItems = [
-  { label: "Tired", value: 2 },
-  { label: "Normal", value: 3 },
-  { label: "Energetic", value: 6 },
+  { label: "tired", value: 2 },
+  { label: "normal", value: 3 },
+  { label: "energetic", value: 6 },
 ];
 
 export default function SuggestionForm({
@@ -33,7 +32,6 @@ export default function SuggestionForm({
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
   const { tags, selectedTags, toggleTagSelection } = useHabitTags();
   // UI state
-  const [energyOpen, setEnergyOpen] = useState(false);
   const [timeSpecific, setTimeSpecific] = useState(false);
 
   const handleTimeSlide = (value: number) => {
@@ -81,15 +79,13 @@ export default function SuggestionForm({
       />
 
       {/* Energy */}
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <Text>I'm feeling </Text>
-        <DropDownPicker
-          open={energyOpen}
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={{fontSize: 17}}>I'm feeling </Text>
+        <RNPickerSelect
           value={energy}
           items={energyTypeItems}
-          setValue={setEnergy}
-          setOpen={setEnergyOpen}
-          style={{ width: 150 }}
+          onValueChange={setEnergy}
+          style={pickerSelectStyles}
         />
       </View>
       {/* Tags */}
@@ -124,6 +120,7 @@ export default function SuggestionForm({
         <Switch
           value={timeSpecific}
           onValueChange={(value) => setTimeSpecific(value)}
+          color={secondaryColor}
         />
       </View>
 
@@ -202,5 +199,27 @@ const styles = StyleSheet.create({
     width: "30%",
     alignItems: "center",
     shadowColor: "#000",
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderColor: 'gray',
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
+    color: 'black',
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'purple',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
