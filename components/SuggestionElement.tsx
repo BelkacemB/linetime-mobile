@@ -64,18 +64,31 @@ export const SuggestionElement = ({ suggestion }: Props) => {
           end={{ x: 1, y: 0 }}
           style={{ width: "100%" }}
         >
-          <View style={{ flexDirection: 'row', marginBottom: 1, paddingBottom: 10, backgroundColor: 'white' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              marginBottom: 1,
+              paddingBottom: 10,
+              backgroundColor: "white",
+            }}
+          >
             <View
-              style={{ flexDirection: 'row', width: '50%', justifyContent: 'center' }}
+              style={{
+                flexDirection: "row",
+                width: "50%",
+                justifyContent: "center",
+              }}
             >
               <Feather name="activity" size={24} color="black" />
               <Text style={{ fontSize: 20 }}> {suggestion.name}</Text>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: "flex-end" }}>
+            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
               <Ionicons name="time-outline" size={24} color="black" />
-              <Text style={{ fontSize: 20 }}> {suggestion.suggestedTime} minutes</Text>
+              <Text style={{ fontSize: 20 }}>
+                {" "}
+                {suggestion.suggestedTime} minutes
+              </Text>
             </View>
-
           </View>
         </LinearGradient>
       </ListItem.Content>

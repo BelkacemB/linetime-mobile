@@ -30,10 +30,7 @@ export default function Navigation({
   const [user, loading, error] = useAuthState(auth);
 
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={DefaultTheme}
-    >
+    <NavigationContainer linking={LinkingConfiguration} theme={DefaultTheme}>
       {loading && <Skeleton style={{ width: "100%", height: "100%" }} />}
       {error && <Text> {error.message} </Text>}
       {user ? <RootNavigator /> : <LoginNavigator />}

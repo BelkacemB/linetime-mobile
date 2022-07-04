@@ -1,8 +1,5 @@
 import { StyleSheet } from "react-native";
-import {
-  primaryColor,
-  secondaryColor
-} from "../constants/Colors";
+import { primaryColor, secondaryColor } from "../constants/Colors";
 import { Text, TouchableOpacity, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { Today } from "../components/Today";

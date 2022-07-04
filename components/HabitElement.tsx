@@ -3,7 +3,7 @@ import Habit from "../model/Habit";
 import { deleteHabit, updateHabit } from "../api/HabitService";
 import useUserToken from "../hooks/useUserToken";
 import { AirbnbRating, Button, ListItem } from "@rneui/base";
-import { Text, View } from "./Themed";
+import { Text, TouchableOpacity, View } from "./Themed";
 import { secondaryColor, tertiaryColor } from "../constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -42,59 +42,62 @@ export const HabitElement = ({
   };
 
   return (
-
-      <ListItem.Swipeable
-        leftWidth={220}
-        leftStyle={{ flexDirection: "row" }}
-        leftContent={(reset) => (
-          <>
-            <Button
-              title="Edit"
-              onPress={() => {
-                reset();
-                edit();
-              }}
-              icon={{ name: "settings", color: "white" }}
-              buttonStyle={{ minHeight: "100%" }}
-            />
-            <Button
-              title="Clock in"
-              onPress={() => {
-                reset();
-                onHabitCheck();
-              }}
-              icon={{ name: "check", color: "white" }}
-              buttonStyle={{ minHeight: "100%", backgroundColor: "green" }}
-            />
-          </>
-        )}
-        rightContent={(reset) => (
+    <ListItem.Swipeable
+      leftWidth={220}
+      leftStyle={{ flexDirection: "row" }}
+      leftContent={(reset) => (
+        <>
           <Button
-            title="Delete"
+            title="Edit"
             onPress={() => {
               reset();
-              remove();
+              edit();
             }}
-            icon={{ name: "delete", color: "white" }}
-            buttonStyle={{ backgroundColor: "red", minHeight: "100%" }}
+            icon={{ name: "settings", color: "white" }}
+            buttonStyle={{ minHeight: "100%" }}
           />
-        )}
+          <Button
+            title="Clock in"
+            onPress={() => {
+              reset();
+              onHabitCheck();
+            }}
+            icon={{ name: "check", color: "white" }}
+            buttonStyle={{ minHeight: "100%", backgroundColor: "green" }}
+          />
+        </>
+      )}
+      rightContent={(reset) => (
+        <Button
+          title="Delete"
+          onPress={() => {
+            reset();
+            remove();
+          }}
+          icon={{ name: "delete", color: "white" }}
+          buttonStyle={{ backgroundColor: "red", minHeight: "100%" }}
+        />
+      )}
+    >
+      <ListItem.Content
+        onPress={() => {
+          edit();
+        }}
+        style={{borderBottomColor: secondaryColor, borderBottomWidth: 1}}
       >
-        <ListItem.Content>
-          <LinearGradient 
-            colors={[tertiaryColor, secondaryColor, tertiaryColor]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={{width: "100%"}}
-          >
-          <View
+
+          <TouchableOpacity
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
               width: "100%",
               marginBottom: 1,
-              paddingBottom: 5, 
+              paddingBottom: 5,
             }}
+            onLongPress={() => {
+              edit();
+            }
+            }
           >
             <View>
               <ListItem.Title style={{ fontSize: 20, fontWeight: "500" }}>
@@ -115,11 +118,9 @@ export const HabitElement = ({
                 {habit.tags?.map((tag) => tag.toLowerCase()).join(", ")}
               </Text>
             </View>
-          </View>
-          </LinearGradient>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem.Swipeable>
-
+          </TouchableOpacity>
+      </ListItem.Content>
+      <ListItem.Chevron />
+    </ListItem.Swipeable>
   );
 };

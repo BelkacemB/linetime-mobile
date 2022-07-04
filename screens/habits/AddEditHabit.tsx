@@ -279,11 +279,11 @@ export const AddEditHabit = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: { 
+  scrollView: {
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
-    flexGrow: 1
+    flexGrow: 1,
   },
   title: {
     fontSize: 20,

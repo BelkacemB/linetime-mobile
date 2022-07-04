@@ -8,7 +8,9 @@ export const SuggestionList = ({ route }) => {
   return (
     <View style={styles.container}>
       {listOfSuggestions.length == 0 && (
-        <Text style={{fontSize: 20}}>No suggestions for now! Try adding new habits to your playlist</Text>
+        <Text style={{ fontSize: 20 }}>
+          No suggestions for now! Try adding new habits to your playlist
+        </Text>
       )}
       {listOfSuggestions.map((suggestion) => (
         <SuggestionElement suggestion={suggestion} key={suggestion.name} />

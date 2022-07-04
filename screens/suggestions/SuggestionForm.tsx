@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
 import { Text, TouchableOpacity, View } from "../../components/Themed";
-import RNPickerSelect from 'react-native-picker-select';
+import RNPickerSelect from "react-native-picker-select";
 import CircleSlider from "../../components/CircleSlider";
 import { Switch } from "@rneui/base";
 
 import { fetchSuggestions, SuggestionRequest } from "../../api/LinetimeService";
 
-import {
-  secondaryColor,
-} from "../../constants/Colors";
+import { secondaryColor } from "../../constants/Colors";
 import { RootTabScreenProps } from "../../types";
 import useUserToken from "../../hooks/useUserToken";
 import useHabitTags from "../../hooks/useHabitTags";
@@ -80,9 +78,9 @@ export default function SuggestionForm({
       />
 
       {/* Energy */}
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <SimpleLineIcons name="energy" size={25} color="black" />
-        <Text style={{fontSize: 17}}> I'm feeling </Text>
+        <Text style={{ fontSize: 17 }}> I'm feeling </Text>
         <RNPickerSelect
           value={energy}
           items={energyTypeItems}
@@ -98,10 +96,8 @@ export default function SuggestionForm({
       />
 
       {/* Tags */}
-      <View
-        style={{ alignItems: "center", justifyContent: "center"}}
-      >
-        <Text style={{fontWeight: "bold"}}>#tags </Text>
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <Text style={{ fontWeight: "bold" }}>#tags </Text>
         <View style={{ flexDirection: "row" }}>
           {tags.map((tag) => (
             <SelectChip
@@ -123,9 +119,8 @@ export default function SuggestionForm({
       />
 
       <View style={{ flexDirection: "row" }}>
-      <Ionicons name="time-outline" size={25} color="black" />
+        <Ionicons name="time-outline" size={25} color="black" />
         <View style={{ justifyContent: "center" }}>
-          
           <Text>Time specific activities </Text>
         </View>
         <Switch
@@ -174,7 +169,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#fff",
     flexGrow: 1,
-
   },
   title: {
     fontSize: 20,
@@ -219,19 +213,19 @@ const pickerSelectStyles = StyleSheet.create({
     fontStyle: "italic",
     paddingVertical: 10,
     paddingHorizontal: 10,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderBottomWidth: 1,
-    borderStyle: 'solid',
-    color: 'black',
+    borderStyle: "solid",
+    color: "black",
   },
   inputAndroid: {
     fontSize: 16,
     paddingHorizontal: 5,
     paddingVertical: 8,
     borderWidth: 0.5,
-    borderColor: 'purple',
+    borderColor: "purple",
     borderRadius: 8,
-    color: 'black',
+    color: "black",
     paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
