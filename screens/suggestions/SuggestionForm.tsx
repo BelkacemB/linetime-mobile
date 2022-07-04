@@ -146,7 +146,6 @@ export default function SuggestionForm({
       <View
         style={{
           flexDirection: "column",
-          zIndex: -5,
           width: "100%",
           alignItems: "center",
         }}

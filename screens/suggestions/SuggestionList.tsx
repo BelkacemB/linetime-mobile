@@ -8,7 +8,7 @@ export const SuggestionList = ({ route }) => {
   return (
     <View style={styles.container}>
       {listOfSuggestions.length == 0 && (
-        <Text>No suggestions for now! Try to add new habits</Text>
+        <Text style={{fontSize: 20}}>No suggestions for now! Try adding new habits to your playlist</Text>
       )}
       {listOfSuggestions.map((suggestion) => (
         <SuggestionElement suggestion={suggestion} key={suggestion.name} />
@@ -20,6 +20,7 @@ export const SuggestionList = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    justifyContent: "center",
   },
 });
