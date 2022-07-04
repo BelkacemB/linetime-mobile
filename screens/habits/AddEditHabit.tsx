@@ -271,6 +271,7 @@ export const AddEditHabit = ({ navigation, route }) => {
           onPress={buildAndRegisterHabit}
           title={"Save"}
           buttonStyle={styles.button}
+          color={secondaryColor}
         />
       </ScrollView>
     </ScrollView>
@@ -281,7 +282,8 @@ const styles = StyleSheet.create({
   scrollView: { 
     backgroundColor: "white",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    flexGrow: 1
   },
   title: {
     fontSize: 20,
@@ -313,13 +315,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   button: {
-    backgroundColor: secondaryColor,
-    marginHorizontal: 10,
-    marginTop: 30,
-    borderWidth: 1,
+    margin: 10,
+    shadowOpacity: 0.2,
+    borderWidth: 0.1,
     borderRadius: 10,
     padding: 10,
-    bottom: 20,
+    alignItems: "center",
+    shadowColor: "#000",
   },
   separator: {
     backgroundColor: secondaryColor,
