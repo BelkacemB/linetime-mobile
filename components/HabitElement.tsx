@@ -83,42 +83,40 @@ export const HabitElement = ({
         onPress={() => {
           edit();
         }}
-        style={{borderBottomColor: secondaryColor, borderBottomWidth: 1}}
+        style={{ borderBottomColor: secondaryColor, borderBottomWidth: 1 }}
       >
-
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "100%",
-              marginBottom: 1,
-              paddingBottom: 5,
-            }}
-            onLongPress={() => {
-              edit();
-            }
-            }
-          >
-            <View>
-              <ListItem.Title style={{ fontSize: 20, fontWeight: "500" }}>
-                {habit.name}
-              </ListItem.Title>
-              <ListItem.Subtitle style={{ fontSize: 14, fontStyle: "italic" }}>
-                Last done: {formatDate(habit.lastDone)}
-              </ListItem.Subtitle>
-            </View>
-            <View>
-              <AirbnbRating
-                count={3}
-                defaultRating={habit.benefits}
-                size={15}
-                showRating={false}
-              />
-              <Text style={{ fontStyle: "italic", fontSize: 13 }}>
-                {habit.tags?.map((tag) => tag.toLowerCase()).join(", ")}
-              </Text>
-            </View>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+            marginBottom: 1,
+            paddingBottom: 5,
+          }}
+          onLongPress={() => {
+            edit();
+          }}
+        >
+          <View>
+            <ListItem.Title style={{ fontSize: 20, fontWeight: "500" }}>
+              {habit.name}
+            </ListItem.Title>
+            <ListItem.Subtitle style={{ fontSize: 14, fontStyle: "italic" }}>
+              Last done: {formatDate(habit.lastDone)}
+            </ListItem.Subtitle>
+          </View>
+          <View>
+            <AirbnbRating
+              count={3}
+              defaultRating={habit.benefits}
+              size={15}
+              showRating={false}
+            />
+            <Text style={{ fontStyle: "italic", fontSize: 13 }}>
+              {habit.tags?.map((tag) => tag.toLowerCase()).join(", ")}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </ListItem.Content>
       <ListItem.Chevron />
     </ListItem.Swipeable>

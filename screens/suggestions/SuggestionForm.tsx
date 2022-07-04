@@ -14,7 +14,7 @@ import useUserToken from "../../hooks/useUserToken";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
 import SimpleLineIcons from "@expo/vector-icons/build/SimpleLineIcons";
-import Ionicons from "@expo/vector-icons/build/Ionicons";
+import { Feather } from "@expo/vector-icons";
 
 const energyTypeItems = [
   { label: "tired", value: 2 },
@@ -119,7 +119,7 @@ export default function SuggestionForm({
       />
 
       <View style={{ flexDirection: "row" }}>
-        <Ionicons name="time-outline" size={25} color="black" />
+        <Feather name="sun" size={24} color={secondaryColor} />
         <View style={{ justifyContent: "center" }}>
           <Text>Time specific activities </Text>
         </View>

@@ -1,12 +1,15 @@
 import { StyleSheet } from "react-native";
-import { primaryColor, secondaryColor } from "../constants/Colors";
+import {
+  primaryColor,
+  secondaryColor,
+  tertiaryColor,
+} from "../constants/Colors";
 import { Text, TouchableOpacity, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { Today } from "../components/Today";
 import { Avatar } from "@rneui/themed";
 import React from "react";
-import { Button } from "@rneui/base";
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import { Button, Card } from "@rneui/base";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
@@ -30,7 +33,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         }}
       />
       <Today />
-      <Text style={styles.welcome}>Hello, {user}</Text>
+      <Text style={styles.welcome}>Hello, Belkacem</Text>
       <Avatar
         size={110}
         rounded
@@ -42,24 +45,34 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         lightColor={primaryColor}
         darkColor="rgba(255,255,255,0.1)"
       />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("SuggestionForm")}
-      >
-        <Text>Play</Text>
-        <AntDesign name="playcircleo" size={30} color={secondaryColor} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("HabitList")}
-      >
-        <Text>Habit playlist</Text>
-        <MaterialCommunityIcons
-          name="playlist-edit"
-          size={30}
-          color={secondaryColor}
-        />
-      </TouchableOpacity>
+      <View style={{ flexDirection: "row", width: "100%" }}>
+          <Card containerStyle={styles.textCard}>
+          <TouchableOpacity onPress={() => navigation.navigate("HabitList")} style={{backgroundColor: 'transparent'}}>
+        
+            <Card.Title>Habit playlist</Card.Title>
+            <Card.Divider />
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>16</Text>
+            <Text style={{ fontSize: 16 }}>habits</Text>
+            <Text style={{ fontSize: 16 }}> </Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>5</Text>
+            <Text style={{ fontSize: 16 }}>tags</Text>
+            <Text style={{ fontSize: 16 }}> </Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              Last update
+            </Text>
+            <Text style={{ fontSize: 16 }}>04/07/2022</Text>
+            </TouchableOpacity>
+          </Card>
+          <Card containerStyle={styles.card}>
+        <TouchableOpacity onPress={() => navigation.navigate("SuggestionForm")} style={{backgroundColor: 'transparent'}}>
+
+            <Card.Title>Play</Card.Title>
+            <Card.Divider />
+            <Card.Image source={require("../assets/images/playlist.png")} />
+        </TouchableOpacity>
+
+          </Card>
+      </View>
     </View>
   );
 }
@@ -80,7 +93,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 15,
     height: 1,
     width: "80%",
     opacity: 0.2,
@@ -94,5 +107,36 @@ const styles = StyleSheet.create({
     width: "30%",
     alignItems: "center",
     shadowColor: "#000",
+  },
+  card: {
+    width: "40%",
+    borderWidth: 1,
+    padding: 0,
+    paddingVertical: 5,
+    justifyContent: "center",
+    shadowColor: secondaryColor,
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    backgroundColor: tertiaryColor,
+    borderRadius: 10,
+  },
+  textCard: {
+    width: "40%",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 0,
+    paddingVertical: 5,
+    backgroundColor: tertiaryColor,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: secondaryColor,
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
   },
 });
