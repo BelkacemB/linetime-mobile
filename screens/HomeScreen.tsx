@@ -46,11 +46,12 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         darkColor="rgba(255,255,255,0.1)"
       />
       <View style={{ flexDirection: "row", width: "100%" }}>
-          <Card containerStyle={styles.textCard}>
+          <Card containerStyle={styles.card}>
           <TouchableOpacity onPress={() => navigation.navigate("HabitList")} style={{backgroundColor: 'transparent'}}>
         
-            <Card.Title>Habit playlist</Card.Title>
+            <Card.Title>PLAYLIST</Card.Title>
             <Card.Divider />
+            <View style={{ backgroundColor: 'transparent', alignItems: 'center'}}>
             <Text style={{ fontSize: 16, fontWeight: "bold" }}>16</Text>
             <Text style={{ fontSize: 16 }}>habits</Text>
             <Text style={{ fontSize: 16 }}> </Text>
@@ -61,12 +62,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
               Last update
             </Text>
             <Text style={{ fontSize: 16 }}>04/07/2022</Text>
+            </View>
             </TouchableOpacity>
           </Card>
           <Card containerStyle={styles.card}>
         <TouchableOpacity onPress={() => navigation.navigate("SuggestionForm")} style={{backgroundColor: 'transparent'}}>
 
-            <Card.Title>Play</Card.Title>
+            <Card.Title>PLAY</Card.Title>
             <Card.Divider />
             <Card.Image source={require("../assets/images/playlist.png")} />
         </TouchableOpacity>
@@ -122,21 +124,5 @@ const styles = StyleSheet.create({
     },
     backgroundColor: tertiaryColor,
     borderRadius: 10,
-  },
-  textCard: {
-    width: "40%",
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 0,
-    paddingVertical: 5,
-    backgroundColor: tertiaryColor,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: secondaryColor,
-    shadowOpacity: 0.5,
-    shadowOffset: {
-      width: 1,
-      height: 2,
-    },
-  },
+  }
 });
