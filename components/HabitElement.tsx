@@ -89,7 +89,7 @@ export const HabitElement = ({
             <ListItem.Title style={{ fontSize: 20, fontWeight: "500" }}>
               {habit.name}
             </ListItem.Title>
-            <ListItem.Subtitle>
+            <ListItem.Subtitle style={{ fontSize: 14, fontStyle: "italic"}}>
               Last done: {formatDate(habit.lastDone)}
             </ListItem.Subtitle>
           </View>

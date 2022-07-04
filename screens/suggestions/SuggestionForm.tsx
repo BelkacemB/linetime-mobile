@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -71,6 +71,7 @@ export default function SuggestionForm({
   };
 
   return (
+    <SafeAreaView> 
     <ScrollView contentContainerStyle={styles.scrollView}>
       <Text style={styles.title}>Describe your current state</Text>
       <View
@@ -101,11 +102,11 @@ export default function SuggestionForm({
       <View
         style={{ alignItems: "center", justifyContent: "center", zIndex: -3 }}
       >
-        <Text>Tags </Text>
+        <Text>#tags </Text>
         <View style={{ flexDirection: "row" }}>
           {tags.map((tag) => (
             <SelectChip
-              label={tag}
+              label={tag.toLowerCase()}
               key={tag}
               onPress={() => {
                 toggleTagSelection(tag);
@@ -154,17 +155,19 @@ export default function SuggestionForm({
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onSubmit}>
-        <Text>LineTime 🚀</Text>
+        <Text>Play 🚀</Text>
       </TouchableOpacity>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   scrollView: {
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white"
+    justifyContent: "space-between",
+    backgroundColor: "white",
+    flexGrow: 1
   },
   title: {
     fontSize: 20,
@@ -191,11 +194,13 @@ const styles = StyleSheet.create({
     borderColor: "#eee",
   },
   button: {
-    backgroundColor: transparentSecondaryColor,
-    marginTop: 30,
-    borderWidth: 1,
+    margin: 10,
+    shadowOpacity: 0.2,
+    borderWidth: 0.1,
     borderRadius: 10,
     padding: 10,
-    bottom: 20,
+    width: "30%",
+    alignItems: "center",
+    shadowColor: "#000",
   },
 });

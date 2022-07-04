@@ -112,7 +112,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    margin: 5,
+    marginHorizontal: 5,
+    color: "white",
   },
   separator: {
     marginVertical: 30,

@@ -49,12 +49,14 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         style={styles.button}
         onPress={() => navigation.navigate("SuggestionForm")}
       >
+        <Text>Play</Text>
         <AntDesign name="playcircleo" size={30} color={secondaryColor} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("HabitList")}
       >
+        <Text>Habit playlist</Text>
         <MaterialCommunityIcons
           name="playlist-edit"
           size={30}
@@ -88,10 +90,12 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 10,
-    borderWidth: 1,
+    shadowOpacity: 0.2,
+    borderWidth: 0.1,
     borderRadius: 10,
     padding: 10,
     width: "30%",
     alignItems: "center",
+    shadowColor: "#000",
   },
 });

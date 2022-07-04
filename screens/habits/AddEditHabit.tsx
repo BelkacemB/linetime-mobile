@@ -239,7 +239,7 @@ export const AddEditHabit = ({ navigation, route }) => {
       >
         {tags.map((tag) => (
           <SelectChip
-            label={tag}
+            label={tag.toLowerCase()}
             key={tag}
             onPress={() => {
               toggleTagSelection(tag);
