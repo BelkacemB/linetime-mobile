@@ -15,6 +15,8 @@ import { RootTabScreenProps } from "../../types";
 import useUserToken from "../../hooks/useUserToken";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
+import SimpleLineIcons from "@expo/vector-icons/build/SimpleLineIcons";
+import Ionicons from "@expo/vector-icons/build/Ionicons";
 
 const energyTypeItems = [
   { label: "tired", value: 2 },
@@ -69,7 +71,6 @@ export default function SuggestionForm({
   };
 
   return (
-    <SafeAreaView> 
     <ScrollView contentContainerStyle={styles.scrollView}>
       <Text style={styles.title}>Describe your current state</Text>
       <View
@@ -80,7 +81,8 @@ export default function SuggestionForm({
 
       {/* Energy */}
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={{fontSize: 17}}>I'm feeling </Text>
+        <SimpleLineIcons name="energy" size={25} color="black" />
+        <Text style={{fontSize: 17}}> I'm feeling </Text>
         <RNPickerSelect
           value={energy}
           items={energyTypeItems}
@@ -88,17 +90,18 @@ export default function SuggestionForm({
           style={pickerSelectStyles}
         />
       </View>
-      {/* Tags */}
+
       <View
-        style={styles.blank}
+        style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
 
+      {/* Tags */}
       <View
-        style={{ alignItems: "center", justifyContent: "center", zIndex: -3 }}
+        style={{ alignItems: "center", justifyContent: "center"}}
       >
-        <Text>#tags </Text>
+        <Text style={{fontWeight: "bold"}}>#tags </Text>
         <View style={{ flexDirection: "row" }}>
           {tags.map((tag) => (
             <SelectChip
@@ -113,8 +116,16 @@ export default function SuggestionForm({
         </View>
       </View>
 
-      <View style={{ flexDirection: "row", zIndex: -3 }}>
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
+
+      <View style={{ flexDirection: "row" }}>
+      <Ionicons name="time-outline" size={25} color="black" />
         <View style={{ justifyContent: "center" }}>
+          
           <Text>Time specific activities </Text>
         </View>
         <Switch
@@ -155,7 +166,6 @@ export default function SuggestionForm({
         <Text>Play 🚀</Text>
       </TouchableOpacity>
     </ScrollView>
-    </SafeAreaView>
   );
 }
 
@@ -163,15 +173,17 @@ const styles = StyleSheet.create({
   scrollView: {
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "white",
-    flexGrow: 1
+    backgroundColor: "#fff",
+    flexGrow: 1,
+
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    marginTop: 20,
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 20,
     height: 1,
     width: "80%",
   },
@@ -205,6 +217,7 @@ const styles = StyleSheet.create({
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 16,
+    fontStyle: "italic",
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderColor: 'gray',
@@ -214,7 +227,7 @@ const pickerSelectStyles = StyleSheet.create({
   },
   inputAndroid: {
     fontSize: 16,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     paddingVertical: 8,
     borderWidth: 0.5,
     borderColor: 'purple',

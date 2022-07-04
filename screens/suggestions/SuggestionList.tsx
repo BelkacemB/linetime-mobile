@@ -6,7 +6,7 @@ import { Text, View } from "../../components/Themed";
 export const SuggestionList = ({ route }) => {
   const { listOfSuggestions } = route.params;
   return (
-    <View>
+    <View style={styles.container}>
       {listOfSuggestions.length == 0 && (
         <Text>No suggestions for now! Try to add new habits</Text>
       )}
@@ -19,8 +19,7 @@ export const SuggestionList = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    flexGrow: 1,
+    backgroundColor: "white"
   },
 });
