@@ -74,7 +74,6 @@ export default function SuggestionForm({
     <ScrollView contentContainerStyle={styles.scrollView}>
       <Text style={styles.title}>Describe your current state</Text>
 
-
       {/* Energy */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <SimpleLineIcons name="energy" size={25} color="black" />
@@ -128,7 +127,6 @@ export default function SuggestionForm({
         />
       </View>
 
-
       {/* Time */}
       <View
         style={{
@@ -137,18 +135,21 @@ export default function SuggestionForm({
           alignItems: "center",
         }}
       >
-        <Text style={{fontSize: 20}}>Time available</Text>
-        <Text style={{fontSize: 16, fontWeight: "bold"}} ><Ionicons name="timer-outline" size={24} color="black" />{timeInMinutes} minutes</Text>
+        <Text style={{ fontSize: 20 }}>Time available</Text>
+        <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+          <Ionicons name="timer-outline" size={24} color="black" />
+          {timeInMinutes} minutes
+        </Text>
 
         <MultiSlider
-            values={[timeInMinutes]}
-            min={20}
-            max={120}
-            onValuesChange={(values) => setTimeInMinutes(values[0])}
-            sliderLength={250}
-            step={5}
-            selectedStyle={{ backgroundColor: secondaryColor }}
-          />
+          values={[timeInMinutes]}
+          min={20}
+          max={120}
+          onValuesChange={(values) => setTimeInMinutes(values[0])}
+          sliderLength={250}
+          step={5}
+          selectedStyle={{ backgroundColor: secondaryColor }}
+        />
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onSubmit}>

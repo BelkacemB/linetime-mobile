@@ -52,7 +52,7 @@ export async function getUserHabits(
     },
   })
     .then((response) => response.json())
-    .then((responseJson) => responseJson as Habit[])
+    .then((json) => json.map((habit) => Habit.fromJSON(habit)))
     .catch((error) => {
       console.log(error);
       return [];

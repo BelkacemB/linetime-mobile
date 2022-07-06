@@ -26,7 +26,7 @@ export const SuggestionElement = ({ suggestion }: Props) => {
   );
 
   const onHabitClick = () => {
-    matchingHabit.lastDone = new Date();
+    matchingHabit.clockIn();
     updateHabit(matchingHabit, userToken);
   };
 

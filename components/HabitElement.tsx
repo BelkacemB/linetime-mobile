@@ -4,8 +4,7 @@ import { deleteHabit, updateHabit } from "../api/HabitService";
 import useUserToken from "../hooks/useUserToken";
 import { AirbnbRating, Button, ListItem } from "@rneui/base";
 import { Text, TouchableOpacity, View } from "./Themed";
-import { secondaryColor, tertiaryColor } from "../constants/Colors";
-import { LinearGradient } from "expo-linear-gradient";
+import { secondaryColor } from "../constants/Colors";
 
 const formatDate = (date: Date): string => {
   return new Date(date).toLocaleDateString("fr-FR");
@@ -36,7 +35,7 @@ export const HabitElement = ({
     onUpdateOrDelete();
   }
   const onHabitCheck = () => {
-    habit.lastDone = new Date();
+    habit.clockIn();
     updateHabit(habit, userToken);
     onUpdateOrDelete();
   };
@@ -102,7 +101,10 @@ export const HabitElement = ({
               {habit.name}
             </ListItem.Title>
             <ListItem.Subtitle style={{ fontSize: 14, fontStyle: "italic" }}>
-              Last done: {formatDate(habit.lastDone)}
+              Last done:{" "}
+              {habit.clockInTimes?.length > 0
+                ? formatDate(habit.clockInTimes[0])
+                : "Never"}
             </ListItem.Subtitle>
           </View>
           <View>

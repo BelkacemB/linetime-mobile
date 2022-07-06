@@ -78,7 +78,6 @@ export const AddEditHabit = ({ navigation, route }) => {
       .setTags(selectedTags)
       .setTimesOfDay(timesOfDay)
       .setCreationDate(isEditMode ? typedHabit.creationDate : new Date())
-      .setLastDone(isEditMode ? typedHabit.lastDone : new Date())
       .build();
 
     if (isEditMode) {
@@ -264,16 +263,24 @@ export const AddEditHabit = ({ navigation, route }) => {
         />
       </View>
 
-
       <ScrollView
         keyboardDismissMode="none"
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
       >
         <Button
           onPress={buildAndRegisterHabit}
-          title={<Text style={{fontSize: 16}}><Entypo name="save" size={16} color="black" /> Save</Text>}
-          buttonStyle={{ backgroundColor: 'white', ...styles.button }}
+          title={
+            <Text style={{ fontSize: 16 }}>
+              <Entypo name="save" size={16} color="black" /> Save
+            </Text>
+          }
+          buttonStyle={{ backgroundColor: "white", ...styles.button }}
           color={secondaryColor}
-          titleStyle={{ color: 'black' }}
+          titleStyle={{ color: "black" }}
         />
       </ScrollView>
     </ScrollView>

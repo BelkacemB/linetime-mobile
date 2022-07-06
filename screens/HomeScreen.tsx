@@ -86,6 +86,12 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           <Entypo name="shuffle" size={40} color="black" />
         </TouchableOpacity>
       </View>
+      <View
+        style={styles.separator}
+        lightColor={primaryColor}
+        darkColor="rgba(255,255,255,0.1)"
+      />
+      <Text style={styles.quote}>“Do small things in a great way.”</Text>
     </View>
   );
 }
@@ -94,7 +100,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
+    margin: 5,
+    padding: 5,
   },
   title: {
     fontSize: 20,
@@ -125,5 +133,12 @@ const styles = StyleSheet.create({
       height: 2,
     },
     borderRadius: 10,
+  },
+  quote: {
+    fontSize: 25,
+    fontStyle: "italic",
+    marginTop: 10,
+    marginBottom: 10,
+    fontFamily: "space-mono",
   },
 });

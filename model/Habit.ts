@@ -4,8 +4,6 @@ export default class Habit {
   id?: string;
   name: string;
   creationDate: Date;
-  lastDone?: Date;
-  lastRejected?: Date;
   minTime?: number;
   maxTime?: number;
   benefits: number;
@@ -13,18 +11,46 @@ export default class Habit {
   userId: string;
   timesOfDay: string[];
   tags?: string[];
+  clockInTimes: Date[] = [];
+  lastDone: Date;
+
+  // Constructor for Habit from JSON
+  static fromJSON(json: any): Habit {
+    const habit = new Habit(json.id, json.name);
+    habit.creationDate = new Date(json.creationDate);
+    habit.minTime = json.minTime;
+    habit.maxTime = json.maxTime;
+    habit.benefits = json.benefits;
+    habit.energy = json.energy;
+    habit.userId = json.userId;
+    habit.timesOfDay = json.timesOfDay;
+    habit.tags = json.tags;
+    habit.clockInTimes = json.clockInTimes?.map((time) => new Date(time));
+    return habit;
+  }
 
   constructor(id: string, name: string) {
     this.id = id;
     this.name = name;
   }
 
-  updateLastDone(lastDone: Date) {
-    this.lastDone = lastDone;
+  clockIn(): void {
+    const now: Date = new Date();
+    if (!this.clockInTimes) {
+      this.clockInTimes = [];
+    }
+    this.clockInTimes.push(now);
+
+    // TODO Following code is for API purposes only, remove when backend is ready
+    this.lastDone = now;
   }
 
   getLastDone(): Date | undefined {
-    return this.lastDone;
+    // Get most recent clock in time if clockInTimes defined and not empty
+    if (this.clockInTimes.length > 0) {
+      return this.clockInTimes[this.clockInTimes.length - 1];
+    }
+    return undefined;
   }
 
   setId(id: string) {
@@ -41,11 +67,6 @@ export class HabitBuilder {
 
   setName(name: string) {
     this._habit.name = name;
-    return this;
-  }
-
-  setLastDone(lastDone: Date) {
-    this._habit.lastDone = lastDone;
     return this;
   }
 
@@ -96,7 +117,6 @@ export class HabitBuilder {
   copy(habit: Habit) {
     this._habit.id = habit.id;
     this._habit.name = habit.name;
-    this._habit.lastDone = habit.lastDone;
     this._habit.creationDate = habit.creationDate;
     this._habit.minTime = habit.minTime;
     this._habit.maxTime = habit.maxTime;
@@ -105,6 +125,8 @@ export class HabitBuilder {
     this._habit.userId = habit.userId;
     this._habit.tags = habit.tags;
     this._habit.timesOfDay = habit.timesOfDay;
+    this._habit.clockInTimes = habit.clockInTimes;
+    this._habit.lastDone = habit.lastDone;
     return this.build();
   }
 }
