@@ -9,6 +9,7 @@ import { Text, View } from "../../components/Themed";
 
 import {
   AntDesign,
+  Entypo,
   Feather,
   MaterialIcons,
   SimpleLineIcons,
@@ -107,7 +108,7 @@ export const AddEditHabit = ({ navigation, route }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>{isEditMode ? "Edit" : "Add new"} habit</Text>
       <View style={styles.formLine}>
         <Text style={styles.formLineText}>
@@ -263,15 +264,16 @@ export const AddEditHabit = ({ navigation, route }) => {
         />
       </View>
 
+
       <ScrollView
         keyboardDismissMode="none"
-        contentContainerStyle={{ justifyContent: "flex-end" }}
       >
         <Button
           onPress={buildAndRegisterHabit}
-          title={"Save"}
-          buttonStyle={styles.button}
+          title={<Text style={{fontSize: 16}}><Entypo name="save" size={16} color="black" /> Save</Text>}
+          buttonStyle={{ backgroundColor: 'white', ...styles.button }}
           color={secondaryColor}
+          titleStyle={{ color: 'black' }}
         />
       </ScrollView>
     </ScrollView>
@@ -279,10 +281,10 @@ export const AddEditHabit = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
+  container: {
     backgroundColor: "white",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     flexGrow: 1,
   },
   title: {

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import RNPickerSelect from "react-native-picker-select";
-import CircleSlider from "../../components/CircleSlider";
 import { Switch } from "@rneui/base";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
 
 import { fetchSuggestions, SuggestionRequest } from "../../api/LinetimeService";
 
@@ -14,7 +14,8 @@ import useUserToken from "../../hooks/useUserToken";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
 import SimpleLineIcons from "@expo/vector-icons/build/SimpleLineIcons";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
+import { getDefaultEnergyLevel } from "../../constants/Util";
 
 const energyTypeItems = [
   { label: "tired", value: 2 },
@@ -28,9 +29,10 @@ export default function SuggestionForm({
   const userToken = useUserToken();
 
   // Form state
-  const [energy, setEnergy] = useState<number>(6);
+  const [energy, setEnergy] = useState<number>(getDefaultEnergyLevel());
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
   const { tags, selectedTags, toggleTagSelection } = useHabitTags();
+
   // UI state
   const [timeSpecific, setTimeSpecific] = useState(false);
 
@@ -71,11 +73,7 @@ export default function SuggestionForm({
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       <Text style={styles.title}>Describe your current state</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
+
 
       {/* Energy */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -130,12 +128,6 @@ export default function SuggestionForm({
         />
       </View>
 
-      {/* Line of empty text */}
-      <View
-        style={styles.blank}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
 
       {/* Time */}
       <View
@@ -145,15 +137,18 @@ export default function SuggestionForm({
           alignItems: "center",
         }}
       >
-        <Text>Time available</Text>
-        <CircleSlider
-          value={timeInMinutes}
-          min={20}
-          max={300}
-          onValueChange={handleTimeSlide}
-          dialRadius={80}
-          meterColor={secondaryColor}
-        />
+        <Text style={{fontSize: 20}}>Time available</Text>
+        <Text style={{fontSize: 16, fontWeight: "bold"}} ><Ionicons name="timer-outline" size={24} color="black" />{timeInMinutes} minutes</Text>
+
+        <MultiSlider
+            values={[timeInMinutes]}
+            min={20}
+            max={120}
+            onValuesChange={(values) => setTimeInMinutes(values[0])}
+            sliderLength={250}
+            step={5}
+            selectedStyle={{ backgroundColor: secondaryColor }}
+          />
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onSubmit}>
@@ -196,7 +191,7 @@ const styles = StyleSheet.create({
     borderColor: "#eee",
   },
   button: {
-    margin: 10,
+    marginBottom: 20,
     shadowOpacity: 0.2,
     borderWidth: 0.1,
     borderRadius: 10,
