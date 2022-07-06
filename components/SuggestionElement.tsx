@@ -18,8 +18,7 @@ type Props = {
 };
 
 export const SuggestionElement = ({ suggestion }: Props) => {
-  const [habits] = useUserHabitList();
-  const [hidden, setHidden] = React.useState(false);
+  const { habits } = useUserHabitList();
   const userToken = useUserToken();
 
   const matchingHabit: Habit = habits.find(
@@ -29,7 +28,6 @@ export const SuggestionElement = ({ suggestion }: Props) => {
   const onHabitClick = () => {
     matchingHabit.lastDone = new Date();
     updateHabit(matchingHabit, userToken);
-    setHidden(true);
   };
 
   return (
@@ -39,7 +37,6 @@ export const SuggestionElement = ({ suggestion }: Props) => {
           title="Reject"
           onPress={() => {
             reset();
-            setHidden(true);
           }}
           icon={{ name: "close", color: "white" }}
           buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}

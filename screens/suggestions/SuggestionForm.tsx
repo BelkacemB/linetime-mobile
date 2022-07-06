@@ -19,7 +19,7 @@ import { Feather } from "@expo/vector-icons";
 const energyTypeItems = [
   { label: "tired", value: 2 },
   { label: "normal", value: 3 },
-  { label: "energetic", value: 6 },
+  { label: "fresh", value: 6 },
 ];
 
 export default function SuggestionForm({

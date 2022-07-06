@@ -11,7 +11,7 @@ import useUserHabitList from "../../hooks/useUserHabitList";
 import { extractTagsFromHabits } from "../../model/Util";
 
 export const HabitList = ({ navigation }) => {
-  const [habits, loading, onUpdate] = useUserHabitList();
+  const { habits, loading, onUpdate } = useUserHabitList();
   const [filteredHabits, setFilteredHabits] = React.useState(habits);
 
   const [visibleSpinner, setVisibleSpinner] = React.useState(loading);

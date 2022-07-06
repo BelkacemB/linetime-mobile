@@ -4,7 +4,7 @@ import useUserHabitList from "./useUserHabitList";
 
 // TODO Split in two hooks: one for selection and one for reading the list
 export default function useHabitTags() {
-  const [habits] = useUserHabitList();
+  const { habits } = useUserHabitList();
   const [tags, setTags] = React.useState<string[]>([]);
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
   const [newTag, setNewTag] = React.useState<string>("");

@@ -9,14 +9,20 @@ import { RootTabScreenProps } from "../types";
 import { Today } from "../components/Today";
 import { Avatar } from "@rneui/themed";
 import React from "react";
-import { Button, Card } from "@rneui/base";
+import { Badge, Button, Image } from "@rneui/base";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import useUserId from "../hooks/useUserId";
+import Entypo from "@expo/vector-icons/build/Entypo";
+import useUserHabitList from "../hooks/useUserHabitList";
+import useHabitTags from "../hooks/useHabitTags";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const user = useUserId().slice(0, 8);
+
+  const { habits } = useUserHabitList();
+  const { tags } = useHabitTags();
 
   const userSignOut = () => {
     signOut(auth);
@@ -45,35 +51,40 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         lightColor={primaryColor}
         darkColor="rgba(255,255,255,0.1)"
       />
-      <View style={{ flexDirection: "row", width: "100%" }}>
-          <Card containerStyle={styles.card}>
-          <TouchableOpacity onPress={() => navigation.navigate("HabitList")} style={{backgroundColor: 'transparent'}}>
-        
-            <Card.Title>PLAYLIST</Card.Title>
-            <Card.Divider />
-            <View style={{ backgroundColor: 'transparent', alignItems: 'center'}}>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>16</Text>
-            <Text style={{ fontSize: 16 }}>habits</Text>
-            <Text style={{ fontSize: 16 }}> </Text>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>5</Text>
-            <Text style={{ fontSize: 16 }}>tags</Text>
-            <Text style={{ fontSize: 16 }}> </Text>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              Last update
+      <View style={{ flexDirection: "row", width: "95%" }}>
+        <TouchableOpacity
+          style={{
+            width: "70%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            ...styles.card,
+          }}
+          onPress={() => navigation.navigate("HabitList")}
+        >
+          <View style={{ flexDirection: "column", width: "40%" }}>
+            <Text style={styles.welcome}>Playlist</Text>
+            <Text>{}</Text>
+            <Text style={{ fontSize: 16 }}>
+              <Badge status="success" /> {habits?.length} habits
             </Text>
-            <Text style={{ fontSize: 16 }}>04/07/2022</Text>
-            </View>
-            </TouchableOpacity>
-          </Card>
-          <Card containerStyle={styles.card}>
-        <TouchableOpacity onPress={() => navigation.navigate("SuggestionForm")} style={{backgroundColor: 'transparent'}}>
-
-            <Card.Title>PLAY</Card.Title>
-            <Card.Divider />
-            <Card.Image source={require("../assets/images/playlist.png")} />
+            <Text style={{ fontSize: 16 }}>
+              <Badge status="primary" /> {tags?.length} tags
+            </Text>
+          </View>
+          <View>
+            <Image
+              source={require("../assets/images/playlist.png")}
+              style={{ width: 130, height: 100 }}
+            />
+          </View>
         </TouchableOpacity>
-
-          </Card>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("SuggestionForm")}
+          style={{ width: "25%", ...styles.card }}
+        >
+          <Text style={styles.welcome}>Play</Text>
+          <Entypo name="shuffle" size={40} color="black" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -100,29 +111,19 @@ const styles = StyleSheet.create({
     width: "80%",
     opacity: 0.2,
   },
-  button: {
-    margin: 10,
-    shadowOpacity: 0.2,
-    borderWidth: 0.1,
-    borderRadius: 10,
-    padding: 10,
-    width: "30%",
-    alignItems: "center",
-    shadowColor: "#000",
-  },
   card: {
-    width: "40%",
-    borderWidth: 1,
-    padding: 0,
+    borderWidth: 0.2,
+    padding: 5,
+    margin: 5,
     paddingVertical: 5,
     justifyContent: "center",
-    shadowColor: secondaryColor,
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOpacity: 0.5,
     shadowOffset: {
       width: 1,
       height: 2,
     },
-    backgroundColor: tertiaryColor,
     borderRadius: 10,
-  }
+  },
 });

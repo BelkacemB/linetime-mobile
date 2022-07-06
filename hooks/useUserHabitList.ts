@@ -27,5 +27,5 @@ export default function useUserHabitList() {
     setUpdate(!update);
   };
 
-  return [habits, loading, onUpdate] as const;
+  return { habits, loading, onUpdate } as const;
 }
