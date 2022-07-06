@@ -94,16 +94,20 @@ export const AddEditHabit = ({ navigation, route }) => {
 
   const setMin = (min: string) => {
     if (isNaN(Number(min))) {
-      return;
+      setMinAndMax([0, minAndMax[1]]);
     }
-    setMinAndMax([parseInt(min, 10), minAndMax[1]]);
+    let value = parseInt(min, 10);
+    console.log(value);
+    console.log(minAndMax[0]);
+    setMinAndMax([Math.min(value, minAndMax[1]), minAndMax[1]]);
   };
 
   const setMax = (max: string) => {
     if (isNaN(Number(max))) {
       return;
     }
-    setMinAndMax([minAndMax[0], parseInt(max, 10)]);
+    let value = parseInt(max, 10);
+    setMinAndMax([minAndMax[0], Math.max(value, minAndMax[0])]);
   };
 
   return (
@@ -162,7 +166,7 @@ export const AddEditHabit = ({ navigation, route }) => {
             max={3}
             onValuesChange={(values) => setEnergy(values)}
             sliderLength={80}
-            step={0.1}
+            step={0.6}
             selectedStyle={{ backgroundColor: secondaryColor }}
           />
           <Text style={{ fontSize: 15 }}>
@@ -187,13 +191,16 @@ export const AddEditHabit = ({ navigation, route }) => {
             onChangeText={setMin}
             style={styles.textInput}
             value={minAndMax[0].toString()}
+            keyboardType="numeric"
           />
           <Text> to </Text>
           <TextInput
             onChangeText={setMax}
             style={styles.textInput}
             value={minAndMax[1].toString()}
+            keyboardType="numeric"
           />
+
           <Text> minutes</Text>
         </View>
       </View>
@@ -322,6 +329,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: "#eee",
     fontWeight: "bold",
+    minWidth: "10%",
   },
   button: {
     margin: 10,
