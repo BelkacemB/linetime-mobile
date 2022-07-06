@@ -83,6 +83,7 @@ export default function SuggestionForm({
           items={energyTypeItems}
           onValueChange={setEnergy}
           style={pickerSelectStyles}
+          useNativeAndroidPickerStyle={false}
         />
       </View>
 
@@ -216,12 +217,12 @@ const pickerSelectStyles = StyleSheet.create({
   },
   inputAndroid: {
     fontSize: 16,
-    paddingHorizontal: 5,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: "purple",
-    borderRadius: 8,
+    fontStyle: "italic",
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderColor: "gray",
+    borderBottomWidth: 1,
+    borderStyle: "solid",
     color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
