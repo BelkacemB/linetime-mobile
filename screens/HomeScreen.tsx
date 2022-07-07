@@ -1,28 +1,26 @@
 import { StyleSheet } from "react-native";
-import {
-  primaryColor,
-  secondaryColor,
-  tertiaryColor,
-} from "../constants/Colors";
+import { primaryColor } from "../constants/Colors";
 import { Text, TouchableOpacity, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { Today } from "../components/Today";
 import { Avatar } from "@rneui/themed";
 import React from "react";
 import { Badge, Button, Image } from "@rneui/base";
+import { useFonts, Inter_600SemiBold } from "@expo-google-fonts/inter";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
-import useUserId from "../hooks/useUserId";
 import Entypo from "@expo/vector-icons/build/Entypo";
 import useUserHabitList from "../hooks/useUserHabitList";
 import useHabitTags from "../hooks/useHabitTags";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
-  const user = useUserId().slice(0, 8);
-
   const { habits } = useUserHabitList();
   const { tags } = useHabitTags();
+
+  let [fontsLoaded] = useFonts({
+    Inter_600SemiBold,
+  });
 
   const userSignOut = () => {
     signOut(auth);
@@ -91,7 +89,9 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         lightColor={primaryColor}
         darkColor="rgba(255,255,255,0.1)"
       />
-      <Text style={styles.quote}>“Do small things in a great way.”</Text>
+      {fontsLoaded && (
+        <Text style={styles.quote}>“Do small things in a great way.”</Text>
+      )}
     </View>
   );
 }
@@ -139,6 +139,6 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     marginTop: 10,
     marginBottom: 10,
-    fontFamily: "space-mono",
+    fontFamily: "Inter_600SemiBold",
   },
 });

@@ -87,6 +87,11 @@ export default function SuggestionForm({
         />
       </View>
 
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
       {/* Time */}
       <View
         style={{
@@ -147,7 +152,7 @@ export default function SuggestionForm({
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onSubmit}>
-        <Text>Play 🚀</Text>
+        <Text>Play 💃</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -156,7 +161,7 @@ export default function SuggestionForm({
 const styles = StyleSheet.create({
   scrollView: {
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     backgroundColor: "#fff",
     flexGrow: 1,
   },
@@ -191,7 +196,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.1,
     borderRadius: 10,
     padding: 10,
-    width: "30%",
+    width: "60%",
     alignItems: "center",
     shadowColor: "#000",
   },

@@ -3,7 +3,7 @@ export type TimeOfDay = "morning" | "afternoon" | "evening";
 
 const getTimeOfDay = (): TimeOfDay => {
   const hour = new Date().getHours();
-  if (hour < 12) {
+  if (hour < 12 && hour >= 5) {
     return "morning";
   } else if (hour < 18) {
     return "afternoon";

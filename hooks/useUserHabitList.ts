@@ -21,7 +21,7 @@ export default function useUserHabitList() {
         setHabits(habits);
       });
     }
-  }, [update, userToken]);
+  }, [userToken]);
 
   const onUpdate = () => {
     setUpdate(!update);

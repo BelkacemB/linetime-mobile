@@ -41,10 +41,14 @@ export function deleteHabit(habit: Habit, token: string) {
   });
 }
 
+let apiCallCount = 0;
+
 export async function getUserHabits(
   userId: string,
   token: string
 ): Promise<Habit[]> {
+  apiCallCount++;
+  console.log(`API call #${apiCallCount}`);
   return fetch(`${API_URL}/${userId}`, {
     method: "GET",
     headers: {
