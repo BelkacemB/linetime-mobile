@@ -81,7 +81,7 @@ export const HabitElement = ({
               buttonStyle={{ minHeight: "100%" }}
             />
             <Button
-              title="Clock in"
+              title="Check in"
               onPress={() => {
                 reset();
                 onHabitCheck();
@@ -138,6 +138,7 @@ export const HabitElement = ({
                 defaultRating={habit.benefits}
                 size={15}
                 showRating={false}
+                isDisabled={true}
               />
               <Text style={{ fontStyle: "italic", fontSize: 13 }}>
                 {habit.tags?.map((tag) => tag.toLowerCase()).join(", ")}

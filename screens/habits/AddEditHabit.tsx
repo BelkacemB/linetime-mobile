@@ -92,24 +92,6 @@ export const AddEditHabit = ({ navigation, route }) => {
     navigation.navigate("HabitList");
   }
 
-  const setMin = (min: string) => {
-    if (isNaN(Number(min))) {
-      setMinAndMax([0, minAndMax[1]]);
-    }
-    let value = parseInt(min, 10);
-    console.log(value);
-    console.log(minAndMax[0]);
-    setMinAndMax([Math.min(value, minAndMax[1]), minAndMax[1]]);
-  };
-
-  const setMax = (max: string) => {
-    if (isNaN(Number(max))) {
-      return;
-    }
-    let value = parseInt(max, 10);
-    setMinAndMax([minAndMax[0], Math.max(value, minAndMax[0])]);
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>{isEditMode ? "Edit" : "Add new"} habit</Text>
@@ -174,41 +156,47 @@ export const AddEditHabit = ({ navigation, route }) => {
           </Text>
         </View>
       </View>
-
-      <View style={styles.formLine}>
-        <Text style={styles.formLineText}>
-          <AntDesign name="clockcircle" size={20} color={secondaryColor} />
-          Min & max times
-        </Text>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <TextInput
-            onChangeText={setMin}
-            style={styles.textInput}
-            value={minAndMax[0].toString()}
-            keyboardType="numeric"
-          />
-          <Text> to </Text>
-          <TextInput
-            onChangeText={setMax}
-            style={styles.textInput}
-            value={minAndMax[1].toString()}
-            keyboardType="numeric"
-          />
-
-          <Text> minutes</Text>
-        </View>
-      </View>
       <View
         style={styles.separator}
         lightColor={primaryColor}
         darkColor="rgba(255,255,255,0.1)"
       />
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          alignContent: "center",
+        }}
+      >
+        <Text style={styles.formLineText}>
+          <AntDesign name="clockcircle" size={20} color={secondaryColor} />
+          Min & max times
+        </Text>
+        <MultiSlider
+          values={minAndMax}
+          min={5}
+          max={120}
+          onValuesChange={(values) => setMinAndMax(values)}
+          step={5}
+          selectedStyle={{ backgroundColor: secondaryColor }}
+        />
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "80%",
+          }}
+        >
+          <Text style={{ fontSize: 20, flex: 1 }}>
+            <Text style={{ fontWeight: "bold" }}>{minAndMax[0]}</Text> minutes
+          </Text>
+          <Text style={{ fontSize: 20 }}>
+            <Text style={{ fontWeight: "bold" }}>{minAndMax[1]}</Text> minutes
+          </Text>
+        </View>
+      </View>
+
+      <Text>{}</Text>
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <Text style={styles.formLineText}>
           <Feather name="sun" size={24} color={secondaryColor} />
@@ -231,7 +219,11 @@ export const AddEditHabit = ({ navigation, route }) => {
         selectedButtonStyle={{ backgroundColor: secondaryColor }}
         selectedTextStyle={{ color: "white" }}
       />
-
+      <View
+        style={styles.separator}
+        lightColor={primaryColor}
+        darkColor="rgba(255,255,255,0.1)"
+      />
       {/* Display chips for tags */}
       <Text style={{ fontSize: 20 }}>#tags</Text>
 
@@ -333,6 +325,7 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 10,
+    width: "80%",
     shadowOpacity: 0.2,
     borderWidth: 0.1,
     borderRadius: 10,

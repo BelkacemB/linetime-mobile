@@ -77,13 +77,49 @@ export default function SuggestionForm({
       {/* Energy */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <SimpleLineIcons name="energy" size={25} color="black" />
-        <Text style={{ fontSize: 17 }}> I'm feeling </Text>
+        <Text style={{ fontSize: 20 }}> I'm feeling </Text>
         <RNPickerSelect
           value={energy}
           items={energyTypeItems}
           onValueChange={setEnergy}
           style={pickerSelectStyles}
           useNativeAndroidPickerStyle={false}
+        />
+      </View>
+
+      {/* Time */}
+      <View
+        style={{
+          flexDirection: "column",
+          width: "100%",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontSize: 20 }}>Time available</Text>
+        <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+          <Ionicons name="timer-outline" size={24} color="black" />
+          {timeInMinutes} minutes
+        </Text>
+
+        <MultiSlider
+          values={[timeInMinutes]}
+          min={20}
+          max={120}
+          onValuesChange={(values) => setTimeInMinutes(values[0])}
+          step={5}
+          selectedStyle={{ backgroundColor: secondaryColor }}
+        />
+      </View>
+
+      <View style={{ flexDirection: "row" }}>
+        <Feather name="sun" size={24} color={secondaryColor} />
+        <View style={{ justifyContent: "center" }}>
+          <Text>Time specific activities </Text>
+        </View>
+        <Switch
+          value={timeSpecific}
+          onValueChange={(value) => setTimeSpecific(value)}
+          color={secondaryColor}
         />
       </View>
 
@@ -108,49 +144,6 @@ export default function SuggestionForm({
             />
           ))}
         </View>
-      </View>
-
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-
-      <View style={{ flexDirection: "row" }}>
-        <Feather name="sun" size={24} color={secondaryColor} />
-        <View style={{ justifyContent: "center" }}>
-          <Text>Time specific activities </Text>
-        </View>
-        <Switch
-          value={timeSpecific}
-          onValueChange={(value) => setTimeSpecific(value)}
-          color={secondaryColor}
-        />
-      </View>
-
-      {/* Time */}
-      <View
-        style={{
-          flexDirection: "column",
-          width: "100%",
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontSize: 20 }}>Time available</Text>
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-          <Ionicons name="timer-outline" size={24} color="black" />
-          {timeInMinutes} minutes
-        </Text>
-
-        <MultiSlider
-          values={[timeInMinutes]}
-          min={20}
-          max={120}
-          onValuesChange={(values) => setTimeInMinutes(values[0])}
-          sliderLength={250}
-          step={5}
-          selectedStyle={{ backgroundColor: secondaryColor }}
-        />
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onSubmit}>
@@ -206,7 +199,7 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    fontSize: 16,
+    fontSize: 20,
     fontStyle: "italic",
     paddingVertical: 10,
     paddingHorizontal: 10,
