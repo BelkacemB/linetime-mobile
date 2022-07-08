@@ -12,23 +12,23 @@ export const extractTagsFromHabits = (habits: Habit[]): string[] => {
 
 const calculateHabitCheckInFrequncy = (habit: Habit): number => {
   // calculate the average check in diff in minutes between adjacent check ins
-  const checkInDiffs = habit.clockInTimes.map((checkIn, index) => {
-    if (index === 0) {
-      return 0;
-    }
-    const prevCheckIn = habit.clockInTimes[index - 1];
-    return (checkIn.getTime() - prevCheckIn.getTime()) / 60000;
-  })
-  .filter((checkInDiff) => checkInDiff > 0);
-  ;
-
+  const clockInTimesPlusNow = habit.clockInTimes.concat(new Date());
+  const checkInDiffs = clockInTimesPlusNow
+    .map((checkIn, index) => {
+      if (index === 0) {
+        return 0;
+      }
+      const prevCheckIn = habit.clockInTimes[index - 1];
+      return (checkIn.getTime() - prevCheckIn.getTime()) / 60000;
+    })
+    .filter((checkInDiff) => checkInDiff > 0);
   const averageCheckInDiff =
-    checkInDiffs.reduce((acc, curr) => acc + curr, 0) / checkInDiffs.length - 1;
+    checkInDiffs.reduce((acc, curr) => acc + curr, 0) / checkInDiffs.length;
   return averageCheckInDiff;
 };
 
 const getFrequencyFromCheckInDiff = (checkInDiff: number): string => {
-  if (checkInDiff < 60 * 24) {
+  if (checkInDiff < 60 * 48) {
     return "daily";
   } else {
     const averageCheckInDiff = checkInDiff / (60 * 24);

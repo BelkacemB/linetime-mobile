@@ -4,19 +4,31 @@ import { Text, TouchableOpacity, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { Today } from "../components/Today";
 import { Avatar } from "@rneui/themed";
-import React from "react";
+import React, { useEffect } from "react";
 import { Badge, Button, Image } from "@rneui/base";
 import { useFonts, Inter_600SemiBold } from "@expo-google-fonts/inter";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import Entypo from "@expo/vector-icons/build/Entypo";
-import useUserHabitList from "../hooks/useUserHabitList";
 import useHabitTags from "../hooks/useHabitTags";
+import { AppContext } from "../model/Store";
+import useUserToken from "../hooks/useUserToken";
+import useUserId from "../hooks/useUserId";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
-  const { habits } = useUserHabitList();
-  const { tags } = useHabitTags();
+  const userToken = useUserToken();
+  const userId = useUserId();
+  const { state, dispatch } = React.useContext(AppContext);
+
+  useEffect(() => {
+    if (userToken && userId) {
+      dispatch({ type: "SET_TOKEN", token: userToken });
+      dispatch({ type: "SET_USER_ID", userId });
+    }
+  }, [userToken, userId, dispatch]);
+
+  const { tags } = useHabitTags(state.habits);
 
   let [fontsLoaded] = useFonts({
     Inter_600SemiBold,
@@ -63,7 +75,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
             <Text style={styles.welcome}>Playlist</Text>
             <Text>{}</Text>
             <Text style={{ fontSize: 16 }}>
-              <Badge status="success" /> {habits?.length} habits
+              <Badge status="success" /> {state.habits?.length} habits
             </Text>
             <Text style={{ fontSize: 16 }}>
               <Badge status="primary" /> {tags?.length} tags

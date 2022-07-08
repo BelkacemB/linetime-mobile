@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 
 import { Text, TouchableOpacity, View } from "../../components/Themed";
@@ -16,6 +16,7 @@ import { SelectChip } from "../../components/SelectChip";
 import SimpleLineIcons from "@expo/vector-icons/build/SimpleLineIcons";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { getDefaultEnergyLevel } from "../../constants/Util";
+import { AppContext } from "../../model/Store";
 
 const energyTypeItems = [
   { label: "tired", value: 2 },
@@ -27,11 +28,13 @@ export default function SuggestionForm({
   navigation,
 }: RootTabScreenProps<"SuggestionForm">) {
   const userToken = useUserToken();
-
+  const {
+    state: { habits },
+  } = useContext(AppContext);
   // Form state
   const [energy, setEnergy] = useState<number>(getDefaultEnergyLevel());
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
-  const { tags, selectedTags, toggleTagSelection } = useHabitTags();
+  const { tags, selectedTags, toggleTagSelection } = useHabitTags(habits);
 
   // UI state
   const [timeSpecific, setTimeSpecific] = useState(false);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { SectionList, StyleSheet } from "react-native";
 import { Button, Dialog } from "@rneui/base";
 
@@ -7,17 +7,14 @@ import { HabitElement } from "../../components/HabitElement";
 import { Text, View } from "../../components/Themed";
 import { AntDesign, Feather } from "@expo/vector-icons";
 
-import useUserHabitList from "../../hooks/useUserHabitList";
 import { extractTagsFromHabits } from "../../model/Util";
+import { AppContext } from "../../model/Store";
 
 export const HabitList = ({ navigation }) => {
-  const { habits, loading, onUpdate } = useUserHabitList();
+  const {
+    state: { habits },
+  } = useContext(AppContext);
   const [filteredHabits, setFilteredHabits] = React.useState(habits);
-
-  const [visibleSpinner, setVisibleSpinner] = React.useState(loading);
-  useEffect(() => {
-    setVisibleSpinner(loading);
-  }, [loading]);
 
   const [search, setSearch] = React.useState("");
 
@@ -58,10 +55,7 @@ export const HabitList = ({ navigation }) => {
           style={styles.button}
           title={<AntDesign name="pluscircleo" size={20} color="black" />}
           onPress={() => {
-            navigation.navigate("AddEditHabit", {
-              onAdd: onUpdate,
-              onUpdate: onUpdate,
-            });
+            navigation.navigate("AddEditHabit");
           }}
           type="clear"
         />
@@ -73,30 +67,12 @@ export const HabitList = ({ navigation }) => {
           value={search}
           containerStyle={{ width: "60%", backgroundColor: "white" }}
         />
-        <Button
-          title={<Feather name="refresh-ccw" size={20} color="black" />}
-          onPress={onUpdate}
-          style={styles.button}
-          type="clear"
-        />
       </View>
-
-      <Dialog
-        isVisible={visibleSpinner}
-        onBackdropPress={() => setVisibleSpinner(false)}
-        overlayStyle={{ backgroundColor: "white" }}
-      >
-        <Dialog.Loading />
-      </Dialog>
 
       <SectionList
         sections={sectionsByTags}
         renderItem={({ item }) => (
-          <HabitElement
-            habit={item}
-            navigation={navigation}
-            onUpdateOrDelete={onUpdate}
-          />
+          <HabitElement habit={item} navigation={navigation} />
         )}
         keyExtractor={(item) => item.id}
         renderSectionHeader={({ section: { title } }) => (

@@ -1,5 +1,5 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { ScrollView, StyleSheet, TextInput } from "react-native";
 
 import { AirbnbRating, Button, ButtonGroup } from "@rneui/base";
@@ -18,12 +18,18 @@ import { SelectChip } from "../../components/SelectChip";
 import { primaryColor, secondaryColor } from "../../constants/Colors";
 import useHabitTags from "../../hooks/useHabitTags";
 import useUserId from "../../hooks/useUserId";
-import useUserToken from "../../hooks/useUserToken";
 import { TIMES_OF_DAY } from "../../model/constants";
 import Habit, { HabitBuilder } from "../../model/Habit";
+import { AppContext } from "../../model/Store";
 
 export const AddEditHabit = ({ navigation, route }) => {
-  const { onAdd, onUpdate, habit } = route.params;
+  // Get habit from route params if it exists
+  const habit = route.params?.habit ?? undefined;
+
+  const {
+    state: { habits },
+    dispatch,
+  } = useContext(AppContext);
   const typedHabit: Habit = habit as Habit;
   const isEditMode = typedHabit !== undefined;
 
@@ -43,7 +49,7 @@ export const AddEditHabit = ({ navigation, route }) => {
     setNewTag,
     onAddTag,
     toggleTagSelection,
-  } = useHabitTags();
+  } = useHabitTags(habits);
 
   // Initialize state in edit mode
   useEffect(() => {
@@ -62,7 +68,6 @@ export const AddEditHabit = ({ navigation, route }) => {
   }, []);
 
   const userId = useUserId();
-  const userToken = useUserToken();
 
   function buildAndRegisterHabit() {
     const timesOfDay = TIMES_OF_DAY.filter((_, index) =>
@@ -82,11 +87,9 @@ export const AddEditHabit = ({ navigation, route }) => {
 
     if (isEditMode) {
       newHabit.setId(typedHabit.id);
-      updateHabit(newHabit, userToken);
-      onUpdate();
+      dispatch({ type: "UPDATE_HABIT", habit: newHabit });
     } else {
-      persistHabit(newHabit, userToken);
-      onAdd();
+      dispatch({ type: "ADD_HABIT", habit: newHabit });
     }
 
     navigation.navigate("HabitList");
