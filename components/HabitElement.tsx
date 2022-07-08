@@ -5,6 +5,8 @@ import useUserToken from "../hooks/useUserToken";
 import { AirbnbRating, Button, ListItem, Dialog } from "@rneui/base";
 import { Text, TouchableOpacity, View } from "./Themed";
 import { secondaryColor } from "../constants/Colors";
+import { getCheckInFrequencyFromHabit } from "../model/Util";
+import { Feather } from "@expo/vector-icons";
 
 const formatDate = (date: Date): string => {
   return new Date(date).toLocaleDateString("fr-FR");
@@ -126,13 +128,18 @@ export const HabitElement = ({
                 {habit.name}
               </ListItem.Title>
               <ListItem.Subtitle style={{ fontSize: 14, fontStyle: "italic" }}>
-                Last done:{" "}
+                Last check-in:{" "}
                 {habit.clockInTimes?.length > 0
                   ? formatDate(habit.clockInTimes[0])
                   : "Never"}
               </ListItem.Subtitle>
+              {habit.clockInTimes?.length >= 2 && (
+                <Text style = {{fontSize: 13, marginTop: 5}}>
+                  <Feather name="repeat" size={13} color="black" /> <Text style={{fontWeight: "bold"}}>{getCheckInFrequencyFromHabit(habit)}</Text>
+                </Text>
+              )}
             </View>
-            <View>
+            <View style={{alignItems: "center"}}>
               <AirbnbRating
                 count={3}
                 defaultRating={habit.benefits}
@@ -143,6 +150,7 @@ export const HabitElement = ({
               <Text style={{ fontStyle: "italic", fontSize: 13 }}>
                 {habit.tags?.map((tag) => tag.toLowerCase()).join(", ")}
               </Text>
+
             </View>
           </TouchableOpacity>
         </ListItem.Content>
