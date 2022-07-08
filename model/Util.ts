@@ -12,8 +12,6 @@ export const extractTagsFromHabits = (habits: Habit[]): string[] => {
 
 const calculateHabitCheckInFrequncy = (habit: Habit): number => {
   // calculate the average check in diff in minutes between adjacent check ins
-  console.log(habit.name)
-  console.log(habit.clockInTimes);
   const checkInDiffs = habit.clockInTimes.map((checkIn, index) => {
     if (index === 0) {
       return 0;
