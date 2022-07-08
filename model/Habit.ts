@@ -41,7 +41,7 @@ export default class Habit {
     }
 
     if (this.clockInTimes.length >= 10) {
-      this.clockInTimes.shift();
+      
     }
     this.clockInTimes.push(now);
 

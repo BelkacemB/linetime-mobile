@@ -18,7 +18,6 @@ import { SelectChip } from "../../components/SelectChip";
 import { primaryColor, secondaryColor } from "../../constants/Colors";
 import useHabitTags from "../../hooks/useHabitTags";
 import useUserId from "../../hooks/useUserId";
-import useUserToken from "../../hooks/useUserToken";
 import { TIMES_OF_DAY } from "../../model/constants";
 import Habit, { HabitBuilder } from "../../model/Habit";
 import { AppContext } from "../../model/Store";

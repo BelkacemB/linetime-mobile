@@ -14,16 +14,21 @@ import Entypo from "@expo/vector-icons/build/Entypo";
 import useHabitTags from "../hooks/useHabitTags";
 import { AppContext } from "../model/Store";
 import useUserToken from "../hooks/useUserToken";
+import { useAuthState } from "react-firebase-hooks/auth";
+import useUserId from "../hooks/useUserId";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const userToken = useUserToken();
+  const userId = useUserId();
   const { state, dispatch } = React.useContext(AppContext);
 
   useEffect(() => {
-    if (userToken) {
+    if (userToken && userId) {
       dispatch({ type: "SET_TOKEN", token: userToken });
+      dispatch({ type: "SET_USER_ID", userId });
     }
-  }, [userToken, dispatch]);
+  }
+  , [userToken, userId, dispatch]);
 
   const { tags } = useHabitTags(state.habits);
 

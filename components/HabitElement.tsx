@@ -24,7 +24,9 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
   const [isDialogVisible, setIsDialogVisible] = React.useState(false);
 
   const edit = () => {
-    navigation.navigate("AddEditHabit");
+    navigation.navigate("AddEditHabit", {
+      habit: habit,
+    });
   };
 
   const confirmDelete = () => {
@@ -121,7 +123,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
               <ListItem.Subtitle style={{ fontSize: 14, fontStyle: "italic" }}>
                 Last check-in:{" "}
                 {habit.clockInTimes?.length > 0
-                  ? formatDate(habit.clockInTimes[0])
+                  ? formatDate(habit.clockInTimes[habit.clockInTimes.length - 1])
                   : "Never"}
               </ListItem.Subtitle>
               {habit.clockInTimes?.length >= 2 && (

@@ -12,7 +12,8 @@ type HabitAction =
   | { type: "UPDATE_HABIT"; habit: Habit }
   | { type: "DELETE_HABIT"; habit: Habit }
   | { type: "LOAD_HABITS"; habits: Habit[] }
-  | { type: "SET_TOKEN"; token: string };
+  | { type: "SET_TOKEN"; token: string }
+  | { type: "SET_USER_ID"; userId: string };
 
 type InitialStateType = {
   habits: Habit[];
@@ -65,6 +66,11 @@ const mainReducer = (
       return {
         ...state,
         token: action.token,
+      };
+    case "SET_USER_ID":
+      return {
+        ...state,
+        userId: action.userId,
       };
     default:
       return state;

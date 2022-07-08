@@ -28,7 +28,7 @@ const calculateHabitCheckInFrequncy = (habit: Habit): number => {
 };
 
 const getFrequencyFromCheckInDiff = (checkInDiff: number): string => {
-  if (checkInDiff < 60 * 24) {
+  if (checkInDiff < 60 * 48) {
     return "daily";
   } else {
     const averageCheckInDiff = checkInDiff / (60 * 24);
