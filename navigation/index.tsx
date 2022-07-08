@@ -1,8 +1,4 @@
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { registerRootComponent } from "expo";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
@@ -21,6 +17,8 @@ import { SignUp } from "../screens/login/SignUp";
 import { AddEditHabit } from "../screens/habits/AddEditHabit";
 import App from "../App";
 import { Skeleton } from "@rneui/base";
+import { UserInterfaceIdiom } from "expo-constants";
+import { AppProvider } from "../model/Store";
 
 export default function Navigation({
   colorScheme,
@@ -46,34 +44,36 @@ const HomeStack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      />
-      <HomeStack.Screen
-        name="SuggestionForm"
-        component={SuggestionForm}
-        options={{ title: "What to do?" }}
-      />
-      <HomeStack.Screen
-        name="SuggestionList"
-        component={SuggestionList}
-        options={{ title: "Suggestions" }}
-      />
+    <AppProvider>
+      <HomeStack.Navigator>
+        <HomeStack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <HomeStack.Screen
+          name="SuggestionForm"
+          component={SuggestionForm}
+          options={{ title: "What to do?" }}
+        />
+        <HomeStack.Screen
+          name="SuggestionList"
+          component={SuggestionList}
+          options={{ title: "Suggestions" }}
+        />
 
-      <HomeStack.Screen
-        name="HabitList"
-        component={HabitList}
-        options={{ title: "Habit list" }}
-      />
-      <HomeStack.Screen
-        name="AddEditHabit"
-        component={AddEditHabit}
-        options={{ title: "Add/edit habit" }}
-      />
-    </HomeStack.Navigator>
+        <HomeStack.Screen
+          name="HabitList"
+          component={HabitList}
+          options={{ title: "Habit list" }}
+        />
+        <HomeStack.Screen
+          name="AddEditHabit"
+          component={AddEditHabit}
+          options={{ title: "Add/edit habit" }}
+        />
+      </HomeStack.Navigator>
+    </AppProvider>
   );
 }
 

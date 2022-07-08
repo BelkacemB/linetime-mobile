@@ -3,7 +3,7 @@ import { API_ADDRESS } from "./constants";
 
 const API_URL = `${API_ADDRESS}/habits`;
 
-export function persistHabit(habit: Habit, token: string) {
+export async function persistHabit(habit: Habit, token: string) {
   fetch(API_URL, {
     method: "POST",
     headers: {
@@ -17,7 +17,7 @@ export function persistHabit(habit: Habit, token: string) {
 }
 
 // Update the habit with an UPDATE request
-export function updateHabit(habit: Habit, token: string) {
+export async function updateHabit(habit: Habit, token: string) {
   fetch(`${API_URL}/${habit.userId}/${habit.id}`, {
     method: "PUT",
     headers: {
@@ -30,7 +30,7 @@ export function updateHabit(habit: Habit, token: string) {
   });
 }
 
-export function deleteHabit(habit: Habit, token: string) {
+export async function deleteHabit(habit: Habit, token: string) {
   fetch(`${API_URL}/${habit.userId}/${habit.id}`, {
     method: "DELETE",
     headers: {

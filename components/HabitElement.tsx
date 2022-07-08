@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Habit from "../model/Habit";
 import { deleteHabit, updateHabit } from "../api/HabitService";
 import useUserToken from "../hooks/useUserToken";
@@ -7,6 +7,7 @@ import { Text, TouchableOpacity, View } from "./Themed";
 import { secondaryColor } from "../constants/Colors";
 import { getCheckInFrequencyFromHabit } from "../model/Util";
 import { Feather } from "@expo/vector-icons";
+import { AppContext } from "../model/Store";
 
 const formatDate = (date: Date): string => {
   return new Date(date).toLocaleDateString("fr-FR");
@@ -15,27 +16,20 @@ const formatDate = (date: Date): string => {
 type HabitProps = {
   habit: Habit;
   navigation: any;
-  onUpdateOrDelete: () => void;
 };
 
-export const HabitElement = ({
-  habit,
-  navigation,
-  onUpdateOrDelete,
-}: HabitProps) => {
-  const userToken = useUserToken();
+export const HabitElement = ({ habit, navigation }: HabitProps) => {
+  const { dispatch } = useContext(AppContext);
 
   const [isDialogVisible, setIsDialogVisible] = React.useState(false);
 
   const edit = () => {
-    navigation.navigate("AddEditHabit", {
-      habit: habit,
-      onUpdate: onUpdateOrDelete,
-    });
+    navigation.navigate("AddEditHabit");
   };
 
   const confirmDelete = () => {
     setIsDialogVisible(true);
+    dispatch({ type: "DELETE_HABIT", habit });
   };
 
   const toggleDialog = () => {
@@ -44,13 +38,10 @@ export const HabitElement = ({
 
   function remove() {
     toggleDialog();
-    deleteHabit(habit, userToken);
-    onUpdateOrDelete();
   }
   const onHabitCheck = () => {
     habit.clockIn();
-    updateHabit(habit, userToken);
-    onUpdateOrDelete();
+    dispatch({ type: "UPDATE_HABIT", habit });
   };
 
   return (
@@ -134,12 +125,15 @@ export const HabitElement = ({
                   : "Never"}
               </ListItem.Subtitle>
               {habit.clockInTimes?.length >= 2 && (
-                <Text style = {{fontSize: 13, marginTop: 5}}>
-                  <Feather name="repeat" size={13} color="black" /> <Text style={{fontWeight: "bold"}}>{getCheckInFrequencyFromHabit(habit)}</Text>
+                <Text style={{ fontSize: 13, marginTop: 5 }}>
+                  <Feather name="repeat" size={13} color="black" />{" "}
+                  <Text style={{ fontWeight: "bold" }}>
+                    {getCheckInFrequencyFromHabit(habit)}
+                  </Text>
                 </Text>
               )}
             </View>
-            <View style={{alignItems: "center"}}>
+            <View style={{ alignItems: "center" }}>
               <AirbnbRating
                 count={3}
                 defaultRating={habit.benefits}
@@ -150,7 +144,6 @@ export const HabitElement = ({
               <Text style={{ fontStyle: "italic", fontSize: 13 }}>
                 {habit.tags?.map((tag) => tag.toLowerCase()).join(", ")}
               </Text>
-
             </View>
           </TouchableOpacity>
         </ListItem.Content>

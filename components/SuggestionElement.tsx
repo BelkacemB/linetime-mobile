@@ -1,5 +1,4 @@
-import React from "react";
-import useUserHabitList from "../hooks/useUserHabitList";
+import React, { useContext } from "react";
 import Habit from "../model/Habit";
 import { Suggestion } from "../model/LinetimeTypes";
 
@@ -12,14 +11,18 @@ import Feather from "@expo/vector-icons/build/Feather";
 import { secondaryColor, tertiaryColor } from "../constants/Colors";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
+import { AppContext } from "../model/Store";
 
 type Props = {
   suggestion: Suggestion;
 };
 
 export const SuggestionElement = ({ suggestion }: Props) => {
-  const { habits } = useUserHabitList();
-  const userToken = useUserToken();
+  const {
+    state: { habits },
+  } = useContext(AppContext);
+
+  const {dispatch} = useContext(AppContext);
 
   const matchingHabit: Habit = habits.find(
     (habit) => habit.id === suggestion.id
@@ -27,7 +30,7 @@ export const SuggestionElement = ({ suggestion }: Props) => {
 
   const onHabitClick = () => {
     matchingHabit.clockIn();
-    updateHabit(matchingHabit, userToken);
+    dispatch({ type: "UPDATE_HABIT", habit: matchingHabit });
   };
 
   return (
