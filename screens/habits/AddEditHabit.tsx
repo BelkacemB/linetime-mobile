@@ -23,7 +23,9 @@ import Habit, { HabitBuilder } from "../../model/Habit";
 import { AppContext } from "../../model/Store";
 
 export const AddEditHabit = ({ navigation, route }) => {
-  const { habit } = route.params;
+  // Get habit from route params if it exists
+  const habit = route.params?.habit ?? undefined;
+
   const {
     state: { habits },
     dispatch,

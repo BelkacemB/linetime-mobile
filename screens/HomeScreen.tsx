@@ -27,8 +27,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
       dispatch({ type: "SET_TOKEN", token: userToken });
       dispatch({ type: "SET_USER_ID", userId });
     }
-  }
-  , [userToken, userId, dispatch]);
+  }, [userToken, userId, dispatch]);
 
   const { tags } = useHabitTags(state.habits);
 

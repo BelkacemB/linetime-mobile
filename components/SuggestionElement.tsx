@@ -22,7 +22,7 @@ export const SuggestionElement = ({ suggestion }: Props) => {
     state: { habits },
   } = useContext(AppContext);
 
-  const {dispatch} = useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
 
   const matchingHabit: Habit = habits.find(
     (habit) => habit.id === suggestion.id

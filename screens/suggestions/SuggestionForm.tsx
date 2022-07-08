@@ -28,7 +28,9 @@ export default function SuggestionForm({
   navigation,
 }: RootTabScreenProps<"SuggestionForm">) {
   const userToken = useUserToken();
-  const {state: {habits}} = useContext(AppContext);
+  const {
+    state: { habits },
+  } = useContext(AppContext);
   // Form state
   const [energy, setEnergy] = useState<number>(getDefaultEnergyLevel());
   const [timeInMinutes, setTimeInMinutes] = useState<number>(60);
