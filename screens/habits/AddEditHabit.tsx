@@ -83,6 +83,7 @@ export const AddEditHabit = ({ navigation, route }) => {
       .setTags(selectedTags)
       .setTimesOfDay(timesOfDay)
       .setCreationDate(isEditMode ? typedHabit.creationDate : new Date())
+      .setClockInTimes(isEditMode ? typedHabit.clockInTimes : [])
       .build();
 
     if (isEditMode) {

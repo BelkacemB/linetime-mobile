@@ -6,6 +6,7 @@ import { View, Text } from "../../components/Themed";
 
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { secondaryColor } from "../../constants/Colors";
 
 const errorCodeToMessage = {
   "auth/invalid-email": "Invalid email address",
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   input: {
     width: 350,
     height: 55,
-    backgroundColor: "#42A5F5",
+    backgroundColor: secondaryColor,
     margin: 10,
     padding: 8,
     color: "white",

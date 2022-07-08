@@ -113,6 +113,11 @@ export class HabitBuilder {
     return this;
   }
 
+  setClockInTimes(clockInTimes: Date[]) {
+    this._habit.clockInTimes = clockInTimes;
+    return this;
+  }
+
   build(): Habit {
     return this._habit;
   }
