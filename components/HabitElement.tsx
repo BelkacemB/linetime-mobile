@@ -142,8 +142,8 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
                 count={3}
                 defaultRating={habit.benefits}
                 size={15}
+                isDisabled
                 showRating={false}
-                isDisabled={true}
               />
               <Text style={{ fontStyle: "italic", fontSize: 13 }}>
                 {habit.tags?.map((tag) => tag.toLowerCase()).join(", ")}

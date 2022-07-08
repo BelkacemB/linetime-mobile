@@ -14,7 +14,6 @@ import Entypo from "@expo/vector-icons/build/Entypo";
 import useHabitTags from "../hooks/useHabitTags";
 import { AppContext } from "../model/Store";
 import useUserToken from "../hooks/useUserToken";
-import { useAuthState } from "react-firebase-hooks/auth";
 import useUserId from "../hooks/useUserId";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
