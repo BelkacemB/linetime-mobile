@@ -20,10 +20,12 @@ const calculateHabitCheckInFrequncy = (habit: Habit): number => {
     }
     const prevCheckIn = habit.clockInTimes[index - 1];
     return (checkIn.getTime() - prevCheckIn.getTime()) / 60000;
-  });
+  })
+  .filter((checkInDiff) => checkInDiff > 0);
+  ;
 
   const averageCheckInDiff =
-    checkInDiffs.reduce((acc, curr) => acc + curr, 0) / checkInDiffs.length;
+    checkInDiffs.reduce((acc, curr) => acc + curr, 0) / checkInDiffs.length - 1;
   return averageCheckInDiff;
 };
 
@@ -32,7 +34,7 @@ const getFrequencyFromCheckInDiff = (checkInDiff: number): string => {
     return "daily";
   } else {
     const averageCheckInDiff = checkInDiff / (60 * 24);
-    return `${Math.round(averageCheckInDiff)} days`;
+    return `every ${Math.round(averageCheckInDiff)} days`;
   }
 };
 
