@@ -1,7 +1,7 @@
 // Method to get time of day ('morning', 'afternoon', 'evening') based on local time
 export type TimeOfDay = "morning" | "afternoon" | "evening";
 
-const getTimeOfDay = (): TimeOfDay => {
+export const getTimeOfDay = (): TimeOfDay => {
   const hour = new Date().getHours();
   if (hour < 12 && hour >= 5) {
     return "morning";

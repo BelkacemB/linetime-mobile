@@ -65,7 +65,13 @@ export const HabitList = ({ navigation }) => {
           placeholder="Search"
           onChangeText={(text) => setSearch(text)}
           value={search}
-          containerStyle={{ width: "60%", backgroundColor: "white" }}
+          containerStyle={{
+            width: "80%",
+            height: "100%",
+            backgroundColor: "white",
+            borderBottomColor: "transparent",
+            borderTopColor: "transparent",
+          }}
         />
       </View>
 
@@ -104,9 +110,6 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ccc",
   },
   button: {
-    marginHorizontal: 10,
-    marginTop: 30,
-    padding: 10,
-    bottom: 20,
+    margin: 5,
   },
 });

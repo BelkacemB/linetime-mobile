@@ -17,7 +17,6 @@ import { SignUp } from "../screens/login/SignUp";
 import { AddEditHabit } from "../screens/habits/AddEditHabit";
 import App from "../App";
 import { Skeleton } from "@rneui/base";
-import { UserInterfaceIdiom } from "expo-constants";
 import { AppProvider } from "../model/Store";
 
 export default function Navigation({

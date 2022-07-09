@@ -155,7 +155,7 @@ export default function SuggestionForm({
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onSubmit}>
-        <Text>Play 💃</Text>
+        <Text>Play ▶️</Text>
       </TouchableOpacity>
     </ScrollView>
   );

@@ -15,14 +15,14 @@ import { AppContext } from "../model/Store";
 
 type Props = {
   suggestion: Suggestion;
+  onRejectOrAccept: (Suggestion) => void;
 };
 
-export const SuggestionElement = ({ suggestion }: Props) => {
+export const SuggestionElement = ({ suggestion, onRejectOrAccept }: Props) => {
   const {
     state: { habits },
+    dispatch,
   } = useContext(AppContext);
-
-  const { dispatch } = useContext(AppContext);
 
   const matchingHabit: Habit = habits.find(
     (habit) => habit.id === suggestion.id
@@ -35,11 +35,11 @@ export const SuggestionElement = ({ suggestion }: Props) => {
 
   return (
     <ListItem.Swipeable
-      leftContent={(reset) => (
+      leftContent={() => (
         <Button
-          title="Reject"
+          title="Later"
           onPress={() => {
-            reset();
+            onRejectOrAccept(suggestion);
           }}
           icon={{ name: "close", color: "white" }}
           buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
@@ -47,10 +47,11 @@ export const SuggestionElement = ({ suggestion }: Props) => {
       )}
       rightContent={(reset) => (
         <Button
-          title="Accept"
+          title="Check in"
           onPress={() => {
             reset();
             onHabitClick();
+            onRejectOrAccept(suggestion);
           }}
           icon={{ name: "check", color: "white" }}
           buttonStyle={{ minHeight: "100%", backgroundColor: "green" }}
@@ -75,7 +76,7 @@ export const SuggestionElement = ({ suggestion }: Props) => {
             <View
               style={{
                 flexDirection: "row",
-                width: "50%",
+                width: "60%",
                 justifyContent: "center",
               }}
             >
