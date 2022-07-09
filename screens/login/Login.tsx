@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Input, Image } from "@rneui/base";
-import { Button, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { View, Text, TouchableOpacity } from "../../components/Themed";
 
 import { auth } from "../../firebase";
@@ -29,15 +29,20 @@ export const Login = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={{ marginVertical: 10 }}>
         <Image
           source={require("../../assets/images/compact-cassette.png")}
           style={{ width: 200, height: 150 }}
         />
       </View>
 
-      <Text style={styles.logoText}>linetime</Text>
+      <Text style={styles.logoText}>LineTime</Text>
+      <View
+        style={styles.separator}
+        lightColor="#636e72"
+        darkColor="rgba(255,255,255,0.1)"
+      />
       {/* Login by email and password using firebase */}
       <Input
         label="Email"
@@ -65,7 +70,7 @@ export const Login = ({ navigation }) => {
         <AntDesign name="form" size={24} color="black" />
         <Text style={{ fontSize: 16, marginVertical: 5 }}>Sign Up</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -82,9 +87,10 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   container: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
+    flexGrow: 1,
   },
   button: {
     marginVertical: 20,
@@ -102,5 +108,11 @@ const styles = StyleSheet.create({
     fontVariant: ["small-caps"],
     marginVertical: 10,
     color: secondaryColor,
+  },
+  separator: {
+    marginVertical: 15,
+    height: 1,
+    width: "80%",
+    opacity: 0.2,
   },
 });
