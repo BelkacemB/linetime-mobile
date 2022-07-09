@@ -62,6 +62,7 @@ export const SuggestionList = ({ navigation, route }) => {
           />
         ))}
       </View>
+      { suggestions.length > 0 && (
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <TouchableOpacity style={styles.button} onPress={onAcceptAll}>
           <Text>Accept all ✅</Text>
@@ -69,7 +70,7 @@ export const SuggestionList = ({ navigation, route }) => {
         <TouchableOpacity style={styles.button} onPress={onRejectAll}>
           <Text>Reject all ❌</Text>
         </TouchableOpacity>
-      </View>
+      </View> )}
     </View>
   );
 };
