@@ -83,7 +83,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           </View>
           <View>
             <Image
-              source={require("../assets/images/playlist.png")}
+              source={require("../assets/images/compact-cassette.png")}
               style={{ width: 130, height: 100 }}
             />
           </View>
@@ -153,5 +153,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     fontFamily: "Inter_600SemiBold",
+    textAlign: "center",
   },
 });

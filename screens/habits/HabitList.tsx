@@ -60,6 +60,8 @@ export const HabitList = ({ navigation }) => {
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => {
           data.item.clockIn();
+          dispatch({ type: "UPDATE_HABIT", habit: data.item });
+          rowMap[data.item.id].closeRow();
         }}
       >
         <AntDesign name="check" size={24} color="green" />
