@@ -28,9 +28,8 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
     });
   };
 
-  const confirmDelete = () => {
+  const askForDeleteConfirmation = () => {
     setIsDialogVisible(true);
-    dispatch({ type: "DELETE_HABIT", habit });
   };
 
   const toggleDialog = () => {
@@ -38,8 +37,9 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
   };
 
   function remove() {
-    toggleDialog();
+    dispatch({ type: "DELETE_HABIT", habit });
   }
+
   const onHabitCheck = () => {
     habit.clockIn();
     dispatch({ type: "UPDATE_HABIT", habit });
@@ -91,7 +91,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
             title="Delete"
             onPress={() => {
               reset();
-              confirmDelete();
+              askForDeleteConfirmation();
             }}
             icon={{ name: "delete", color: "white" }}
             buttonStyle={{ backgroundColor: "red", minHeight: "80%" }}
@@ -159,8 +159,6 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
 
 const styles = StyleSheet.create({
   habitElement: {
-    borderBottomColor: secondaryColor,
-    borderBottomWidth: 0.4,
     shadowColor: secondaryColor,
     shadowOpacity: 0.4,
     shadowRadius: 2,
