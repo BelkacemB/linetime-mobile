@@ -1,12 +1,13 @@
 import React from "react";
 
-import { Input } from "@rneui/themed";
+import { Input, Image } from "@rneui/base";
 import { Button, StyleSheet } from "react-native";
-import { View, Text } from "../../components/Themed";
+import { View, Text, TouchableOpacity } from "../../components/Themed";
 
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { secondaryColor } from "../../constants/Colors";
+import { AntDesign } from "@expo/vector-icons";
 
 const errorCodeToMessage = {
   "auth/invalid-email": "Invalid email address",
@@ -29,30 +30,41 @@ export const Login = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Login</Text>
+      <View>
+        <Image
+          source={require("../../assets/images/compact-cassette.png")}
+          style={{ width: 200, height: 150 }}
+        />
+      </View>
+
+      <Text style={styles.logoText}>linetime</Text>
       {/* Login by email and password using firebase */}
       <Input
         label="Email"
         style={styles.input}
-        placeholder="Enter your email"
         onChangeText={(text) => setEmail(text)}
       />
       <Input
         label="Password"
         style={styles.input}
-        placeholder="Enter your password"
         secureTextEntry={true}
         onChangeText={(text) => setPassword(text)}
       />
       <Text style={{ color: "red" }}>{error}</Text>
-      <Button onPress={handleLogin} title="Login" />
+      <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        <AntDesign name="login" size={24} color="black" />
+        <Text style={{ fontSize: 16, marginVertical: 5 }}>Login</Text>
+      </TouchableOpacity>
       <Text>Don't have an account? </Text>
-      <Button
+      <TouchableOpacity
         onPress={() => {
           navigation.navigate("SignUp");
         }}
-        title="Sign Up"
-      />
+        style={styles.button}
+      >
+        <AntDesign name="form" size={24} color="black" />
+        <Text style={{ fontSize: 16, marginVertical: 5 }}>Sign Up</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -73,5 +85,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  button: {
+    marginVertical: 20,
+    backgroundColor: "white",
+    shadowOpacity: 0.3,
+    borderWidth: 0.1,
+    borderRadius: 10,
+    padding: 10,
+    width: "35%",
+    alignItems: "center",
+    shadowColor: "#000",
+  },
+  logoText: {
+    fontSize: 35,
+    fontVariant: ["small-caps"],
+    marginVertical: 10,
+    color: secondaryColor,
   },
 });

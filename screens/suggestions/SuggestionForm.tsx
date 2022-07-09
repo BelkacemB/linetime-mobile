@@ -14,7 +14,7 @@ import useUserToken from "../../hooks/useUserToken";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
 import SimpleLineIcons from "@expo/vector-icons/build/SimpleLineIcons";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { getDefaultEnergyLevel } from "../../constants/Util";
 import { AppContext } from "../../model/Store";
 
@@ -155,7 +155,10 @@ export default function SuggestionForm({
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onSubmit}>
-        <Text>Play ▶️</Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <AntDesign name="playcircleo" size={24} color="black" />
+          <Text> Play</Text>
+        </View>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -199,7 +202,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.3,
     borderRadius: 10,
     padding: 10,
-    width: "60%",
+    width: "40%",
     alignItems: "center",
     shadowColor: "#000",
   },

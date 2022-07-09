@@ -55,7 +55,6 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         rounded
         source={require("../assets/images/avatar.jpeg")}
       />
-      <Text style={styles.title}>LineTime</Text>
       <View
         style={styles.separator}
         lightColor={primaryColor}
