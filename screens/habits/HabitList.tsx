@@ -64,7 +64,11 @@ export const HabitList = ({ navigation }) => {
           type="clear"
         />
       </View>
-
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
       <FlatList
         data={filteredHabits}
         renderItem={({ item }) => (
@@ -82,14 +86,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    marginHorizontal: 5,
     color: "white",
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 15,
     height: 1,
-    width: "80%",
-    opacity: 0.2,
+    width: "100%",
+    opacity: 1,
   },
   header: {
     fontSize: 25,

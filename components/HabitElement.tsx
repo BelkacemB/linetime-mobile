@@ -62,6 +62,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
       </Dialog>
       <ListItem.Swipeable
         leftWidth={220}
+        style={{width: "100%", padding: 0, backgroundColor: "white"}}
         leftStyle={{ flexDirection: "row", alignItems: "center" }}
         leftContent={(reset) => (
           <>
@@ -151,7 +152,6 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
             </View>
           </TouchableOpacity>
         </ListItem.Content>
-        <ListItem.Chevron />
       </ListItem.Swipeable>
     </>
   );
@@ -159,6 +159,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
 
 const styles = StyleSheet.create({
   habitElement: {
+    width: "100%",
     minHeight: 60,
     shadowColor: secondaryColor,
     shadowOpacity: 0.4,
