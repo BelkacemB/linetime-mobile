@@ -159,6 +159,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
 
 const styles = StyleSheet.create({
   habitElement: {
+    minHeight: 60,
     shadowColor: secondaryColor,
     shadowOpacity: 0.4,
     shadowRadius: 2,

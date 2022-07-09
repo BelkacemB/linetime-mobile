@@ -1,13 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { SectionList, StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { Button } from "@rneui/base";
 
 import { SearchBar } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
-import { Text, View } from "../../components/Themed";
+import { View } from "../../components/Themed";
 import { AntDesign } from "@expo/vector-icons";
 
-import { extractTagsFromHabits } from "../../model/Util";
 import { AppContext } from "../../model/Store";
 
 export const HabitList = ({ navigation }) => {
@@ -18,27 +17,18 @@ export const HabitList = ({ navigation }) => {
 
   const [search, setSearch] = React.useState("");
 
-  // Update filteredHabits when search changes
   useEffect(() => {
-    setFilteredHabits(
-      habits.filter((habit) => {
-        return habit.name.toLowerCase().includes(search.toLowerCase());
-      })
+    // Filter the habits and sort them by benefit
+    const filteredHabits = habits.filter((habit) =>
+      habit.name.toLowerCase().includes(search.toLowerCase())
     );
+    // Sort the habits by benefit
+    const sortedHabits = filteredHabits.sort((a, b) => {
+      return b.benefits - a.benefits;
+    });
+
+    setFilteredHabits(sortedHabits);
   }, [habits, search]);
-
-  let tagsSet = extractTagsFromHabits(filteredHabits);
-
-  const sectionsByTags = [
-    {
-      title: "All",
-      data: filteredHabits,
-    },
-    ...Array.from(tagsSet).map((tag) => ({
-      title: tag,
-      data: filteredHabits.filter((habit) => habit.tags?.includes(tag)),
-    })),
-  ];
 
   return (
     <View style={styles.container}>
@@ -51,14 +41,6 @@ export const HabitList = ({ navigation }) => {
           width: "100%",
         }}
       >
-        <Button
-          style={styles.button}
-          title={<AntDesign name="pluscircleo" size={20} color="black" />}
-          onPress={() => {
-            navigation.navigate("AddEditHabit");
-          }}
-          type="clear"
-        />
         <SearchBar
           lightTheme
           round
@@ -73,18 +55,24 @@ export const HabitList = ({ navigation }) => {
             borderTopColor: "transparent",
           }}
         />
+        <Button
+          style={styles.button}
+          title={<AntDesign name="pluscircleo" size={20} color="black" />}
+          onPress={() => {
+            navigation.navigate("AddEditHabit");
+          }}
+          type="clear"
+        />
       </View>
 
-      <SectionList
-        sections={sectionsByTags}
+      <FlatList
+        data={filteredHabits}
         renderItem={({ item }) => (
           <HabitElement habit={item} navigation={navigation} />
         )}
         keyExtractor={(item) => item.id}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.header}>{title}</Text>
-        )}
       />
+
       {/* Add a new habit */}
     </View>
   );
