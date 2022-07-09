@@ -87,7 +87,7 @@ export const SuggestionElement = ({ suggestion, onRejectOrAccept }: Props) => {
               <Ionicons name="time-outline" size={24} color="black" />
               <Text style={{ fontSize: 20 }}>
                 {" "}
-                {suggestion.suggestedTime} minutes
+                {suggestion.suggestedTime} min
               </Text>
             </View>
           </View>

@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
+import { StyleSheet } from "react-native";
 import Habit from "../model/Habit";
-import { deleteHabit, updateHabit } from "../api/HabitService";
-import useUserToken from "../hooks/useUserToken";
 import { AirbnbRating, Button, ListItem, Dialog } from "@rneui/base";
 import { Text, TouchableOpacity, View } from "./Themed";
 import { secondaryColor } from "../constants/Colors";
@@ -63,7 +62,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
       </Dialog>
       <ListItem.Swipeable
         leftWidth={220}
-        leftStyle={{ flexDirection: "row" }}
+        leftStyle={{ flexDirection: "row", alignItems: "center" }}
         leftContent={(reset) => (
           <>
             <Button
@@ -73,7 +72,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
                 edit();
               }}
               icon={{ name: "settings", color: "white" }}
-              buttonStyle={{ minHeight: "100%" }}
+              buttonStyle={{ minHeight: "80%" }}
             />
             <Button
               title="Check in"
@@ -82,10 +81,11 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
                 onHabitCheck();
               }}
               icon={{ name: "check", color: "white" }}
-              buttonStyle={{ minHeight: "100%", backgroundColor: "green" }}
+              buttonStyle={{ minHeight: "80%", backgroundColor: "green" }}
             />
           </>
         )}
+        rightStyle={{ flexDirection: "row", alignItems: "center" }}
         rightContent={(reset) => (
           <Button
             title="Delete"
@@ -94,7 +94,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
               confirmDelete();
             }}
             icon={{ name: "delete", color: "white" }}
-            buttonStyle={{ backgroundColor: "red", minHeight: "100%" }}
+            buttonStyle={{ backgroundColor: "red", minHeight: "80%" }}
           />
         )}
       >
@@ -102,7 +102,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
           onPress={() => {
             edit();
           }}
-          style={{ borderBottomColor: secondaryColor, borderBottomWidth: 1 }}
+          style={styles.habitElement}
         >
           <TouchableOpacity
             style={{
@@ -156,3 +156,14 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  habitElement: {
+    borderBottomColor: secondaryColor,
+    borderBottomWidth: 0.4,
+    shadowColor: secondaryColor,
+    shadowOpacity: 0.4,
+    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 6 },
+  },
+});

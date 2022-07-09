@@ -2,8 +2,7 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import React, { useContext, useEffect } from "react";
 import { ScrollView, StyleSheet, TextInput } from "react-native";
 
-import { AirbnbRating, Button, ButtonGroup } from "@rneui/base";
-import { persistHabit, updateHabit } from "../../api/HabitService";
+import { AirbnbRating, Button, ButtonGroup, Dialog } from "@rneui/base";
 
 import { Text, View } from "../../components/Themed";
 
@@ -42,6 +41,8 @@ export const AddEditHabit = ({ navigation, route }) => {
     0, 1, 2,
   ]);
 
+  const [error, setError] = React.useState<string | undefined>();
+
   const {
     tags,
     selectedTags,
@@ -70,6 +71,12 @@ export const AddEditHabit = ({ navigation, route }) => {
   const userId = useUserId();
 
   function buildAndRegisterHabit() {
+    // If name is empty, show Dialog with error message
+    if (name === "") {
+      setError("Please enter a name for your habit.");
+      return;
+    }
+
     const timesOfDay = TIMES_OF_DAY.filter((_, index) =>
       selectedIndexes.includes(index)
     );
@@ -98,6 +105,16 @@ export const AddEditHabit = ({ navigation, route }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Dialog
+        isVisible={error !== undefined}
+        onBackdropPress={() => setError(undefined)}
+        overlayStyle={{ backgroundColor: "white" }}
+        style={{ backgroundColor: "white" }}
+      >
+        <Dialog.Title title="Missing information" />
+        <Text>{error}</Text>
+      </Dialog>
+
       <Text style={styles.title}>{isEditMode ? "Edit" : "Add new"} habit</Text>
       <View style={styles.formLine}>
         <Text style={styles.formLineText}>
@@ -325,7 +342,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: "#eee",
     fontWeight: "bold",
-    minWidth: "10%",
+    minWidth: "15%",
   },
   button: {
     margin: 10,

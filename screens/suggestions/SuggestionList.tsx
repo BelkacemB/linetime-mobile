@@ -41,36 +41,34 @@ export const SuggestionList = ({ navigation, route }) => {
       ) : (
         <View style={{ alignItems: "center" }}>
           <Text style={{ fontSize: 25, margin: 30, fontWeight: "bold" }}>
-            Good {getTimeOfDay()}!
+            Good {getTimeOfDay()}! 🙌
           </Text>
           <Text style={{ fontSize: 25, margin: 30, fontStyle: "italic" }}>
-            Here's your optimized playlist for today:
+            🤖 Here's your freshly computer-generated playlist
           </Text>
-          <View
-            style={styles.separator}
-            lightColor="#eee"
-            darkColor="rgba(255,255,255,0.1)"
-          />
         </View>
       )}
-      <View>
-        {suggestions.map((suggestion) => (
-          <SuggestionElement
-            suggestion={suggestion}
-            key={suggestion.name}
-            onRejectOrAccept={onRejectOrAccept}
-          />
-        ))}
-      </View>
-      { suggestions.length > 0 && (
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        <TouchableOpacity style={styles.button} onPress={onAcceptAll}>
-          <Text>Accept all ✅</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={onRejectAll}>
-          <Text>Reject all ❌</Text>
-        </TouchableOpacity>
-      </View> )}
+      {suggestions.length > 0 && (
+        <View style={styles.suggestionList}>
+          <View>
+            {suggestions.map((suggestion) => (
+              <SuggestionElement
+                suggestion={suggestion}
+                key={suggestion.name}
+                onRejectOrAccept={onRejectOrAccept}
+              />
+            ))}
+          </View>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <TouchableOpacity style={styles.button} onPress={onAcceptAll}>
+              <Text>Accept all ✅</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={onRejectAll}>
+              <Text>Reject all ❌</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -81,11 +79,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "space-around",
   },
-  separator: {
-    marginVertical: 20,
-    height: 2,
-    width: "80%",
-  },
   button: {
     marginBottom: 20,
     shadowOpacity: 0.2,
@@ -95,5 +88,14 @@ const styles = StyleSheet.create({
     width: "35%",
     alignItems: "center",
     shadowColor: "#000",
+  },
+  suggestionList: {
+    justifyContent: "space-between",
+    shadowOpacity: 0.5,
+    borderTopWidth: 0.2,
+    borderRadius: 20,
+    shadowColor: "#000",
+    padding: 10,
+    flex: 1,
   },
 });

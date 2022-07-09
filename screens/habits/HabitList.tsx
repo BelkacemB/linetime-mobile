@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { SectionList, StyleSheet } from "react-native";
-import { Button, Dialog } from "@rneui/base";
+import { Button } from "@rneui/base";
 
 import { SearchBar } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
 import { Text, View } from "../../components/Themed";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 import { extractTagsFromHabits } from "../../model/Util";
 import { AppContext } from "../../model/Store";
