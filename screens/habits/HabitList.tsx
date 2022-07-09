@@ -1,28 +1,34 @@
 import React, { useContext, useEffect } from "react";
-import { FlatList, StyleSheet } from "react-native";
-import { Button } from "@rneui/base";
+import { StyleSheet } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
+import { Button, Dialog } from "@rneui/base";
 
-import { SearchBar } from "@rneui/themed";
+import { SearchBar, Text } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
-import { View } from "../../components/Themed";
+import { TouchableOpacity, View } from "../../components/Themed";
 import { AntDesign } from "@expo/vector-icons";
 
 import { AppContext } from "../../model/Store";
+import Habit from "../../model/Habit";
 
 export const HabitList = ({ navigation }) => {
   const {
     state: { habits },
+    dispatch,
   } = useContext(AppContext);
-  const [filteredHabits, setFilteredHabits] = React.useState(habits);
 
+  const [filteredHabits, setFilteredHabits] = React.useState(habits);
   const [search, setSearch] = React.useState("");
+  const [habitToDelete, setHabitToDelete] = React.useState(null);
+
+  const removeHabit = (habit: Habit) => {
+    dispatch({ type: "DELETE_HABIT", habit });
+  };
 
   useEffect(() => {
-    // Filter the habits and sort them by benefit
     const filteredHabits = habits.filter((habit) =>
       habit.name.toLowerCase().includes(search.toLowerCase())
     );
-    // Sort the habits by benefit
     const sortedHabits = filteredHabits.sort((a, b) => {
       return b.benefits - a.benefits;
     });
@@ -30,55 +36,120 @@ export const HabitList = ({ navigation }) => {
     setFilteredHabits(sortedHabits);
   }, [habits, search]);
 
-  return (
-    <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          alignContent: "center",
-          width: "100%",
+  const renderHiddenItem = (data, rowMap) => (
+    <View style={styles.rowBack}>
+      <TouchableOpacity
+        onPress={() => {
+          setHabitToDelete(data.item);
         }}
       >
-        <SearchBar
-          lightTheme
-          round
-          placeholder="Search"
-          onChangeText={(text) => setSearch(text)}
-          value={search}
-          containerStyle={{
-            width: "80%",
-            height: "100%",
-            backgroundColor: "white",
-            borderBottomColor: "transparent",
-            borderTopColor: "transparent",
+        <AntDesign name="delete" size={24} color="red" />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.backRightBtn, styles.backRightBtnRight]}
+        onPress={() => {
+          navigation.navigate("AddEditHabit", {
+            habit: data.item,
+          });
+        }}
+      >
+        <AntDesign name="edit" size={24} color="black" />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.backRightBtn, styles.backRightBtnLeft]}
+        onPress={() => {
+          data.item.clockIn();
+        }}
+      >
+        <AntDesign name="check" size={24} color="green" />
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    <>
+      <Dialog
+        isVisible={habitToDelete !== null}
+        onBackdropPress={() => {
+          setHabitToDelete(null);
+        }}
+        overlayStyle={{ backgroundColor: "white" }}
+        style={{ backgroundColor: "white" }}
+      >
+        <Dialog.Title title="Delete habit" />
+        <Text>
+          Are you sure you want to delete the habit "{habitToDelete?.name}"?
+        </Text>
+        <Dialog.Actions>
+          <Dialog.Button
+            title="Yes"
+            onPress={() => {
+              removeHabit(habitToDelete);
+              setHabitToDelete(null);
+            }}
+          />
+          <Dialog.Button
+            title="No"
+            onPress={() => {
+              setHabitToDelete(null);
+            }}
+          />
+        </Dialog.Actions>
+      </Dialog>
+      <View style={styles.container}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            alignContent: "center",
+            width: "100%",
           }}
+        >
+          <SearchBar
+            lightTheme
+            round
+            placeholder="Search"
+            onChangeText={(text) => setSearch(text)}
+            value={search}
+            containerStyle={{
+              width: "80%",
+              height: "100%",
+              backgroundColor: "white",
+              borderBottomColor: "transparent",
+              borderTopColor: "transparent",
+            }}
+          />
+          <Button
+            style={styles.button}
+            title={<AntDesign name="pluscircleo" size={20} color="black" />}
+            onPress={() => {
+              navigation.navigate("AddEditHabit");
+            }}
+            type="clear"
+          />
+        </View>
+        <View
+          style={styles.separator}
+          lightColor="#eee"
+          darkColor="rgba(255,255,255,0.1)"
         />
-        <Button
-          style={styles.button}
-          title={<AntDesign name="pluscircleo" size={20} color="black" />}
-          onPress={() => {
-            navigation.navigate("AddEditHabit");
-          }}
-          type="clear"
+        <SwipeListView
+          data={filteredHabits}
+          renderItem={({ item }) => (
+            <HabitElement habit={item} navigation={navigation} />
+          )}
+          keyExtractor={(item) => item.id}
+          renderHiddenItem={renderHiddenItem}
+          leftOpenValue={75}
+          rightOpenValue={-150}
+          previewRowKey={"0"}
+          previewOpenValue={-40}
+          previewOpenDelay={3000}
         />
       </View>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <FlatList
-        data={filteredHabits}
-        renderItem={({ item }) => (
-          <HabitElement habit={item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      {/* Add a new habit */}
-    </View>
+    </>
   );
 };
 
@@ -102,5 +173,36 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 5,
+  },
+  backTextWhite: {
+    color: "#FFF",
+  },
+  rowFront: {
+    alignItems: "center",
+    backgroundColor: "#CCC",
+    justifyContent: "center",
+    height: 50,
+  },
+  rowBack: {
+    alignItems: "center",
+    backgroundColor: "white",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingLeft: 15,
+  },
+  backRightBtn: {
+    alignItems: "center",
+    bottom: 0,
+    justifyContent: "center",
+    position: "absolute",
+    top: 0,
+    width: 75,
+  },
+  backRightBtnLeft: {
+    right: 75,
+  },
+  backRightBtnRight: {
+    right: 0,
   },
 });

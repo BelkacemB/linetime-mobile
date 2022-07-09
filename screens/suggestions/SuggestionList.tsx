@@ -10,6 +10,7 @@ export const SuggestionList = ({ navigation, route }) => {
   const { listOfSuggestions } = route.params;
   const {
     state: { habits },
+    dispatch,
   } = React.useContext(AppContext);
   const [suggestions, setSuggestions] = React.useState(listOfSuggestions);
 
@@ -23,6 +24,7 @@ export const SuggestionList = ({ navigation, route }) => {
       const matchingHabit = habits.find((habit) => habit.id === suggestion.id);
       if (matchingHabit) {
         matchingHabit.clockIn();
+        dispatch({ type: "UPDATE_HABIT", habit: matchingHabit });
       }
     });
     navigation.navigate("Home");

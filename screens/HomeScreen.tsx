@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { primaryColor } from "../constants/Colors";
 import { Text, TouchableOpacity, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
@@ -39,7 +39,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Button
         onPress={() => userSignOut()}
         title="Sign Out"
@@ -104,7 +104,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
       {fontsLoaded && (
         <Text style={styles.quote}>“Do small things in a great way.”</Text>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     margin: 5,
     padding: 5,
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 20,
