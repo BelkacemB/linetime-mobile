@@ -27,6 +27,16 @@ const initialState = {
   userId: "",
 };
 
+const persistHabitAndGetId = async (
+  habit: Habit,
+  token: string,
+  userId: string
+) => {
+  const id = await persistHabit(habit, token);
+  return id;
+}
+
+
 const AppContext = React.createContext<{
   state: InitialStateType;
   dispatch: Dispatch<HabitAction>;
@@ -38,11 +48,16 @@ const mainReducer = (
 ): InitialStateType => {
   switch (action.type) {
     case "ADD_HABIT":
-      persistHabit(action.habit, state.token);
+      persistHabitAndGetId(action.habit, state.token, state.userId).then(
+        (id) => {
+          action.habit.id = id;
+        }
+      );
       return {
         ...state,
         habits: [...state.habits, action.habit],
       };
+
     case "UPDATE_HABIT":
       updateHabit(action.habit, state.token);
       return {

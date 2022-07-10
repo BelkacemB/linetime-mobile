@@ -99,8 +99,6 @@ export const AddEditHabit = ({ navigation, route }) => {
     } else {
       newHabit.lastDone = new Date();
       dispatch({ type: "ADD_HABIT", habit: newHabit });
-      // For ID purposes, we need to get the ID of the habit we just added
-      reloadAndDispatch(userId, token, dispatch);
     }
 
     navigation.navigate("HabitList");

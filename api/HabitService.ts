@@ -3,17 +3,18 @@ import { API_ADDRESS } from "./constants";
 
 const API_URL = `${API_ADDRESS}/habits`;
 
-export async function persistHabit(habit: Habit, token: string) {
-  fetch(API_URL, {
+export async function persistHabit(habit: Habit, token: string): Promise<string> {
+  // Post the habit to the API and return the id from the "id" field of the json response
+  const response = await fetch(API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(habit),
-  }).catch((error) => {
-    console.log(error);
   });
+  const json = await response.json();
+  return json.id;
 }
 
 // Update the habit with an UPDATE request
@@ -48,6 +49,7 @@ export async function getUserHabits(
   token: string
 ): Promise<Habit[]> {
   apiCallCount++;
+  console.log(`API call ${apiCallCount}`);
   return fetch(`${API_URL}/${userId}`, {
     method: "GET",
     headers: {

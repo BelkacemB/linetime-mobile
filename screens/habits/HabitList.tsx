@@ -10,7 +10,6 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 
 import { AppContext } from "../../model/Store";
 import Habit from "../../model/Habit";
-import { getUserHabits } from "../../api/HabitService";
 import { reloadAndDispatch } from "../../model/Util";
 
 export const HabitList = ({ navigation }) => {
