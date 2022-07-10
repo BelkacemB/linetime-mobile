@@ -5,6 +5,7 @@ import { Text, TouchableOpacity, View } from "../../components/Themed";
 import { Suggestion } from "../../model/LinetimeTypes";
 import { getTimeOfDay } from "../../constants/Util";
 import { AppContext } from "../../model/Store";
+import useUserId from "../../hooks/useUserId";
 
 export const SuggestionList = ({ navigation, route }) => {
   const { listOfSuggestions } = route.params;
@@ -13,6 +14,7 @@ export const SuggestionList = ({ navigation, route }) => {
     dispatch,
   } = React.useContext(AppContext);
   const [suggestions, setSuggestions] = React.useState(listOfSuggestions);
+  const userId = useUserId();
 
   const onRejectOrAccept = (suggestion: Suggestion) => {
     setSuggestions(suggestions.filter((s) => s.id !== suggestion.id));
@@ -42,10 +44,24 @@ export const SuggestionList = ({ navigation, route }) => {
         </Text>
       ) : (
         <View style={{ alignItems: "center" }}>
-          <Text style={{ fontSize: 25, margin: 30, fontWeight: "bold" }}>
-            Good {getTimeOfDay()}! 🙌
+          <Text
+            style={{
+              fontSize: 25,
+              margin: 30,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Good {getTimeOfDay()}, {userId.substring(0, 8)}! 🙌
           </Text>
-          <Text style={{ fontSize: 25, margin: 30, fontStyle: "italic" }}>
+          <Text
+            style={{
+              fontSize: 25,
+              margin: 30,
+              fontStyle: "italic",
+              textAlign: "justify",
+            }}
+          >
             🤖 Here's your freshly computer-generated playlist
           </Text>
         </View>

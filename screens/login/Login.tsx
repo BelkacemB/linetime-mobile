@@ -66,6 +66,7 @@ export const Login = ({ navigation }) => {
           navigation.navigate("SignUp");
         }}
         style={styles.button}
+        disabled
       >
         <AntDesign name="form" size={24} color="black" />
         <Text style={{ fontSize: 16, marginVertical: 5 }}>Sign Up</Text>

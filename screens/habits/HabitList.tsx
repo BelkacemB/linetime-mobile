@@ -6,14 +6,16 @@ import { Button, Dialog } from "@rneui/base";
 import { SearchBar, Text } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
 import { TouchableOpacity, View } from "../../components/Themed";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 import { AppContext } from "../../model/Store";
 import Habit from "../../model/Habit";
+import { getUserHabits } from "../../api/HabitService";
+import { reloadAndDispatch } from "../../model/Util";
 
 export const HabitList = ({ navigation }) => {
   const {
-    state: { habits },
+    state: { habits, token, userId },
     dispatch,
   } = useContext(AppContext);
 
@@ -116,7 +118,7 @@ export const HabitList = ({ navigation }) => {
             onChangeText={(text) => setSearch(text)}
             value={search}
             containerStyle={{
-              width: "80%",
+              width: "70%",
               height: "100%",
               backgroundColor: "white",
               borderBottomColor: "transparent",
@@ -128,6 +130,14 @@ export const HabitList = ({ navigation }) => {
             title={<AntDesign name="pluscircleo" size={20} color="black" />}
             onPress={() => {
               navigation.navigate("AddEditHabit");
+            }}
+            type="clear"
+          />
+          <Button
+            style={styles.button}
+            title={<Feather name="refresh-ccw" size={20} color="black" />}
+            onPress={() => {
+              reloadAndDispatch(userId, token, dispatch);
             }}
             type="clear"
           />
@@ -149,6 +159,7 @@ export const HabitList = ({ navigation }) => {
           previewRowKey={"0"}
           previewOpenValue={-40}
           previewOpenDelay={3000}
+          key={habits.length}
         />
       </View>
     </>

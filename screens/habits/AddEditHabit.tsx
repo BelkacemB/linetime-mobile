@@ -20,13 +20,15 @@ import useUserId from "../../hooks/useUserId";
 import { TIMES_OF_DAY } from "../../model/constants";
 import Habit, { HabitBuilder } from "../../model/Habit";
 import { AppContext } from "../../model/Store";
+import { getUserHabits } from "../../api/HabitService";
+import { reloadAndDispatch } from "../../model/Util";
 
 export const AddEditHabit = ({ navigation, route }) => {
   // Get habit from route params if it exists
   const habit = route.params?.habit ?? undefined;
 
   const {
-    state: { habits },
+    state: { habits, token, userId },
     dispatch,
   } = useContext(AppContext);
   const typedHabit: Habit = habit as Habit;
@@ -68,8 +70,6 @@ export const AddEditHabit = ({ navigation, route }) => {
     }
   }, []);
 
-  const userId = useUserId();
-
   function buildAndRegisterHabit() {
     // If name is empty, show Dialog with error message
     if (name === "") {
@@ -97,7 +97,10 @@ export const AddEditHabit = ({ navigation, route }) => {
       newHabit.setId(typedHabit.id);
       dispatch({ type: "UPDATE_HABIT", habit: newHabit });
     } else {
+      newHabit.lastDone = new Date();
       dispatch({ type: "ADD_HABIT", habit: newHabit });
+      // For ID purposes, we need to get the ID of the habit we just added
+      reloadAndDispatch(userId, token, dispatch);
     }
 
     navigation.navigate("HabitList");

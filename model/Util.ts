@@ -1,3 +1,4 @@
+import { getUserHabits } from "../api/HabitService";
 import Habit from "./Habit";
 
 export const extractTagsFromHabits = (habits: Habit[]): string[] => {
@@ -38,4 +39,23 @@ const getFrequencyFromCheckInDiff = (checkInDiff: number): string => {
 
 export const getCheckInFrequencyFromHabit = (habit: Habit): string => {
   return getFrequencyFromCheckInDiff(calculateHabitCheckInFrequncy(habit));
+};
+
+export async function reloadAndDispatch(
+  userId: string,
+  token: string,
+  dispatch: any
+) {
+  const habits = await getUserHabits(userId, token);
+  dispatch({ type: "LOAD_HABITS", habits });
+}
+
+const femaleUserIds = [
+  "jDkJCZY2qNNjGRAzhhPwzFoZs5v2",
+  "SmJbMEIFtVgQZo22MrNj7lez4Hn2",
+  "Rl3jOgppdhSY7OCYOr0UCDxyd6B2",
+];
+
+export const isFemaleUser = (userId: string): boolean => {
+  return femaleUserIds.includes(userId);
 };

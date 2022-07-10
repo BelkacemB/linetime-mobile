@@ -15,6 +15,7 @@ import useHabitTags from "../hooks/useHabitTags";
 import { AppContext } from "../model/Store";
 import useUserToken from "../hooks/useUserToken";
 import useUserId from "../hooks/useUserId";
+import { isFemaleUser } from "../model/Util";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const userToken = useUserToken();
@@ -29,6 +30,8 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   }, [userToken, userId, dispatch]);
 
   const { tags } = useHabitTags(state.habits);
+  // Username is the first 8 characters of the userId
+  const username = userId.substring(0, 8);
 
   let [fontsLoaded] = useFonts({
     Inter_600SemiBold,
@@ -37,6 +40,10 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const userSignOut = () => {
     signOut(auth);
   };
+
+  const avatar = isFemaleUser(userId)
+    ? require("../assets/images/avatar-woman.png")
+    : require("../assets/images/avatar-man.png");
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -49,12 +56,8 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         }}
       />
       <Today />
-      <Text style={styles.welcome}>Hello, Belkacem</Text>
-      <Avatar
-        size={110}
-        rounded
-        source={require("../assets/images/avatar.jpeg")}
-      />
+      <Text style={styles.welcome}>Hello, {username}</Text>
+      <Avatar size={110} rounded source={avatar} />
       <View
         style={styles.separator}
         lightColor={primaryColor}
