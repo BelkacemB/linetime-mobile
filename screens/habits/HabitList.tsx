@@ -178,12 +178,8 @@ export const HabitList = ({ navigation }) => {
             </View>
           </View>
         </ScrollView>
+      </View>
 
-        <View
-          style={styles.separator}
-          lightColor="#eee"
-          darkColor="rgba(255,255,255,0.1)"
-        />
         <SwipeListView
           data={filteredHabits}
           renderItem={({ item }) => (
@@ -197,7 +193,6 @@ export const HabitList = ({ navigation }) => {
           previewOpenValue={-40}
           previewOpenDelay={3000}
         />
-      </View>
     </>
   );
 };
