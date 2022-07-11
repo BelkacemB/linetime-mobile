@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { Button, Dialog } from "@rneui/base";
 
@@ -11,31 +11,43 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { AppContext } from "../../model/Store";
 import Habit from "../../model/Habit";
 import { reloadAndDispatch } from "../../model/Util";
+import useHabitTags from "../../hooks/useHabitTags";
+import { SelectChip } from "../../components/SelectChip";
 
 export const HabitList = ({ navigation }) => {
   const {
-    state: { habits, token, userId },
+    state: { habits: allHabits, token, userId },
     dispatch,
   } = useContext(AppContext);
 
-  const [filteredHabits, setFilteredHabits] = React.useState(habits);
-  const [search, setSearch] = React.useState("");
+  const [searchText, setSearchText] = React.useState("");
+  const [filteredHabits, setFilteredHabits] = React.useState(allHabits);
   const [habitToDelete, setHabitToDelete] = React.useState(null);
+  const { tags, selectedTags, toggleTagSelection } = useHabitTags(allHabits)
+
+  useEffect(() => {
+    // Filter on selected tags
+    let searchedHabits = filteredHabits;
+    if (selectedTags.length > 0) {
+      searchedHabits = allHabits.filter((habit) => {
+        return selectedTags.every((tag) => habit.tags?.includes(tag));
+      });
+    } else {
+      searchedHabits = allHabits;
+    }
+
+    searchedHabits = searchedHabits.filter((habit) =>
+      habit.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    
+    setFilteredHabits(searchedHabits);
+  }
+  , [selectedTags, searchText]);
+
 
   const removeHabit = (habit: Habit) => {
     dispatch({ type: "DELETE_HABIT", habit });
   };
-
-  useEffect(() => {
-    const filteredHabits = habits.filter((habit) =>
-      habit.name.toLowerCase().includes(search.toLowerCase())
-    );
-    const sortedHabits = filteredHabits.sort((a, b) => {
-      return b.benefits - a.benefits;
-    });
-
-    setFilteredHabits(sortedHabits);
-  }, [habits, search]);
 
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
@@ -114,8 +126,8 @@ export const HabitList = ({ navigation }) => {
             lightTheme
             round
             placeholder="Search"
-            onChangeText={(text) => setSearch(text)}
-            value={search}
+            onChangeText={setSearchText}
+            value={searchText}
             containerStyle={{
               width: "70%",
               height: "100%",
@@ -141,6 +153,34 @@ export const HabitList = ({ navigation }) => {
             type="clear"
           />
         </View>
+        <ScrollView
+          contentContainerStyle={{
+            flexDirection: "row",
+            alignItems: "center",
+            height: 90,
+            borderBottomColor: 'gray',
+            borderBottomWidth: 0.2,
+            marginLeft: 10,
+          }}
+          horizontal
+        >
+          <Text style={{ fontWeight: "bold" }}>Filter by tags </Text>
+          <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <View style={{ flexDirection: "row" }}>
+              {tags.map((tag) => (
+                <SelectChip
+                  label={tag.toLowerCase()}
+                  key={tag}
+                  onPress={() => {
+                    toggleTagSelection(tag);
+                  }}
+                  selected={selectedTags.includes(tag)}
+                />
+              ))}
+            </View>
+          </View>
+        </ScrollView>
+
         <View
           style={styles.separator}
           lightColor="#eee"
@@ -158,7 +198,6 @@ export const HabitList = ({ navigation }) => {
           previewRowKey={"0"}
           previewOpenValue={-40}
           previewOpenDelay={3000}
-          key={habits.length}
         />
       </View>
     </>
@@ -167,15 +206,14 @@ export const HabitList = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
     color: "white",
+    backgroundColor: "white",
   },
   separator: {
     marginVertical: 15,
     height: 1,
     width: "100%",
-    opacity: 1,
+    opacity: 0,
   },
   header: {
     fontSize: 25,
