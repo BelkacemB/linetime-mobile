@@ -18,6 +18,7 @@ import { AddEditHabit } from "../screens/habits/AddEditHabit";
 import App from "../App";
 import { Skeleton } from "@rneui/base";
 import { AppProvider } from "../model/Store";
+import { PlaylistTimer } from "../screens/suggestions/PlaylistTimer";
 
 export default function Navigation({
   colorScheme,
@@ -53,6 +54,11 @@ function RootNavigator() {
         <HomeStack.Screen
           name="SuggestionForm"
           component={SuggestionForm}
+          options={{ title: "What to do?" }}
+        />
+        <HomeStack.Screen
+          name="PlaylistTimer"
+          component={PlaylistTimer}
           options={{ title: "What to do?" }}
         />
         <HomeStack.Screen

@@ -29,14 +29,21 @@ export const SuggestionList = ({ navigation, route }) => {
 
   const onAcceptAll = () => {
     // Find matching habits and clock in
-    suggestions.forEach((suggestion) => {
-      const matchingHabit = habits.find((habit) => habit.id === suggestion.id);
-      if (matchingHabit) {
-        matchingHabit.clockIn();
-        dispatch({ type: "UPDATE_HABIT", habit: matchingHabit });
-      }
+    navigation.navigate("PlaylistTimer", {
+      suggestions: suggestions,
+      onTimeElapsed: () => {
+        // Find all habits that match the suggestions and clock in
+        suggestions.forEach((suggestion) => {
+          const matchingHabit = habits.find(
+            (habit) => habit.id === suggestion.id
+          );
+          if (matchingHabit) {
+            matchingHabit.clockIn();
+            dispatch({ type: "UPDATE_HABIT", habit: matchingHabit });
+          }
+        });
+      },
     });
-    navigation.navigate("Home");
   };
 
   const onConfirmCheckIn = (habit: Habit) => {

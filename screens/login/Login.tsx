@@ -46,8 +46,7 @@ export const Login = ({ navigation }) => {
         </TouchableOpacity>
       }
     />
-  )
-
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

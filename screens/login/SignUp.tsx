@@ -1,9 +1,9 @@
+import { Input } from "@rneui/themed";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { Button, StyleSheet } from "react-native";
-import { Input } from "@rneui/themed";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import { auth } from "../../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export const SignUp = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
