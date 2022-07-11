@@ -34,8 +34,7 @@ const persistHabitAndGetId = async (
 ) => {
   const id = await persistHabit(habit, token);
   return id;
-}
-
+};
 
 const AppContext = React.createContext<{
   state: InitialStateType;

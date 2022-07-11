@@ -59,3 +59,24 @@ const femaleUserIds = [
 export const isFemaleUser = (userId: string): boolean => {
   return femaleUserIds.includes(userId);
 };
+
+export const getHoursOrDaysFromLastCheckIn = (habit: Habit): string => {
+  // if clock ins undefined, return "never"
+  if (habit.clockInTimes === undefined) {
+    return "never";
+  }
+
+  if (habit.clockInTimes.length <= 0) {
+    return "never";
+  }
+
+  const latestCheckIn = habit.clockInTimes[habit.clockInTimes.length - 1];
+  const now = new Date();
+  const diff = now.getTime() - latestCheckIn.getTime();
+  const diffInHours = diff / (1000 * 60 * 60);
+  const diffInDays = diff / (1000 * 60 * 60 * 24);
+  if (diffInHours < 24) {
+    return `${Math.round(diffInHours)} hours`;
+  }
+  return `${Math.round(diffInDays)} days`;
+};

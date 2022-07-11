@@ -1,17 +1,13 @@
-import React, { useContext } from "react";
-import Habit from "../model/Habit";
+import React from "react";
 import { Suggestion } from "../model/LinetimeTypes";
 
-import { updateHabit } from "../api/HabitService";
-import useUserToken from "../hooks/useUserToken";
-import { Button, ListItem } from "@rneui/base";
 import { Text } from "./Themed";
 import { View } from "react-native";
 import Feather from "@expo/vector-icons/build/Feather";
 import { secondaryColor, tertiaryColor } from "../constants/Colors";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
-import { AppContext } from "../model/Store";
+import { Entypo } from "@expo/vector-icons";
 
 type Props = {
   suggestion: Suggestion;
@@ -19,81 +15,44 @@ type Props = {
 };
 
 export const SuggestionElement = ({ suggestion, onRejectOrAccept }: Props) => {
-  const {
-    state: { habits },
-    dispatch,
-  } = useContext(AppContext);
-
-  const matchingHabit: Habit = habits.find(
-    (habit) => habit.id === suggestion.id
-  );
-
-  const onHabitClick = () => {
-    matchingHabit.clockIn();
-    dispatch({ type: "UPDATE_HABIT", habit: matchingHabit });
-  };
-
   return (
-    <ListItem.Swipeable
-      leftContent={() => (
-        <Button
-          title="Later"
-          onPress={() => {
-            onRejectOrAccept(suggestion);
+    <View>
+      <LinearGradient
+        colors={[tertiaryColor, secondaryColor, tertiaryColor]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={{ width: "100%" }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            marginBottom: 3,
+            paddingVertical: 10,
+            backgroundColor: "white",
           }}
-          icon={{ name: "close", color: "white" }}
-          buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
-        />
-      )}
-      rightContent={(reset) => (
-        <Button
-          title="Check in"
-          onPress={() => {
-            reset();
-            onHabitClick();
-            onRejectOrAccept(suggestion);
-          }}
-          icon={{ name: "check", color: "white" }}
-          buttonStyle={{ minHeight: "100%", backgroundColor: "green" }}
-        />
-      )}
-    >
-      <ListItem.Content>
-        <LinearGradient
-          colors={[tertiaryColor, secondaryColor, tertiaryColor]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={{ width: "100%" }}
         >
+          <Entypo name="chevron-small-left" size={24} />
+
           <View
             style={{
               flexDirection: "row",
-              marginBottom: 1,
-              paddingBottom: 10,
-              backgroundColor: "white",
+              width: "60%",
+              justifyContent: "center",
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                width: "60%",
-                justifyContent: "center",
-              }}
-            >
-              <Feather name="activity" size={24} color="black" />
-              <Text style={{ fontSize: 20 }}> {suggestion.name}</Text>
-            </View>
-            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-              <Ionicons name="time-outline" size={24} color="black" />
-              <Text style={{ fontSize: 20 }}>
-                {" "}
-                {suggestion.suggestedTime} min
-              </Text>
-            </View>
+            <Feather name="activity" size={24} color="black" />
+            <Text style={{ fontSize: 20 }}> {suggestion.name}</Text>
           </View>
-        </LinearGradient>
-      </ListItem.Content>
-      <ListItem.Chevron />
-    </ListItem.Swipeable>
+          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <Ionicons name="time-outline" size={24} color="black" />
+            <Text style={{ fontSize: 20 }}>
+              {" "}
+              {suggestion.suggestedTime} min
+            </Text>
+            <Entypo name="chevron-small-right" size={24} />
+          </View>
+        </View>
+      </LinearGradient>
+    </View>
   );
 };

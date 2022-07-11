@@ -2,10 +2,12 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { SuggestionElement } from "../../components/SuggestionElement";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
+import { SwipeListView } from "react-native-swipe-list-view";
 import { Suggestion } from "../../model/LinetimeTypes";
 import { getTimeOfDay } from "../../constants/Util";
 import { AppContext } from "../../model/Store";
 import useUserId from "../../hooks/useUserId";
+import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons";
 
 export const SuggestionList = ({ navigation, route }) => {
   const { listOfSuggestions } = route.params;
@@ -13,7 +15,8 @@ export const SuggestionList = ({ navigation, route }) => {
     state: { habits },
     dispatch,
   } = React.useContext(AppContext);
-  const [suggestions, setSuggestions] = React.useState(listOfSuggestions);
+  const [suggestions, setSuggestions] =
+    React.useState<Suggestion[]>(listOfSuggestions);
   const userId = useUserId();
 
   const onRejectOrAccept = (suggestion: Suggestion) => {
@@ -35,6 +38,35 @@ export const SuggestionList = ({ navigation, route }) => {
   const onRejectAll = () => {
     navigation.navigate("SuggestionForm");
   };
+
+  const renderHiddenItem = (data, rowMap) => (
+    <View style={styles.rowBack}>
+      <TouchableOpacity
+        onPress={() => {
+          onRejectOrAccept(data.item);
+        }}
+      >
+        <Entypo name="cross" size={24} color="red" />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.backRightBtn}
+        onPress={() => {
+          // Find matching habit and clock in
+          const matchingHabit = habits.find(
+            (habit) => habit.id === data.item.id
+          );
+          if (matchingHabit) {
+            matchingHabit.clockIn();
+            dispatch({ type: "UPDATE_HABIT", habit: matchingHabit });
+          }
+          onRejectOrAccept(data.item);
+        }}
+      >
+        <AntDesign name="check" size={24} color="green" />
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -68,15 +100,23 @@ export const SuggestionList = ({ navigation, route }) => {
       )}
       {suggestions.length > 0 && (
         <View style={styles.suggestionList}>
-          <View>
-            {suggestions.map((suggestion) => (
+          <SwipeListView
+            data={suggestions}
+            renderItem={({ item }) => (
               <SuggestionElement
-                suggestion={suggestion}
-                key={suggestion.name}
+                suggestion={item}
                 onRejectOrAccept={onRejectOrAccept}
               />
-            ))}
-          </View>
+            )}
+            renderHiddenItem={renderHiddenItem}
+            keyExtractor={(item) => item.id}
+            leftOpenValue={75}
+            rightOpenValue={-75}
+            previewRowKey={"0"}
+            previewOpenValue={-40}
+            previewOpenDelay={3000}
+          />
+
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <TouchableOpacity style={styles.button} onPress={onAcceptAll}>
               <Text>Accept all ✅</Text>
@@ -115,5 +155,22 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     padding: 10,
     flex: 1,
+  },
+  rowBack: {
+    alignItems: "center",
+    backgroundColor: "white",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingLeft: 15,
+  },
+  backRightBtn: {
+    alignItems: "center",
+    bottom: 0,
+    justifyContent: "center",
+    position: "absolute",
+    top: 0,
+    width: 75,
+    right: 0,
   },
 });

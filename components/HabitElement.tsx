@@ -4,8 +4,11 @@ import Habit from "../model/Habit";
 import { AirbnbRating, Dialog } from "@rneui/base";
 import { Text, TouchableOpacity, View } from "./Themed";
 import { secondaryColor } from "../constants/Colors";
-import { getCheckInFrequencyFromHabit } from "../model/Util";
-import { Feather } from "@expo/vector-icons";
+import {
+  getCheckInFrequencyFromHabit,
+  getHoursOrDaysFromLastCheckIn,
+} from "../model/Util";
+import { Entypo, Feather } from "@expo/vector-icons";
 import { AppContext } from "../model/Store";
 
 const formatDate = (date: Date): string => {
@@ -40,20 +43,19 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
             width: "100%",
             marginBottom: 1,
             paddingBottom: 5,
+            alignItems: "center",
           }}
-          onLongPress={() => {
+          onPress={() => {
             edit();
           }}
         >
-          <View>
+          <Entypo name="chevron-small-left" size={24} color={secondaryColor} />
+          <View style={{ width: "35%" }}>
             <Text style={{ fontSize: 20, fontWeight: "500" }}>
               {habit.name}
             </Text>
             <Text style={{ fontSize: 14, fontStyle: "italic" }}>
-              Last check-in:{" "}
-              {habit.clockInTimes?.length > 0
-                ? formatDate(habit.clockInTimes[habit.clockInTimes.length - 1])
-                : "Never"}
+              Last check-in: {getHoursOrDaysFromLastCheckIn(habit)}
             </Text>
             {habit.clockInTimes?.length >= 2 && (
               <Text style={{ fontSize: 13, marginTop: 5 }}>
@@ -64,7 +66,9 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
               </Text>
             )}
           </View>
-          <View style={{ alignItems: "center" }}>
+          <View
+            style={{ alignItems: "center", width: "15%", flexWrap: "wrap" }}
+          >
             <AirbnbRating
               count={3}
               defaultRating={habit.benefits}
@@ -76,6 +80,7 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
               {habit.tags?.map((tag) => tag.toLowerCase()).join(", ")}
             </Text>
           </View>
+          <Entypo name="chevron-small-right" size={24} color={secondaryColor} />
         </TouchableOpacity>
       </View>
     </>

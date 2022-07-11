@@ -23,7 +23,7 @@ export const HabitList = ({ navigation }) => {
   const [searchText, setSearchText] = React.useState("");
   const [filteredHabits, setFilteredHabits] = React.useState(allHabits);
   const [habitToDelete, setHabitToDelete] = React.useState(null);
-  const { tags, selectedTags, toggleTagSelection } = useHabitTags(allHabits)
+  const { tags, selectedTags, toggleTagSelection } = useHabitTags(allHabits);
 
   useEffect(() => {
     // Filter on selected tags
@@ -39,11 +39,9 @@ export const HabitList = ({ navigation }) => {
     searchedHabits = searchedHabits.filter((habit) =>
       habit.name.toLowerCase().includes(searchText.toLowerCase())
     );
-    
-    setFilteredHabits(searchedHabits);
-  }
-  , [selectedTags, searchText]);
 
+    setFilteredHabits(searchedHabits);
+  }, [selectedTags, searchText]);
 
   const removeHabit = (habit: Habit) => {
     dispatch({ type: "DELETE_HABIT", habit });
@@ -112,7 +110,7 @@ export const HabitList = ({ navigation }) => {
           />
         </Dialog.Actions>
       </Dialog>
-      <View style={styles.container}>
+      <View>
         <View
           style={{
             flexDirection: "row",
@@ -158,7 +156,7 @@ export const HabitList = ({ navigation }) => {
             flexDirection: "row",
             alignItems: "center",
             height: 90,
-            borderBottomColor: 'gray',
+            borderBottomColor: "gray",
             borderBottomWidth: 0.2,
             marginLeft: 10,
           }}
@@ -205,7 +203,7 @@ export const HabitList = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  scrollView: {
     color: "white",
     backgroundColor: "white",
   },

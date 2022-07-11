@@ -67,7 +67,6 @@ export default function SuggestionForm({
     if (timeSpecific) {
       suggestionRequest.localTime = time;
     }
-
     fetchSuggestions(suggestionRequest).then((suggestions) => {
       navigation.navigate("SuggestionList", { listOfSuggestions: suggestions });
     });
