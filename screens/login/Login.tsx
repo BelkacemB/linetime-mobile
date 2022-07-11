@@ -7,7 +7,7 @@ import { View, Text, TouchableOpacity } from "../../components/Themed";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { secondaryColor } from "../../constants/Colors";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 
 const errorCodeToMessage = {
   "auth/invalid-email": "Invalid email address",
@@ -19,6 +19,7 @@ const errorCodeToMessage = {
 export const Login = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [passwordVisible, setPasswordVisible] = React.useState(false);
   const [error, setError] = React.useState("");
 
   const handleLogin = () => {
@@ -27,6 +28,26 @@ export const Login = ({ navigation }) => {
       setError(message);
     });
   };
+
+  // Password node with eye icon
+  const PasswordInput = () => (
+    <Input
+      label="Password"
+      value={password}
+      onChangeText={setPassword}
+      secureTextEntry={passwordVisible}
+      style={styles.input}
+      rightIcon={
+        <TouchableOpacity
+          onPress={() => setPasswordVisible(!passwordVisible)}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Entypo name={passwordVisible ? "eye" : "eye-with-line"} size={24} />
+        </TouchableOpacity>
+      }
+    />
+  )
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -49,12 +70,7 @@ export const Login = ({ navigation }) => {
         style={styles.input}
         onChangeText={(text) => setEmail(text)}
       />
-      <Input
-        label="Password"
-        style={styles.input}
-        secureTextEntry={true}
-        onChangeText={(text) => setPassword(text)}
-      />
+      <PasswordInput />
       <Text style={{ color: "red" }}>{error}</Text>
       <TouchableOpacity onPress={handleLogin} style={styles.button}>
         <AntDesign name="login" size={24} color="black" />
@@ -77,7 +93,6 @@ export const Login = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   input: {
-    width: 350,
     height: 55,
     backgroundColor: secondaryColor,
     margin: 10,
