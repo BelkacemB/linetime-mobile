@@ -55,8 +55,9 @@ export const HabitElement = ({ habit, navigation }: HabitProps) => {
               {habit.name}
             </Text>
             <Text style={{ fontSize: 14, fontStyle: "italic" }}>
-              Last check-in: {getHoursOrDaysFromLastCheckIn(habit)}
+              Last check-in:
             </Text>
+            <Text> {getHoursOrDaysFromLastCheckIn(habit)} </Text>
             {habit.clockInTimes?.length >= 2 && (
               <Text style={{ fontSize: 13, marginTop: 5 }}>
                 <Feather name="repeat" size={13} color="black" />{" "}

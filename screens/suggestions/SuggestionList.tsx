@@ -7,7 +7,9 @@ import { Suggestion } from "../../model/LinetimeTypes";
 import { getTimeOfDay } from "../../constants/Util";
 import { AppContext } from "../../model/Store";
 import useUserId from "../../hooks/useUserId";
-import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Entypo } from "@expo/vector-icons";
+import { ConfirmCheckIn } from "../../components/dialogs/ConfirmCheckIn";
+import Habit from "../../model/Habit";
 
 export const SuggestionList = ({ navigation, route }) => {
   const { listOfSuggestions } = route.params;
@@ -17,6 +19,8 @@ export const SuggestionList = ({ navigation, route }) => {
   } = React.useContext(AppContext);
   const [suggestions, setSuggestions] =
     React.useState<Suggestion[]>(listOfSuggestions);
+  const [habitToCheckIn, setHabitToCheckIn] = React.useState<Habit>(null);
+
   const userId = useUserId();
 
   const onRejectOrAccept = (suggestion: Suggestion) => {
@@ -35,11 +39,19 @@ export const SuggestionList = ({ navigation, route }) => {
     navigation.navigate("Home");
   };
 
+  const onConfirmCheckIn = (habit: Habit) => {
+    habit.clockIn();
+    dispatch({ type: "UPDATE_HABIT", habit: habit });
+    setHabitToCheckIn(null);
+    const matchingSuggestion = suggestions.find((s) => s.id === habit.id);
+    onRejectOrAccept(matchingSuggestion);
+  };
+
   const onRejectAll = () => {
     navigation.navigate("SuggestionForm");
   };
 
-  const renderHiddenItem = (data, rowMap) => (
+  const renderHiddenItem = (data) => (
     <View style={styles.rowBack}>
       <TouchableOpacity
         onPress={() => {
@@ -52,15 +64,12 @@ export const SuggestionList = ({ navigation, route }) => {
       <TouchableOpacity
         style={styles.backRightBtn}
         onPress={() => {
-          // Find matching habit and clock in
           const matchingHabit = habits.find(
             (habit) => habit.id === data.item.id
           );
           if (matchingHabit) {
-            matchingHabit.clockIn();
-            dispatch({ type: "UPDATE_HABIT", habit: matchingHabit });
+            setHabitToCheckIn(matchingHabit);
           }
-          onRejectOrAccept(data.item);
         }}
       >
         <AntDesign name="check" size={24} color="green" />
@@ -69,65 +78,74 @@ export const SuggestionList = ({ navigation, route }) => {
   );
 
   return (
-    <View style={styles.container}>
-      {suggestions.length == 0 ? (
-        <Text style={{ fontSize: 20, margin: 10 }}>
-          No suggestions for now! Try adding new habits to your playlist
-        </Text>
-      ) : (
-        <View style={{ alignItems: "center" }}>
-          <Text
-            style={{
-              fontSize: 25,
-              margin: 30,
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
-          >
-            Good {getTimeOfDay()}, {userId.substring(0, 8)}! 🙌
-          </Text>
-          <Text
-            style={{
-              fontSize: 25,
-              margin: 30,
-              fontStyle: "italic",
-              textAlign: "justify",
-            }}
-          >
-            🤖 Here's your freshly computer-generated playlist
-          </Text>
-        </View>
-      )}
-      {suggestions.length > 0 && (
-        <View style={styles.suggestionList}>
-          <SwipeListView
-            data={suggestions}
-            renderItem={({ item }) => (
-              <SuggestionElement
-                suggestion={item}
-                onRejectOrAccept={onRejectOrAccept}
-              />
-            )}
-            renderHiddenItem={renderHiddenItem}
-            keyExtractor={(item) => item.id}
-            leftOpenValue={75}
-            rightOpenValue={-75}
-            previewRowKey={"0"}
-            previewOpenValue={-40}
-            previewOpenDelay={3000}
-          />
+    <>
+      <ConfirmCheckIn
+        visible={habitToCheckIn !== null}
+        habit={habitToCheckIn}
+        onConfirmCheckIn={onConfirmCheckIn}
+        onCancel={() => setHabitToCheckIn(null)}
+      />
 
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <TouchableOpacity style={styles.button} onPress={onAcceptAll}>
-              <Text>Accept all ✅</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={onRejectAll}>
-              <Text>Reject all ❌</Text>
-            </TouchableOpacity>
+      <View style={styles.container}>
+        {suggestions.length == 0 ? (
+          <Text style={{ fontSize: 20, margin: 10 }}>
+            No suggestions for now! Try adding new habits to your playlist
+          </Text>
+        ) : (
+          <View style={{ alignItems: "center" }}>
+            <Text
+              style={{
+                fontSize: 25,
+                margin: 30,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              Good {getTimeOfDay()}, {userId.substring(0, 8)}! 🙌
+            </Text>
+            <Text
+              style={{
+                fontSize: 25,
+                margin: 30,
+                fontStyle: "italic",
+                textAlign: "justify",
+              }}
+            >
+              🤖 Here's your freshly computer-generated playlist
+            </Text>
           </View>
-        </View>
-      )}
-    </View>
+        )}
+        {suggestions.length > 0 && (
+          <View style={styles.suggestionList}>
+            <SwipeListView
+              data={suggestions}
+              renderItem={({ item }) => (
+                <SuggestionElement
+                  suggestion={item}
+                  onRejectOrAccept={onRejectOrAccept}
+                />
+              )}
+              renderHiddenItem={renderHiddenItem}
+              keyExtractor={(item) => item.id}
+              leftOpenValue={75}
+              rightOpenValue={-75}
+              previewRowKey={"0"}
+              previewOpenValue={-40}
+              previewOpenDelay={3000}
+            />
+
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <TouchableOpacity style={styles.button} onPress={onAcceptAll}>
+                <Text>Accept all ✅</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={onRejectAll}>
+                <Text>Reject all ❌</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+    </>
   );
 };
 

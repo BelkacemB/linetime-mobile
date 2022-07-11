@@ -13,6 +13,7 @@ import Habit from "../../model/Habit";
 import { reloadAndDispatch } from "../../model/Util";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
+import { ConfirmCheckIn } from "../../components/dialogs/ConfirmCheckIn";
 
 export const HabitList = ({ navigation }) => {
   const {
@@ -23,6 +24,7 @@ export const HabitList = ({ navigation }) => {
   const [searchText, setSearchText] = React.useState("");
   const [filteredHabits, setFilteredHabits] = React.useState(allHabits);
   const [habitToDelete, setHabitToDelete] = React.useState(null);
+  const [habitToCheckIn, setHabitToCheckIn] = React.useState(null);
   const { tags, selectedTags, toggleTagSelection } = useHabitTags(allHabits);
 
   useEffect(() => {
@@ -41,10 +43,16 @@ export const HabitList = ({ navigation }) => {
     );
 
     setFilteredHabits(searchedHabits);
-  }, [selectedTags, searchText]);
+  }, [selectedTags, searchText, allHabits]);
 
   const removeHabit = (habit: Habit) => {
     dispatch({ type: "DELETE_HABIT", habit });
+  };
+
+  const onCheckIn = (habit: Habit) => {
+    habit.clockIn();
+    dispatch({ type: "UPDATE_HABIT", habit: habit });
+    setHabitToCheckIn(null);
   };
 
   const renderHiddenItem = (data, rowMap) => (
@@ -70,8 +78,7 @@ export const HabitList = ({ navigation }) => {
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => {
-          data.item.clockIn();
-          dispatch({ type: "UPDATE_HABIT", habit: data.item });
+          setHabitToCheckIn(data.item);
           rowMap[data.item.id].closeRow();
         }}
       >
@@ -82,6 +89,7 @@ export const HabitList = ({ navigation }) => {
 
   return (
     <>
+      {/* Confirm delete */}
       <Dialog
         isVisible={habitToDelete !== null}
         onBackdropPress={() => {
@@ -110,6 +118,18 @@ export const HabitList = ({ navigation }) => {
           />
         </Dialog.Actions>
       </Dialog>
+
+      {/* Confirm check in */}
+      <ConfirmCheckIn
+        visible={habitToCheckIn !== null}
+        habit={habitToCheckIn}
+        onConfirmCheckIn={onCheckIn}
+        onCancel={() => {
+          setHabitToCheckIn(null);
+        }}
+      />
+
+      {/* Search bar */}
       <View>
         <View
           style={{
@@ -180,19 +200,20 @@ export const HabitList = ({ navigation }) => {
         </ScrollView>
       </View>
 
-        <SwipeListView
-          data={filteredHabits}
-          renderItem={({ item }) => (
-            <HabitElement habit={item} navigation={navigation} />
-          )}
-          keyExtractor={(item) => item.id}
-          renderHiddenItem={renderHiddenItem}
-          leftOpenValue={75}
-          rightOpenValue={-150}
-          previewRowKey={"0"}
-          previewOpenValue={-40}
-          previewOpenDelay={3000}
-        />
+      {/* List of habits */}
+      <SwipeListView
+        data={filteredHabits}
+        renderItem={({ item }) => (
+          <HabitElement habit={item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+        renderHiddenItem={renderHiddenItem}
+        leftOpenValue={75}
+        rightOpenValue={-150}
+        previewRowKey={"0"}
+        previewOpenValue={-40}
+        previewOpenDelay={3000}
+      />
     </>
   );
 };

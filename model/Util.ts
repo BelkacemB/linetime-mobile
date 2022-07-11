@@ -76,7 +76,7 @@ export const getHoursOrDaysFromLastCheckIn = (habit: Habit): string => {
   const diffInHours = diff / (1000 * 60 * 60);
   const diffInDays = diff / (1000 * 60 * 60 * 24);
   if (diffInHours < 24) {
-    return `${Math.round(diffInHours)} hours`;
+    return `${Math.round(diffInHours)} hours ago`;
   }
-  return `${Math.round(diffInDays)} days`;
+  return `${Math.round(diffInDays)} days ago`;
 };

@@ -137,9 +137,15 @@ export default function SuggestionForm({
       />
 
       {/* Tags */}
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          height: "10%",
+        }}
+      >
         <Text style={{ fontWeight: "bold" }}>#tags </Text>
-        <View style={{ flexDirection: "row" }}>
+        <ScrollView horizontal style={{ flexDirection: "row" }}>
           {tags.map((tag) => (
             <SelectChip
               label={tag.toLowerCase()}
@@ -150,7 +156,7 @@ export default function SuggestionForm({
               selected={selectedTags.includes(tag)}
             />
           ))}
-        </View>
+        </ScrollView>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onSubmit}>
