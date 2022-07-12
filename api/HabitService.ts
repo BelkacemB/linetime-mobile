@@ -52,7 +52,6 @@ export async function getUserHabits(
   token: string
 ): Promise<Habit[]> {
   apiCallCount++;
-  // console.log(`API call ${apiCallCount}`);
   return fetch(`${API_URL}/${userId}`, {
     method: "GET",
     headers: {

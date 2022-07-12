@@ -39,12 +39,11 @@ export default class Habit {
     if (!this.clockInTimes) {
       this.clockInTimes = [];
     }
-
     if (this.clockInTimes.length >= 10) {
+      this.clockInTimes.shift();
     }
     this.clockInTimes.push(now);
 
-    // TODO Following code is for API purposes only, remove when backend is ready
     this.lastDone = now;
   }
 

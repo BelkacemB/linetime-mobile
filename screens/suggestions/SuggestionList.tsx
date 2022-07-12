@@ -7,7 +7,7 @@ import { Suggestion } from "../../model/LinetimeTypes";
 import { getTimeOfDay } from "../../constants/Util";
 import { AppContext } from "../../model/Store";
 import useUserId from "../../hooks/useUserId";
-import { AntDesign, Entypo } from "@expo/vector-icons";
+import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
 import { ConfirmCheckIn } from "../../components/dialogs/ConfirmCheckIn";
 import Habit from "../../model/Habit";
 
@@ -17,13 +17,14 @@ export const SuggestionList = ({ navigation, route }) => {
     state: { habits },
     dispatch,
   } = React.useContext(AppContext);
+
   const [suggestions, setSuggestions] =
     React.useState<Suggestion[]>(listOfSuggestions);
   const [habitToCheckIn, setHabitToCheckIn] = React.useState<Habit>(null);
 
   const userId = useUserId();
 
-  const onRejectOrAccept = (suggestion: Suggestion) => {
+  const onReject = (suggestion: Suggestion) => {
     setSuggestions(suggestions.filter((s) => s.id !== suggestion.id));
   };
 
@@ -42,16 +43,13 @@ export const SuggestionList = ({ navigation, route }) => {
             dispatch({ type: "UPDATE_HABIT", habit: matchingHabit });
           }
         });
+        navigation.navigate("Home");
       },
     });
   };
 
   const onConfirmCheckIn = (habit: Habit) => {
-    habit.clockIn();
-    dispatch({ type: "UPDATE_HABIT", habit: habit });
-    setHabitToCheckIn(null);
-    const matchingSuggestion = suggestions.find((s) => s.id === habit.id);
-    onRejectOrAccept(matchingSuggestion);
+    // Complete later
   };
 
   const onRejectAll = () => {
@@ -62,7 +60,7 @@ export const SuggestionList = ({ navigation, route }) => {
     <View style={styles.rowBack}>
       <TouchableOpacity
         onPress={() => {
-          onRejectOrAccept(data.item);
+          onReject(data.item);
         }}
       >
         <Entypo name="cross" size={24} color="red" />
@@ -129,7 +127,7 @@ export const SuggestionList = ({ navigation, route }) => {
               renderItem={({ item }) => (
                 <SuggestionElement
                   suggestion={item}
-                  onRejectOrAccept={onRejectOrAccept}
+                  onRejectOrAccept={onReject}
                 />
               )}
               renderHiddenItem={renderHiddenItem}
@@ -143,10 +141,12 @@ export const SuggestionList = ({ navigation, route }) => {
 
             <View style={{ flexDirection: "row", justifyContent: "center" }}>
               <TouchableOpacity style={styles.button} onPress={onAcceptAll}>
-                <Text>Accept all ✅</Text>
+                <FontAwesome name="hourglass-start" size={24} color="black" />
+                <Text>Start</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.button} onPress={onRejectAll}>
-                <Text>Reject all ❌</Text>
+                <AntDesign name="back" size={24} color="black" />
+                <Text>Try again</Text>
               </TouchableOpacity>
             </View>
           </View>
