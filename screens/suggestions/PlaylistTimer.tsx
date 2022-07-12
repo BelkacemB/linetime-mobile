@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { Suggestion } from "../../model/LinetimeTypes";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
@@ -12,6 +12,14 @@ export const PlaylistTimer = ({ navigation, route }) => {
   const [currentSuggestion, setCurrentSuggestion] = React.useState(
     suggestions[0]
   );
+  const [nextSuggestion, setNextSuggestion] = React.useState(
+    suggestions[1]?? null
+  );
+
+  const totalTime = suggestions.reduce(
+    (acc, curr) => acc + curr.suggestedTime,
+    0
+  );
 
   const suggestionsWithStartAndEndTime = suggestions.map((suggestion) => {
     const startTime = suggestions
@@ -22,17 +30,19 @@ export const PlaylistTimer = ({ navigation, route }) => {
   });
 
   const onUpdate = (time: number) => {
-    const currentSuggestion = suggestionsWithStartAndEndTime.find(
+    const timePassed = totalTime*60 - time;
+    let matchingSuggestion = suggestionsWithStartAndEndTime.find(
       (suggestion) =>
-        time >= suggestion.startTime * 60 && time <= suggestion.endTime * 60
+        timePassed >= suggestion.startTime * 60 && timePassed <= suggestion.endTime * 60
     );
-    setCurrentSuggestion(currentSuggestion);
+    let typedSuggestion = suggestions.find((suggestion) => suggestion.id === matchingSuggestion?.id);
+    setCurrentSuggestion(typedSuggestion);
   };
 
-  const totalTime = suggestions.reduce(
-    (acc, curr) => acc + curr.suggestedTime,
-    0
-  );
+  useEffect(() => {
+    const followingSuggestion = suggestions[suggestions.indexOf(currentSuggestion) + 1];
+    setNextSuggestion(followingSuggestion ?? null);
+  }, [currentSuggestion]);
 
   const children = ({ remainingTime }) => {
     const minutes = Math.floor(remainingTime / 60);
@@ -51,6 +61,9 @@ export const PlaylistTimer = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{currentSuggestion?.name}</Text>
+      {nextSuggestion && (
+        <Text style={styles.subtitle}>Coming up: {nextSuggestion?.name}</Text>
+      )}
 
       <CountdownCircleTimer
         isPlaying
