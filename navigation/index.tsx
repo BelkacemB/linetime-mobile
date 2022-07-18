@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { Text, ColorSchemeName } from "react-native";
 
-import HomeScreen from "../screens/HomeScreen";
 import { RootStackParamList, RootLoginParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import SuggestionForm from "../screens/suggestions/SuggestionForm";
@@ -20,6 +19,8 @@ import { Skeleton } from "@rneui/base";
 import { AppProvider } from "../model/Store";
 import { PlaylistTimer } from "../screens/suggestions/PlaylistTimer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { secondaryColor } from "../constants/Colors";
 
 export default function Navigation({
   colorScheme,
@@ -53,19 +54,14 @@ function RootNavigator() {
           options={{ headerShown: false }}
         />
         <HomeStack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
-        <HomeStack.Screen
           name="SuggestionForm"
           component={SuggestionForm}
-          options={{ title: "What to do?" }}
+          options={{ title: "Optimize" }}
         />
         <HomeStack.Screen
           name="PlaylistTimer"
           component={PlaylistTimer}
-          options={{ title: "What to do?" }}
+          options={{ title: "Timer" }}
         />
         <HomeStack.Screen
           name="SuggestionList"
@@ -112,9 +108,35 @@ const BottomTab = createBottomTabNavigator();
 
 function BottomTabsNavigator() {
   return (
-    <BottomTab.Navigator>
-      <BottomTab.Screen name="Playlist" component={HabitList} />
-      <BottomTab.Screen name="Play" component={SuggestionForm} />
+    <BottomTab.Navigator
+      initialRouteName="Play"
+      screenOptions={{
+        tabBarActiveTintColor: secondaryColor,
+        tabBarInactiveTintColor: "gray",
+      }}
+    >
+      <BottomTab.Screen
+        name="Optimize"
+        component={SuggestionForm}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="robot" size={24} color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Playlist"
+        component={HabitList}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="playlist-edit"
+              size={24}
+              color={color}
+            />
+          ),
+        }}
+      />
     </BottomTab.Navigator>
   );
 }

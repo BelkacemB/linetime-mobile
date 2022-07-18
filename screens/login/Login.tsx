@@ -59,7 +59,10 @@ export const Login = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => setPasswordVisible(!passwordVisible)}
           >
-            <Entypo name={passwordVisible ? "eye" : "eye-with-line"} size={24} />
+            <Entypo
+              name={passwordVisible ? "eye" : "eye-with-line"}
+              size={24}
+            />
           </TouchableOpacity>
         }
       />

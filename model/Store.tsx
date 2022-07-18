@@ -108,7 +108,7 @@ const AppProvider = ({ children }) => {
     if (user) {
       user.getIdToken().then((token) => {
         setToken(token);
-      })
+      });
     }
   }, [user]);
 
@@ -119,8 +119,7 @@ const AppProvider = ({ children }) => {
       dispatch({ type: "SET_USER_ID", userId: user.uid });
       loadHabits();
     }
-  }
-  , [user, token]);
+  }, [user, token]);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>

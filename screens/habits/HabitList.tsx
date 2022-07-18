@@ -6,14 +6,16 @@ import { Button, Dialog } from "@rneui/base";
 import { SearchBar, Text } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
 import { TouchableOpacity, View } from "../../components/Themed";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 
 import { AppContext } from "../../model/Store";
 import Habit from "../../model/Habit";
-import { reloadAndDispatch } from "../../model/Util";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
 import { ConfirmCheckIn } from "../../components/dialogs/ConfirmCheckIn";
+
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 
 export const HabitList = ({ navigation }) => {
   const {
@@ -164,9 +166,9 @@ export const HabitList = ({ navigation }) => {
           />
           <Button
             style={styles.button}
-            title={<Feather name="refresh-ccw" size={20} color="black" />}
+            title={<SimpleLineIcons name="logout" size={20} color="black" />}
             onPress={() => {
-              reloadAndDispatch(userId, token, dispatch);
+              signOut(auth);
             }}
             type="clear"
           />

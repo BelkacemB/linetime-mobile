@@ -14,7 +14,10 @@ import useUserToken from "../../hooks/useUserToken";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
 import SimpleLineIcons from "@expo/vector-icons/build/SimpleLineIcons";
-import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
+import {
+  Feather,
+  Ionicons,
+} from "@expo/vector-icons";
 import { getDefaultEnergyLevel } from "../../constants/Util";
 import { AppContext } from "../../model/Store";
 
@@ -144,7 +147,13 @@ export default function SuggestionForm({
         }}
       >
         <Text style={{ fontWeight: "bold", marginBottom: 5 }}>#tags </Text>
-        <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
           {tags.map((tag) => (
             <SelectChip
               label={tag.toLowerCase()}
@@ -157,11 +166,15 @@ export default function SuggestionForm({
           ))}
         </View>
       </View>
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
 
       <TouchableOpacity style={styles.button} onPress={onSubmit}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <AntDesign name="playcircleo" size={24} color="black" />
-          <Text> Play</Text>
+          <Text style={{ fontSize: 20, marginLeft: 10 }}>🚀 LineTime</Text>
         </View>
       </TouchableOpacity>
     </ScrollView>
