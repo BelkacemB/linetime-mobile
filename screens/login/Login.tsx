@@ -29,25 +29,6 @@ export const Login = ({ navigation }) => {
     });
   };
 
-  // Password node with eye icon
-  const PasswordInput = () => (
-    <Input
-      label="Password"
-      value={password}
-      onChangeText={setPassword}
-      secureTextEntry={passwordVisible}
-      style={styles.input}
-      rightIcon={
-        <TouchableOpacity
-          onPress={() => setPasswordVisible(!passwordVisible)}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
-          <Entypo name={passwordVisible ? "eye" : "eye-with-line"} size={24} />
-        </TouchableOpacity>
-      }
-    />
-  );
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={{ marginVertical: 10 }}>
@@ -69,7 +50,19 @@ export const Login = ({ navigation }) => {
         style={styles.input}
         onChangeText={(text) => setEmail(text)}
       />
-      <PasswordInput />
+      <Input
+        label="Password"
+        onChangeText={setPassword}
+        secureTextEntry={passwordVisible}
+        style={styles.input}
+        rightIcon={
+          <TouchableOpacity
+            onPress={() => setPasswordVisible(!passwordVisible)}
+          >
+            <Entypo name={passwordVisible ? "eye" : "eye-with-line"} size={24} />
+          </TouchableOpacity>
+        }
+      />
       <Text style={{ color: "red" }}>{error}</Text>
       <TouchableOpacity onPress={handleLogin} style={styles.button}>
         <AntDesign name="login" size={24} color="black" />
