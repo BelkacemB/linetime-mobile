@@ -13,7 +13,7 @@ export const PlaylistTimer = ({ navigation, route }) => {
     suggestions[0]
   );
   const [nextSuggestion, setNextSuggestion] = React.useState(
-    suggestions[1]?? null
+    suggestions[1] ?? null
   );
 
   const totalTime = suggestions.reduce(
@@ -30,17 +30,21 @@ export const PlaylistTimer = ({ navigation, route }) => {
   });
 
   const onUpdate = (time: number) => {
-    const timePassed = totalTime*60 - time;
+    const timePassed = totalTime * 60 - time;
     let matchingSuggestion = suggestionsWithStartAndEndTime.find(
       (suggestion) =>
-        timePassed >= suggestion.startTime * 60 && timePassed <= suggestion.endTime * 60
+        timePassed >= suggestion.startTime * 60 &&
+        timePassed <= suggestion.endTime * 60
     );
-    let typedSuggestion = suggestions.find((suggestion) => suggestion.id === matchingSuggestion?.id);
+    let typedSuggestion = suggestions.find(
+      (suggestion) => suggestion.id === matchingSuggestion?.id
+    );
     setCurrentSuggestion(typedSuggestion);
   };
 
   useEffect(() => {
-    const followingSuggestion = suggestions[suggestions.indexOf(currentSuggestion) + 1];
+    const followingSuggestion =
+      suggestions[suggestions.indexOf(currentSuggestion) + 1];
     setNextSuggestion(followingSuggestion ?? null);
   }, [currentSuggestion]);
 

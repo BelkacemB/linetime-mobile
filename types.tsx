@@ -25,6 +25,7 @@ export type RootStackParamList = {
   HabitList: undefined;
   AddEditHabit: undefined;
   PlaylistTimer: undefined;
+  BottomTabs: undefined;
 };
 
 export type RootLoginParamList = {

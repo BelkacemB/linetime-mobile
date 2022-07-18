@@ -6,6 +6,8 @@ import {
   deleteHabit,
   getUserHabits,
 } from "../api/HabitService";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase";
 
 type HabitAction =
   | { type: "ADD_HABIT"; habit: Habit }
@@ -92,16 +94,33 @@ const mainReducer = (
 };
 
 const AppProvider = ({ children }) => {
+  const [user] = useAuthState(auth);
+  const [token, setToken] = React.useState("");
+
   const [state, dispatch] = useReducer(mainReducer, initialState);
 
   const loadHabits = async () => {
-    const habits = await getUserHabits(state.userId, state.token);
+    const habits = await getUserHabits(state.userId, token);
     dispatch({ type: "LOAD_HABITS", habits });
   };
 
   useEffect(() => {
-    loadHabits();
-  }, [state.token]);
+    if (user) {
+      user.getIdToken().then((token) => {
+        setToken(token);
+      })
+    }
+  }, [user]);
+
+  // Set the user token and user id on mount
+  useEffect(() => {
+    if (user) {
+      dispatch({ type: "SET_TOKEN", token: token });
+      dispatch({ type: "SET_USER_ID", userId: user.uid });
+      loadHabits();
+    }
+  }
+  , [user, token]);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>

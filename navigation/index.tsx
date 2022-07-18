@@ -19,6 +19,7 @@ import App from "../App";
 import { Skeleton } from "@rneui/base";
 import { AppProvider } from "../model/Store";
 import { PlaylistTimer } from "../screens/suggestions/PlaylistTimer";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 export default function Navigation({
   colorScheme,
@@ -46,6 +47,11 @@ function RootNavigator() {
   return (
     <AppProvider>
       <HomeStack.Navigator>
+        <HomeStack.Screen
+          name="BottomTabs"
+          component={BottomTabsNavigator}
+          options={{ headerShown: false }}
+        />
         <HomeStack.Screen
           name="Home"
           component={HomeScreen}
@@ -77,6 +83,7 @@ function RootNavigator() {
           component={AddEditHabit}
           options={{ title: "Add/edit habit" }}
         />
+        {/* Add the bottom tab navigator to the stack navigator */}
       </HomeStack.Navigator>
     </AppProvider>
   );
@@ -90,7 +97,7 @@ function LoginNavigator() {
       <LoginStack.Screen
         name="Login"
         component={Login}
-        options={{ headerShown: false }}
+        options={{ headerShown: true }}
       />
       <LoginStack.Screen
         name="SignUp"
@@ -98,6 +105,17 @@ function LoginNavigator() {
         options={{ headerShown: false }}
       />
     </LoginStack.Navigator>
+  );
+}
+
+const BottomTab = createBottomTabNavigator();
+
+function BottomTabsNavigator() {
+  return (
+    <BottomTab.Navigator>
+      <BottomTab.Screen name="Playlist" component={HabitList} />
+      <BottomTab.Screen name="Play" component={SuggestionForm} />
+    </BottomTab.Navigator>
   );
 }
 

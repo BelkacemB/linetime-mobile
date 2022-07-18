@@ -63,41 +63,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         lightColor={primaryColor}
         darkColor="rgba(255,255,255,0.1)"
       />
-      <View style={{ flexDirection: "row", width: "95%" }}>
-        <TouchableOpacity
-          style={{
-            width: "70%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            ...styles.card,
-          }}
-          onPress={() => navigation.navigate("HabitList")}
-        >
-          <View style={{ flexDirection: "column", width: "40%" }}>
-            <Text style={styles.welcome}>Playlist</Text>
-            <Text>{}</Text>
-            <Text style={{ fontSize: 16 }}>
-              <Badge status="success" /> {state.habits?.length} habits
-            </Text>
-            <Text style={{ fontSize: 16 }}>
-              <Badge status="primary" /> {tags?.length} tags
-            </Text>
-          </View>
-          <View>
-            <Image
-              source={require("../assets/images/compact-cassette.png")}
-              style={{ width: 130, height: 100 }}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("SuggestionForm")}
-          style={{ width: "25%", ...styles.card }}
-        >
-          <Text style={styles.welcome}>Play</Text>
-          <Entypo name="shuffle" size={40} color="black" />
-        </TouchableOpacity>
-      </View>
+
       <View
         style={styles.separator}
         lightColor={primaryColor}
