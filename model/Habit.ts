@@ -1,5 +1,10 @@
 export type TimeOfDay = "Morning" | "Afternoon" | "Evening" | "Night";
 
+export type CheckIn = {
+  checkInTime: Date;
+  note: string;
+};
+
 export default class Habit {
   id?: string;
   name: string;
@@ -11,7 +16,7 @@ export default class Habit {
   userId: string;
   timesOfDay: string[];
   tags?: string[];
-  clockInTimes: Date[] = [];
+  clockInTimes: CheckIn[] = [];
   lastDone: Date;
 
   // Constructor for Habit from JSON
@@ -25,7 +30,10 @@ export default class Habit {
     habit.userId = json.userId;
     habit.timesOfDay = json.timesOfDay;
     habit.tags = json.tags;
-    habit.clockInTimes = json.clockInTimes?.map((time) => new Date(time));
+    habit.clockInTimes = json.clockInTimes?.map((checkIn) => ({
+      checkInTime: new Date(checkIn.checkInTime),
+      note: checkIn.note,
+    }));
     return habit;
   }
 
@@ -42,15 +50,33 @@ export default class Habit {
     if (this.clockInTimes.length >= 10) {
       this.clockInTimes.shift();
     }
-    this.clockInTimes.push(now);
+    this.clockInTimes.push({
+      checkInTime: now,
+      note: "",
+    });
 
+    this.lastDone = now;
+  }
+
+  clockInWithNote(note: string): void {
+    const now: Date = new Date();
+    if (!this.clockInTimes) {
+      this.clockInTimes = [];
+    }
+    if (this.clockInTimes.length >= 10) {
+      this.clockInTimes.shift();
+    }
+    this.clockInTimes.push({
+      checkInTime: now,
+      note,
+    });
     this.lastDone = now;
   }
 
   getLastDone(): Date | undefined {
     // Get most recent clock in time if clockInTimes defined and not empty
     if (this.clockInTimes.length > 0) {
-      return this.clockInTimes[this.clockInTimes.length - 1];
+      return this.clockInTimes[this.clockInTimes.length - 1].checkInTime;
     }
     return undefined;
   }
@@ -112,7 +138,7 @@ export class HabitBuilder {
     return this;
   }
 
-  setClockInTimes(clockInTimes: Date[]) {
+  setClockInTimes(clockInTimes: CheckIn[]) {
     this._habit.clockInTimes = clockInTimes;
     return this;
   }
