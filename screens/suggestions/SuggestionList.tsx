@@ -164,11 +164,12 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: 20,
+    marginHorizontal: 5,
     shadowOpacity: 0.2,
-    borderWidth: 0.1,
     borderRadius: 10,
     padding: 10,
     width: "35%",
+    elevation: 5,
     alignItems: "center",
     shadowColor: "#000",
   },
