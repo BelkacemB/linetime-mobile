@@ -101,7 +101,7 @@ export const AddEditHabit = ({ navigation, route }) => {
       dispatch({ type: "ADD_HABIT", habit: newHabit });
     }
 
-    navigation.navigate("HabitList");
+    navigation.goBack();
   }
 
   return (

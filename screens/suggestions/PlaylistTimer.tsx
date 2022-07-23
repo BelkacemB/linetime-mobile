@@ -83,7 +83,7 @@ export const PlaylistTimer = ({ navigation, route }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.navigate("HabitList");
+          navigation.goBack();
         }}
       >
         <MaterialIcons name="cancel" size={24} color="black" />

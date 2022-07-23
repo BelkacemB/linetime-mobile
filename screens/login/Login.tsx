@@ -19,7 +19,7 @@ const errorCodeToMessage = {
 export const Login = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [passwordVisible, setPasswordVisible] = React.useState(false);
+  const [passwordVisible, setPasswordVisible] = React.useState(true);
   const [error, setError] = React.useState("");
 
   const handleLogin = () => {

@@ -43,7 +43,7 @@ export const SuggestionList = ({ navigation, route }) => {
             dispatch({ type: "UPDATE_HABIT", habit: matchingHabit });
           }
         });
-        navigation.navigate("Home");
+        navigation.goBack();
       },
     });
   };
@@ -53,7 +53,7 @@ export const SuggestionList = ({ navigation, route }) => {
   };
 
   const onRejectAll = () => {
-    navigation.navigate("SuggestionForm");
+    navigation.goBack();
   };
 
   const renderHiddenItem = (data) => (

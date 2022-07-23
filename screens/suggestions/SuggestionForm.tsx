@@ -14,10 +14,7 @@ import useUserToken from "../../hooks/useUserToken";
 import useHabitTags from "../../hooks/useHabitTags";
 import { SelectChip } from "../../components/SelectChip";
 import SimpleLineIcons from "@expo/vector-icons/build/SimpleLineIcons";
-import {
-  Feather,
-  Ionicons,
-} from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { getDefaultEnergyLevel } from "../../constants/Util";
 import { AppContext } from "../../model/Store";
 
@@ -71,7 +68,7 @@ export default function SuggestionForm({
       suggestionRequest.localTime = time;
     }
     fetchSuggestions(suggestionRequest).then((suggestions) => {
-      navigation.navigate("SuggestionList", { listOfSuggestions: suggestions });
+      navigation.push("SuggestionList", { listOfSuggestions: suggestions });
     });
   };
 

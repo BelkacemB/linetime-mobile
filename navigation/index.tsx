@@ -15,12 +15,12 @@ import { Login } from "../screens/login/Login";
 import { SignUp } from "../screens/login/SignUp";
 import { AddEditHabit } from "../screens/habits/AddEditHabit";
 import App from "../App";
-import { Skeleton } from "@rneui/base";
 import { AppProvider } from "../model/Store";
 import { PlaylistTimer } from "../screens/suggestions/PlaylistTimer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { secondaryColor } from "../constants/Colors";
+import { SplashScreen } from "../screens/SplashScreen";
 
 export default function Navigation({
   colorScheme,
@@ -31,7 +31,7 @@ export default function Navigation({
 
   return (
     <NavigationContainer linking={LinkingConfiguration} theme={DefaultTheme}>
-      {loading && <Skeleton style={{ width: "100%", height: "100%" }} />}
+      {loading && <SplashScreen />}
       {error && <Text> {error.message} </Text>}
       {user ? <RootNavigator /> : <LoginNavigator />}
     </NavigationContainer>
@@ -109,7 +109,7 @@ const BottomTab = createBottomTabNavigator();
 function BottomTabsNavigator() {
   return (
     <BottomTab.Navigator
-      initialRouteName="Play"
+      initialRouteName="Optimize"
       screenOptions={{
         tabBarActiveTintColor: secondaryColor,
         tabBarInactiveTintColor: "gray",
