@@ -45,23 +45,18 @@ export async function deleteHabit(habit: Habit, token: string) {
   });
 }
 
-let apiCallCount = 0;
-
 export async function getUserHabits(
   userId: string,
   token: string
 ): Promise<Habit[]> {
-  apiCallCount++;
-  return fetch(`${API_URL}/${userId}`, {
+  let response = await fetch(`${API_URL}/${userId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  })
-    .then((response) => response.json())
-    .then((json) => json.map((habit) => Habit.fromJSON(habit)))
-    .catch((error) => {
-      console.log(error);
-      return [];
-    });
+  });
+  let json = await response.json();
+  let habitCollection: any[] = json;
+  // Apply habit.fromJson to each habit in the json response
+  return habitCollection.map((habitJson) => Habit.fromJSON(habitJson));
 }
