@@ -116,6 +116,6 @@ const styles = StyleSheet.create({
     width: "35%",
     alignItems: "center",
     shadowColor: "#000",
-    elevation: 5
+    elevation: 5,
   },
 });
