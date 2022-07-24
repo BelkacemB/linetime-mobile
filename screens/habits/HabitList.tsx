@@ -1,12 +1,18 @@
 import React, { useContext, useEffect } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+} from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { Button, Dialog } from "@rneui/base";
 
 import { SearchBar, Text } from "@rneui/themed";
 import { HabitElement } from "../../components/HabitElement";
 import { TouchableOpacity, View } from "../../components/Themed";
-import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 
 import { AppContext } from "../../model/Store";
 import Habit from "../../model/Habit";
@@ -16,6 +22,7 @@ import { ConfirmCheckIn } from "../../components/dialogs/ConfirmCheckIn";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
+import { CheckInList } from "../../components/CheckInList";
 
 export const HabitList = ({ navigation }) => {
   const {
@@ -26,7 +33,13 @@ export const HabitList = ({ navigation }) => {
   const [searchText, setSearchText] = React.useState("");
   const [filteredHabits, setFilteredHabits] = React.useState(allHabits);
   const [habitToDelete, setHabitToDelete] = React.useState(null);
+
   const [habitToCheckIn, setHabitToCheckIn] = React.useState(null);
+  const [checkInNote, setCheckInNote] = React.useState("");
+
+  const [historyModalVisible, setHistoryModalVisible] = React.useState(false);
+  const [habitToHistory, setHabitToHistory] = React.useState(null);
+
   const { tags, selectedTags, toggleTagSelection } = useHabitTags(allHabits);
 
   useEffect(() => {
@@ -52,9 +65,15 @@ export const HabitList = ({ navigation }) => {
   };
 
   const onCheckIn = (habit: Habit) => {
-    habit.clockIn();
+    habit.clockInWithNote(checkInNote);
     dispatch({ type: "UPDATE_HABIT", habit: habit });
     setHabitToCheckIn(null);
+    setCheckInNote("");
+  };
+
+  const viewHabitHistory = (habit: Habit) => {
+    setHabitToHistory(habit);
+    setHistoryModalVisible(true);
   };
 
   const renderHiddenItem = (data, rowMap) => (
@@ -68,13 +87,9 @@ export const HabitList = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => {
-          navigation.navigate("AddEditHabit", {
-            habit: data.item,
-          });
-        }}
+        onPress={() => viewHabitHistory(data.item)}
       >
-        <AntDesign name="edit" size={24} color="black" />
+        <Ionicons name="ios-newspaper-outline" size={24} color="black" />
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -104,6 +119,7 @@ export const HabitList = ({ navigation }) => {
         <Text>
           Are you sure you want to delete the habit "{habitToDelete?.name}"?
         </Text>
+
         <Dialog.Actions>
           <Dialog.Button
             title="Yes"
@@ -129,7 +145,30 @@ export const HabitList = ({ navigation }) => {
         onCancel={() => {
           setHabitToCheckIn(null);
         }}
+        onChangeNote={setCheckInNote}
       />
+
+      {/* Habit history modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={historyModalVisible}
+        onRequestClose={() => {
+          setHistoryModalVisible(!historyModalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <CheckInList habits={[habitToHistory]} />
+          <Pressable
+            style={[styles.button]}
+            onPress={() => setHistoryModalVisible(!historyModalVisible)}
+          >
+            <Text style={{ color: "red", borderRadius: 5, borderWidth: 0.5 }}>
+              Hide history
+            </Text>
+          </Pressable>
+        </View>
+      </Modal>
 
       {/* Search bar */}
       <View>
@@ -270,5 +309,26 @@ const styles = StyleSheet.create({
   },
   backRightBtnRight: {
     right: 0,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
