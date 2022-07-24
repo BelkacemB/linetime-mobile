@@ -21,12 +21,14 @@ type InitialStateType = {
   habits: Habit[];
   token: string;
   userId: string;
+  status: string;
 };
 
 const initialState = {
   habits: [] as Habit[],
   token: "",
   userId: "",
+  status: "initial",
 };
 
 const persistHabitAndGetId = async (
@@ -77,6 +79,7 @@ const mainReducer = (
       return {
         ...state,
         habits: action.habits,
+        status: "loaded",
       };
     case "SET_TOKEN":
       return {

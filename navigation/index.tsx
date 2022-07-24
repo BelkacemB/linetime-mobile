@@ -31,9 +31,14 @@ export default function Navigation({
 
   return (
     <NavigationContainer linking={LinkingConfiguration} theme={DefaultTheme}>
-      {loading && <SplashScreen />}
-      {error && <Text> {error.message} </Text>}
-      {user ? <RootNavigator /> : <LoginNavigator />}
+      {loading ? (
+        <SplashScreen />
+      ) : (
+        <>
+          {error && <Text> {error.message} </Text>}
+          {user ? <RootNavigator /> : <LoginNavigator />}
+        </>
+      )}
     </NavigationContainer>
   );
 }

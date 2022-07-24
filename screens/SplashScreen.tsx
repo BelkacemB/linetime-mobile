@@ -1,15 +1,11 @@
 import React from "react";
-import { View } from "../components/Themed";
+import { Text, View } from "../components/Themed";
 import { StyleSheet } from "react-native";
-import { Image } from "@rneui/base";
 
 export const SplashScreen = () => {
   return (
     <View style={styles.splashScreen}>
-      <Image
-        source={require("../assets/images/compact-cassette.png")}
-        style={{ width: 100, height: 100 }}
-      />
+      <Text style={{fontSize: 40}}>LineTime</Text>
     </View>
   );
 };

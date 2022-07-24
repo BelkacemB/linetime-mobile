@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet } from "react-native";
 
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import RNPickerSelect from "react-native-picker-select";
-import { Switch } from "@rneui/base";
+import { LinearProgress, Switch } from "@rneui/base";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 
 import { fetchSuggestions, SuggestionRequest } from "../../api/LinetimeService";
@@ -29,7 +29,7 @@ export default function SuggestionForm({
 }: RootTabScreenProps<"SuggestionForm">) {
   const userToken = useUserToken();
   const {
-    state: { habits },
+    state: { habits, status },
   } = useContext(AppContext);
   // Form state
   const [energy, setEnergy] = useState<number>(getDefaultEnergyLevel());
@@ -38,15 +38,6 @@ export default function SuggestionForm({
 
   // UI state
   const [timeSpecific, setTimeSpecific] = useState(false);
-
-  const handleTimeSlide = (value: number) => {
-    const minutes = Math.round(value / 3);
-    // Do not update state on the first rendering
-    if (minutes !== timeInMinutes) {
-      setTimeInMinutes(minutes);
-    }
-    return minutes;
-  };
 
   const onSubmit = () => {
     // Get local time in hh:mm format withouth seconds
@@ -151,16 +142,22 @@ export default function SuggestionForm({
             justifyContent: "center",
           }}
         >
-          {tags.map((tag) => (
-            <SelectChip
-              label={tag.toLowerCase()}
-              key={tag}
-              onPress={() => {
-                toggleTagSelection(tag);
-              }}
-              selected={selectedTags.includes(tag)}
-            />
-          ))}
+          {status !== "loaded" ? (
+            <LinearProgress style={{ margin: 10, width: "90%" }} />
+          ) : (
+            <>
+              {tags.map((tag) => (
+                <SelectChip
+                  label={tag.toLowerCase()}
+                  key={tag}
+                  onPress={() => {
+                    toggleTagSelection(tag);
+                  }}
+                  selected={selectedTags.includes(tag)}
+                />
+              ))}
+            </>
+          )}
         </View>
       </View>
       <View
