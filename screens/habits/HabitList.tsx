@@ -1,18 +1,18 @@
 import React, { useContext, useEffect } from "react";
 import {
   Modal,
-  Pressable,
   ScrollView,
-  StyleSheet,
-  TextInput,
+  StyleSheet
 } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { Button, Dialog } from "@rneui/base";
 
 import { SearchBar, Text } from "@rneui/themed";
+import { secondaryColor } from "../../constants/Colors";
 import { HabitElement } from "../../components/HabitElement";
 import { TouchableOpacity, View } from "../../components/Themed";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
 
 import { AppContext } from "../../model/Store";
 import Habit from "../../model/Habit";
@@ -166,6 +166,7 @@ export const HabitList = ({ navigation }) => {
             style={styles.modalButton}
             onPress={() => setHistoryModalVisible(!historyModalVisible)}
           >
+            <FontAwesome name="remove" size={24} color="black" />
             <Text style={{ fontSize: 20 }}>
               Hide
             </Text>
@@ -283,6 +284,8 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   modalButton: {
+    flexDirection: "row",
+    justifyContent: "space-around",
     shadowOpacity: 0.2,
     elevation: 5,
     borderRadius: 10,
@@ -308,6 +311,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingLeft: 15,
+    borderBottomColor: secondaryColor,
+    borderBottomWidth: 0.5
   },
   backRightBtn: {
     alignItems: "center",
@@ -315,13 +320,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "absolute",
     top: 0,
-    width: 75,
+    width: 75
   },
   backRightBtnLeft: {
-    right: 75,
+    right: 75
   },
   backRightBtnRight: {
-    right: 0,
+    right: 0
   },
   modalView: {
     backgroundColor: "white",
