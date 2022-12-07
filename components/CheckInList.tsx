@@ -1,6 +1,7 @@
 import React from "react";
 import Habit from "../model/Habit";
 import { View, Text } from "./Themed";
+import { StyleSheet } from "react-native";
 
 type Props = {
   habits: Habit[];
@@ -31,23 +32,50 @@ export const CheckInList = ({ habits }: Props) => {
     return b.checkInTime.getTime() - a.checkInTime.getTime();
   });
 
+  // Function that the date to "N days ago" or "N hours ago" if it's less than 24 hours
+  const formatDate = (date: Date): string => {
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const diffInHours = diff / (1000 * 60 * 60);
+    if (diffInHours < 24) {
+      return `${Math.round(diffInHours)} hours ago`;
+    } else {
+      return `${Math.round(diffInHours / 24)} days ago`;
+    }
+  };
+
   return (
     <View>
-      {/* TODO Use a proper flatlist here? */}
-      {habits && habits.length == 1 && (
-        <Text>Logs for habit "{habits[0].name}"</Text>
-      )}
       {sortedCheckIns.map((checkIn) => {
         return (
           <View
             key={checkIn.checkInTime.getTime()}
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
+            style={styles.checkInElement}
           >
-            <Text>{checkIn.checkInTime.toLocaleString()}</Text>
-            <Text>{checkIn.note}</Text>
+            <Text style={{ fontWeight: "bold" }}>
+              {formatDate(checkIn.checkInTime)}
+            </Text>
+            <Text
+              style = {{
+                fontSize: 16,
+                textAlign: "center",
+                width: "50%",
+              }}
+            >{checkIn.note}
+            </Text>
           </View>
         );
       })}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  checkInElement: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#fff",
+    padding: 5,
+    marginVertical: 5
+  }
+});

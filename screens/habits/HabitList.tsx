@@ -105,7 +105,8 @@ export const HabitList = ({ navigation }) => {
   );
 
   return (
-    <>
+    <View 
+    style={{ flexDirection: "column", alignContent: "center" }}>
       {/* Confirm delete */}
       <Dialog
         isVisible={habitToDelete !== null}
@@ -157,16 +158,18 @@ export const HabitList = ({ navigation }) => {
           setHistoryModalVisible(!historyModalVisible);
         }}
       >
-        <View style={styles.centeredView}>
-          <CheckInList habits={[habitToHistory]} />
-          <Pressable
-            style={[styles.button]}
+        <View style={styles.modalView}>
+          <CheckInList
+            habits={[habitToHistory]}
+          />
+          <TouchableOpacity
+            style={styles.modalButton}
             onPress={() => setHistoryModalVisible(!historyModalVisible)}
           >
-            <Text style={{ color: "red", borderRadius: 5, borderWidth: 0.5 }}>
-              Hide history
+            <Text style={{ fontSize: 20 }}>
+              Hide
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </Modal>
 
@@ -255,7 +258,7 @@ export const HabitList = ({ navigation }) => {
         previewOpenValue={-40}
         previewOpenDelay={3000}
       />
-    </>
+    </View>
   );
 };
 
@@ -278,6 +281,16 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 5,
+  },
+  modalButton: {
+    shadowOpacity: 0.2,
+    elevation: 5,
+    borderRadius: 10,
+    padding: 10,
+    width: "40%",
+    alignItems: "center",
+    shadowColor: "#000",
+    marginTop: 10
   },
   backTextWhite: {
     color: "#FFF",
@@ -310,14 +323,7 @@ const styles = StyleSheet.create({
   backRightBtnRight: {
     right: 0,
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
-  },
   modalView: {
-    margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -329,6 +335,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 5
   },
 });
