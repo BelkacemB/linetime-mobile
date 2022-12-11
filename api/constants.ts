@@ -1,2 +1,4 @@
+import {REACT_APP_API_ENDPOINT} from '@env';
+
 export const API_ADDRESS =
-  "https://t4fy8hulxb.execute-api.us-east-2.amazonaws.com/prod"; //  "192.168.1.44:8000";
+  REACT_APP_API_ENDPOINT; //  "192.168.1.44:8000";
