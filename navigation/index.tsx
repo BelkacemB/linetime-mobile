@@ -21,6 +21,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { secondaryColor } from "../constants/Colors";
 import { SplashScreen } from "../screens/SplashScreen";
+import { PlaylistsList } from "../screens/playlists/PlaylistsList";
 
 export default function Navigation({
   colorScheme,
@@ -130,8 +131,21 @@ function BottomTabsNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Playlist"
+        name="Habits"
         component={HabitList}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="meditation"
+              size={24}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Playlists"
+        component={PlaylistsList}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons

@@ -26,7 +26,7 @@ import { CheckInList } from "../../components/CheckInList";
 
 export const HabitList = ({ navigation }) => {
   const {
-    state: { habits: allHabits, token, userId },
+    state: { habits: allHabits },
     dispatch,
   } = useContext(AppContext);
 

@@ -33,9 +33,7 @@ const initialState = {
 
 const persistHabitAndGetId = async (
   habit: Habit,
-  token: string,
-  userId: string
-) => {
+  token: string) => {
   const id = await persistHabit(habit, token);
   return id;
 };
@@ -51,7 +49,7 @@ const mainReducer = (
 ): InitialStateType => {
   switch (action.type) {
     case "ADD_HABIT":
-      persistHabitAndGetId(action.habit, state.token, state.userId).then(
+      persistHabitAndGetId(action.habit, state.token).then(
         (id) => {
           action.habit.id = id;
         }
