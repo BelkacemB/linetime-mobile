@@ -8,17 +8,21 @@ import {
 } from "../api/HabitService";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
+import Playlist from "./Playlist";
+import { getUserPlaylists } from "../api/PlaylistService";
 
 type HabitAction =
   | { type: "ADD_HABIT"; habit: Habit }
   | { type: "UPDATE_HABIT"; habit: Habit }
   | { type: "DELETE_HABIT"; habit: Habit }
   | { type: "LOAD_HABITS"; habits: Habit[] }
+  | { type: "LOAD_PLAYLISTS"; playlists: Playlist[] }
   | { type: "SET_TOKEN"; token: string }
   | { type: "SET_USER_ID"; userId: string };
 
 type InitialStateType = {
   habits: Habit[];
+  playlists: Playlist[],
   token: string;
   userId: string;
   status: string;
@@ -26,6 +30,7 @@ type InitialStateType = {
 
 const initialState = {
   habits: [] as Habit[],
+  playlists: [] as Playlist[],
   token: "",
   userId: "",
   status: "initial",
@@ -79,6 +84,12 @@ const mainReducer = (
         habits: action.habits,
         status: "loaded",
       };
+    case "LOAD_PLAYLISTS":
+      return {
+        ...state,
+        playlists: action.playlists,
+        status: "loaded",
+      };
     case "SET_TOKEN":
       return {
         ...state,
@@ -103,6 +114,11 @@ const AppProvider = ({ children }) => {
   const loadHabits = async () => {
     const habits = await getUserHabits(state.userId, token);
     dispatch({ type: "LOAD_HABITS", habits });
+  };
+
+  const loadPlaylists = async () => {
+    const playlists = await getUserPlaylists(state.userId, token);
+    dispatch({ type: "LOAD_PLAYLISTS", playlists });
   };
 
   useEffect(() => {

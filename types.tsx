@@ -24,6 +24,7 @@ export type RootStackParamList = {
   SuggestionList: { listOfSuggestions: Suggestion[] };
   HabitList: undefined;
   AddEditHabit: undefined;
+  AddEditPlaylist: undefined;
   PlaylistTimer: undefined;
   BottomTabs: undefined;
 };

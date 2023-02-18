@@ -22,6 +22,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { secondaryColor } from "../constants/Colors";
 import { SplashScreen } from "../screens/SplashScreen";
 import { PlaylistsList } from "../screens/playlists/PlaylistsList";
+import { AddEditPLaylist } from "../screens/playlists/AddEditPLaylist";
 
 export default function Navigation({
   colorScheme,
@@ -84,6 +85,11 @@ function RootNavigator() {
           name="AddEditHabit"
           component={AddEditHabit}
           options={{ title: "Add/edit habit" }}
+        />
+        <HomeStack.Screen
+          name="AddEditPlaylist"
+          component={AddEditPLaylist}
+          options={{ title: "Add/edit playlist" }}
         />
         {/* Add the bottom tab navigator to the stack navigator */}
       </HomeStack.Navigator>
