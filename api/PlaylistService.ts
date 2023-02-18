@@ -1,7 +1,7 @@
 import Playlist from "../model/Playlist";
-import { API_ADDRESS } from "./constants";
+import Constants from "expo-constants";
 
-const API_URL = `${API_ADDRESS}/playlists`;
+const API_URL = `${Constants.manifest.extra.apiUrl}/playlists`;
 
 export async function persistPlaylist(
     playlist: Playlist,
