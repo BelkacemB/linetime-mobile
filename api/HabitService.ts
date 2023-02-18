@@ -1,5 +1,7 @@
 import Habit from "../model/Habit";
-import { API_ADDRESS } from "./constants";
+import Constants from "expo-constants";
+
+const API_ADDRESS = Constants.manifest.extra.apiUrl;
 
 const API_URL = `${API_ADDRESS}/habits`;
 
