@@ -32,7 +32,7 @@ module.exports = {
         web: {
             favicon: "./assets/images/favicon.png"
         },
-        sdkVersion: "45.0.0",
+        sdkVersion: "48.0.0",
         extra: {
             apiUrl: process.env.API_URL
         }
