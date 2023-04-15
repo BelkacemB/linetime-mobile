@@ -34,7 +34,7 @@ module.exports = {
         },
         sdkVersion: "48.0.0",
         extra: {
-            apiUrl: process.env.API_URL
+            apiUrl: process.env.API_URL || "https://t4fy8hulxb.execute-api.us-east-2.amazonaws.com/prod"
         }
     },
     name: "linetime-mobile",
