@@ -141,11 +141,7 @@ function BottomTabsNavigator() {
         component={HabitList}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="meditation"
-              size={24}
-              color={color}
-            />
+            <MaterialCommunityIcons name="meditation" size={24} color={color} />
           ),
         }}
       />

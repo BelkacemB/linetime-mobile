@@ -12,11 +12,13 @@ export default function useHabitTags(habits: Habit[]) {
   }, [habits]);
 
   const toggleTagSelection = (tag: string) => {
+    const startTime = new Date().getTime();
     if (selectedTags?.includes(tag)) {
       setSelectedTags(selectedTags.filter((t) => t !== tag));
     } else {
       setSelectedTags([...selectedTags, tag]);
     }
+    console.log("toggleTagSelection took: ", new Date().getTime() - startTime);
   };
 
   const onAddTag = () => {

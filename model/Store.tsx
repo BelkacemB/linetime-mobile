@@ -22,7 +22,7 @@ type HabitAction =
 
 type InitialStateType = {
   habits: Habit[];
-  playlists: Playlist[],
+  playlists: Playlist[];
   token: string;
   userId: string;
   status: string;
@@ -36,9 +36,7 @@ const initialState = {
   status: "initial",
 };
 
-const persistHabitAndGetId = async (
-  habit: Habit,
-  token: string) => {
+const persistHabitAndGetId = async (habit: Habit, token: string) => {
   const id = await persistHabit(habit, token);
   return id;
 };
@@ -54,11 +52,9 @@ const mainReducer = (
 ): InitialStateType => {
   switch (action.type) {
     case "ADD_HABIT":
-      persistHabitAndGetId(action.habit, state.token).then(
-        (id) => {
-          action.habit.id = id;
-        }
-      );
+      persistHabitAndGetId(action.habit, state.token).then((id) => {
+        action.habit.id = id;
+      });
       return {
         ...state,
         habits: [...state.habits, action.habit],

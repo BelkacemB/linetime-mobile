@@ -1,9 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import {
-  Modal,
-  ScrollView,
-  StyleSheet
-} from "react-native";
+import { Modal, ScrollView, StyleSheet } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { Button, Dialog } from "@rneui/base";
 
@@ -12,7 +8,7 @@ import { secondaryColor } from "../../constants/Colors";
 import { HabitElement } from "../../components/HabitElement";
 import { TouchableOpacity, View } from "../../components/Themed";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 
 import { AppContext } from "../../model/Store";
 import Habit from "../../model/Habit";
@@ -44,6 +40,7 @@ export const HabitList = ({ navigation }) => {
 
   useEffect(() => {
     // Filter on selected tags
+    const useEffectStartTimestamp = new Date().getTime();
     let searchedHabits = filteredHabits;
     if (selectedTags.length > 0) {
       searchedHabits = allHabits.filter((habit) => {
@@ -52,12 +49,21 @@ export const HabitList = ({ navigation }) => {
     } else {
       searchedHabits = allHabits;
     }
-
+    // Log search duration
+    const searchStart = new Date().getTime();
     searchedHabits = searchedHabits.filter((habit) =>
       habit.name.toLowerCase().includes(searchText.toLowerCase())
     );
+    const searchEnd = new Date().getTime();
+    console.log("Search duration: " + (searchEnd - searchStart) + "ms");
 
     setFilteredHabits(searchedHabits);
+    const useEffectEndTimestamp = new Date().getTime();
+    console.log(
+      "useEffect duration: " +
+        (useEffectEndTimestamp - useEffectStartTimestamp) +
+        "ms"
+    );
   }, [selectedTags, searchText, allHabits]);
 
   const removeHabit = (habit: Habit) => {
@@ -105,8 +111,7 @@ export const HabitList = ({ navigation }) => {
   );
 
   return (
-    <View 
-    style={{ flexDirection: "column", alignContent: "center" }}>
+    <View style={{ flexDirection: "column", alignContent: "center" }}>
       {/* Confirm delete */}
       <Dialog
         isVisible={habitToDelete !== null}
@@ -159,17 +164,13 @@ export const HabitList = ({ navigation }) => {
         }}
       >
         <View style={styles.modalView}>
-          <CheckInList
-            habits={[habitToHistory]}
-          />
+          <CheckInList habits={[habitToHistory]} />
           <TouchableOpacity
             style={styles.modalButton}
             onPress={() => setHistoryModalVisible(!historyModalVisible)}
           >
             <FontAwesome name="remove" size={24} color="black" />
-            <Text style={{ fontSize: 20 }}>
-              Hide
-            </Text>
+            <Text style={{ fontSize: 20 }}>Hide</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -235,7 +236,10 @@ export const HabitList = ({ navigation }) => {
                   label={tag.toLowerCase()}
                   key={tag}
                   onPress={() => {
+                    const startTime = new Date().getTime();
                     toggleTagSelection(tag);
+                    const endTime = new Date().getTime();
+                    console.log("Time to toggle tag: " + (endTime - startTime));
                   }}
                   selected={selectedTags.includes(tag)}
                 />
@@ -293,7 +297,7 @@ const styles = StyleSheet.create({
     width: "40%",
     alignItems: "center",
     shadowColor: "#000",
-    marginTop: 10
+    marginTop: 10,
   },
   backTextWhite: {
     color: "#FFF",
@@ -312,7 +316,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 15,
     borderBottomColor: secondaryColor,
-    borderBottomWidth: 0.5
+    borderBottomWidth: 0.5,
   },
   backRightBtn: {
     alignItems: "center",
@@ -320,13 +324,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "absolute",
     top: 0,
-    width: 75
+    width: 75,
   },
   backRightBtnLeft: {
-    right: 75
+    right: 75,
   },
   backRightBtnRight: {
-    right: 0
+    right: 0,
   },
   modalView: {
     backgroundColor: "white",
@@ -340,6 +344,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
 });
