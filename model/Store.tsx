@@ -9,7 +9,7 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import Playlist from "./Playlist";
-import { getUserPlaylists } from "../api/PlaylistService";
+import { getUserPlaylists, persistPlaylist } from "../api/PlaylistService";
 
 type HabitAction =
   | { type: "ADD_HABIT"; habit: Habit }
@@ -17,6 +17,9 @@ type HabitAction =
   | { type: "DELETE_HABIT"; habit: Habit }
   | { type: "LOAD_HABITS"; habits: Habit[] }
   | { type: "LOAD_PLAYLISTS"; playlists: Playlist[] }
+  | { type: "ADD_PLAYLIST"; playlist: Playlist }
+  | { type: "UPDATE_PLAYLIST"; playlist: Playlist }
+  | { type: "DELETE_PLAYLIST"; playlist: Playlist }
   | { type: "SET_TOKEN"; token: string }
   | { type: "SET_USER_ID"; userId: string };
 
@@ -86,6 +89,26 @@ const mainReducer = (
         playlists: action.playlists,
         status: "loaded",
       };
+    case "ADD_PLAYLIST":
+      persistPlaylist(action.playlist, state.token);
+      return {
+        ...state,
+        playlists: [...state.playlists, action.playlist],
+      };
+    case "UPDATE_PLAYLIST":
+      return {
+        ...state,
+        playlists: state.playlists.map((playlist) =>
+          playlist.id === action.playlist.id ? action.playlist : playlist
+        ),
+      };
+    case "DELETE_PLAYLIST":
+      return {
+        ...state,
+        playlists: state.playlists.filter(
+          (playlist) => playlist.id !== action.playlist.id
+        ),
+      };
     case "SET_TOKEN":
       return {
         ...state,
@@ -131,6 +154,7 @@ const AppProvider = ({ children }) => {
       dispatch({ type: "SET_TOKEN", token: token });
       dispatch({ type: "SET_USER_ID", userId: user.uid });
       loadHabits();
+      loadPlaylists();
     }
   }, [user, token]);
 

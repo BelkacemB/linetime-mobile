@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Text, View } from "../../components/Themed";
+import { Text, TouchableOpacity, View } from "../../components/Themed";
 import SelectDropdown from "react-native-select-dropdown";
 import { StyleSheet, TextInput } from "react-native";
 import { Divider } from "@rneui/themed";
@@ -7,10 +7,12 @@ import { secondaryColor } from "../../constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AppContext } from "../../model/Store";
 import DraggableFlatList from "react-native-draggable-flatlist";
+import { Button } from "@rneui/base";
+import Playlist from "../../model/Playlist";
 
-export const AddEditPLaylist = ({ navigation, route }) => {
+export const AddEditPlaylist = ({ navigation, route }) => {
   const {
-    state: { habits },
+    state: { habits }, dispatch
   } = useContext(AppContext);
 
   const isEditMode = route.params?.playlist !== undefined;
@@ -32,6 +34,14 @@ export const AddEditPLaylist = ({ navigation, route }) => {
       habits.filter((habit) => !playlistHabits.includes(habit))
     );
   }, [playlistHabits]);
+
+  const registerPlaylist = () => {
+    const playlist = new Playlist("", name);
+    playlistHabits.forEach((habit) => {
+      playlist.addHabit(habit.id);
+    });
+    dispatch({ type: "ADD_PLAYLIST", playlist: playlist });
+  };
 
   return (
     <View>
@@ -63,20 +73,22 @@ export const AddEditPLaylist = ({ navigation, route }) => {
           Habits
         </Text>
         <SelectDropdown
-          data={availableHabits.map((habit) => {
-            return habit.name;
-          })}
+          data={availableHabits}
           onSelect={(selectedItem, index) => {
             setPlaylistHabits([...playlistHabits, selectedItem]);
           }}
           buttonTextAfterSelection={(selectedItem, index) => {
-            return selectedItem;
+            return selectedItem.name;
           }}
           rowTextForSelection={(item, index) => {
-            return item;
+            return item.name;
           }}
           onChangeSearchInputText={(text) => {
-            console.log(text);
+            setAvailableHabits(
+              habits.filter((habit) =>
+                habit.name.toLowerCase().includes(text.toLowerCase())
+              )
+            );
           }}
           buttonStyle={styles.textInput}
           buttonTextStyle={{ color: "black" }}
@@ -102,23 +114,44 @@ export const AddEditPLaylist = ({ navigation, route }) => {
       <DraggableFlatList
         data={playlistHabits}
         renderItem={({ item, drag, isActive }) => {
-          return (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginHorizontal: 10,
-              }}
-            >
-              <Text style={{ fontSize: 18, fontWeight: "bold" }}>{item}</Text>
-            </View>
-          );
+          return <RowItem item={item.name} drag={drag} isActive={isActive} />;
         }}
-        keyExtractor={(item, index) => `draggable-item-${item}`}
+        keyExtractor={(item, index) => `draggable-item-${item.name}`}
         onDragEnd={({ data }) => setPlaylistHabits(data)}
       />
+      {/* Save button */}
+      <Button
+        onPress={() => {
+          registerPlaylist();
+          navigation.goBack();
+        }}
+        style={{ margin: 10 }}
+      >
+        Save
+      </Button>
+
     </View>
+  );
+};
+
+const RowItem = ({ item, drag, isActive }) => {
+  return (
+    <TouchableOpacity
+      onLongPress={drag}
+      disabled={isActive}
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginHorizontal: 10,
+        borderBottomColor: "#eee",
+        borderBottomWidth: 1,
+        paddingVertical: 10,
+        backgroundColor: isActive ? secondaryColor : "white",
+      }}
+    >
+      <Text style={{ fontSize: 18, fontWeight: "bold" }}>{item}</Text>
+    </TouchableOpacity>
   );
 };
 

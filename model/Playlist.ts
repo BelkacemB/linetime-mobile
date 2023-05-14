@@ -5,7 +5,7 @@ export default class Playlist {
   id?: string;
   name: string;
   creationDate: Date;
-  habits: Habit[] = [];
+  habits: string[] = [];
   userId: string;
 
   // Constructor for Playlist from JSON
@@ -22,13 +22,13 @@ export default class Playlist {
     this.name = name;
   }
 
-  addHabit(habit: Habit): Playlist {
-    this.habits.push(habit);
+  addHabit(habitId: string): Playlist {
+    this.habits.push(habitId);
     return this;
   }
 
-  removeHabit(habit: Habit): Playlist {
-    this.habits = this.habits.filter((h) => h.id !== habit.id);
+  removeHabit(habitId: string): Playlist {
+    this.habits = this.habits.filter((h) => h !== habitId);
     return this;
   }
 
@@ -37,9 +37,7 @@ export default class Playlist {
     const newPlaylist = new Playlist(this.id, this.name);
     newPlaylist.creationDate = this.creationDate;
     newPlaylist.userId = this.userId;
-    newPlaylist.habits = habitIds.map((id) =>
-      this.habits.find((h) => h.id === id)
-    );
+    newPlaylist.habits = habitIds;
     return newPlaylist;
   }
 }

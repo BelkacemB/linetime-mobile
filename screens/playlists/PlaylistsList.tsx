@@ -4,13 +4,16 @@ import { View, Text } from "../../components/Themed";
 import { AppContext } from "../../model/Store";
 import { SearchBar } from "@rneui/themed";
 import { Button } from "@rneui/base";
-import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { SwipeListView } from "react-native-swipe-list-view";
 
 export const PlaylistsList = ({ navigation }) => {
   const {
     state: { playlists: allPlaylists },
     dispatch,
   } = useContext(AppContext);
+
+  console.log("allPlaylists", allPlaylists);
 
   const [searchText, setSearchText] = React.useState("");
   const [filteredPlaylists, setFilteredPlaylists] =
@@ -50,10 +53,22 @@ export const PlaylistsList = ({ navigation }) => {
           }}
           type="clear"
         />
+
+        <SwipeListView
+          data={filteredPlaylists}
+          renderItem={({ item }) => (
+            <Text
+            >
+              {item.name}
+            </Text>
+          )}
+        />
+              
       </View>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   button: {
