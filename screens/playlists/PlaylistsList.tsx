@@ -64,7 +64,11 @@ export const PlaylistsList = ({ navigation }) => {
       <SwipeListView
         data={filteredPlaylists}
         renderItem={({ item }) => (
-          <PlaylistElement playlist={item} navigation={navigation} />
+          <PlaylistElement
+            playlist={item}
+            navigation={navigation}
+            key={item.id}
+          />
         )}
       />
     </View>

@@ -38,17 +38,16 @@ export const AddEditPlaylist = ({ navigation, route }) => {
   }, [playlistHabits]);
 
   const registerPlaylist = () => {
-    let updatedPlaylist = new Playlist(route.params.playlist.id, name);
-    updatedPlaylist.habits = playlistHabits.map((habit) => habit.id);
-
     if (isEditMode) {
+      let updatedPlaylist = new Playlist(route.params.playlist.id, name);
+      updatedPlaylist.habits = playlistHabits.map((habit) => habit.id);
       dispatch({
         type: "UPDATE_PLAYLIST",
         playlist: updatedPlaylist,
       });
     } else {
       const playlist = new Playlist("", name);
-
+      playlistHabits.forEach((habit) => playlist.addHabit(habit.id));
       dispatch({ type: "ADD_PLAYLIST", playlist: playlist });
     }
   };
