@@ -40,4 +40,10 @@ export default class Playlist {
     newPlaylist.habits = habitIds;
     return newPlaylist;
   }
+
+  // Clear a playlist from all habits (useful for updating a playlist)
+  clearHabits(): Playlist {
+    this.habits = [];
+    return this;
+  }
 }

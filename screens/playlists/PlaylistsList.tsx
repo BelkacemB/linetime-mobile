@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
-import { View, Text } from "../../components/Themed";
+import { View } from "../../components/Themed";
 import { AppContext } from "../../model/Store";
 import { SearchBar } from "@rneui/themed";
 import { Button } from "@rneui/base";
 import { AntDesign } from "@expo/vector-icons";
 import { SwipeListView } from "react-native-swipe-list-view";
+import { PlaylistElement } from "../../components/PlaylistElement";
 
 export const PlaylistsList = ({ navigation }) => {
   const {
@@ -13,11 +14,17 @@ export const PlaylistsList = ({ navigation }) => {
     dispatch,
   } = useContext(AppContext);
 
-  console.log("allPlaylists", allPlaylists);
-
   const [searchText, setSearchText] = React.useState("");
   const [filteredPlaylists, setFilteredPlaylists] =
     React.useState(allPlaylists);
+
+  React.useEffect(() => {
+    setFilteredPlaylists(
+      allPlaylists.filter((playlist) =>
+        playlist.name.toLowerCase().includes(searchText.toLowerCase())
+      )
+    );
+  }, [searchText, allPlaylists]);
 
   return (
     <View style={{ flexDirection: "column", alignContent: "center" }}>
@@ -53,22 +60,16 @@ export const PlaylistsList = ({ navigation }) => {
           }}
           type="clear"
         />
-
-        <SwipeListView
-          data={filteredPlaylists}
-          renderItem={({ item }) => (
-            <Text
-            >
-              {item.name}
-            </Text>
-          )}
-        />
-              
       </View>
+      <SwipeListView
+        data={filteredPlaylists}
+        renderItem={({ item }) => (
+          <PlaylistElement playlist={item} navigation={navigation} />
+        )}
+      />
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   button: {

@@ -9,7 +9,12 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import Playlist from "./Playlist";
-import { getUserPlaylists, persistPlaylist } from "../api/PlaylistService";
+import {
+  getUserPlaylists,
+  persistPlaylist,
+  updatePlaylist,
+  deletePlaylist,
+} from "../api/PlaylistService";
 
 type HabitAction =
   | { type: "ADD_HABIT"; habit: Habit }
@@ -96,6 +101,7 @@ const mainReducer = (
         playlists: [...state.playlists, action.playlist],
       };
     case "UPDATE_PLAYLIST":
+      updatePlaylist(action.playlist, state.token, state.userId);
       return {
         ...state,
         playlists: state.playlists.map((playlist) =>
@@ -103,6 +109,7 @@ const mainReducer = (
         ),
       };
     case "DELETE_PLAYLIST":
+      deletePlaylist(action.playlist, state.token, state.userId);
       return {
         ...state,
         playlists: state.playlists.filter(

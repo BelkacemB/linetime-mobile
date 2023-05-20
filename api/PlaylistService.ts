@@ -34,12 +34,34 @@ export async function getUserPlaylists(
   return json;
 }
 
-export async function deletePlaylist(playlist: Playlist, token: string) {
-  fetch(`${API_URL}/${playlist.userId}/${playlist.id}`, {
+export async function deletePlaylist(
+  playlist: Playlist,
+  token: string,
+  userId: string
+) {
+  console.log(`Deleting playlist ${playlist}`);
+  fetch(`${API_URL}/${userId}/${playlist.id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
+export async function updatePlaylist(
+  playlist: Playlist,
+  token: string,
+  userId: string
+) {
+  fetch(`${API_URL}/${userId}/${playlist.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(playlist),
   }).catch((error) => {
     console.log(error);
   });

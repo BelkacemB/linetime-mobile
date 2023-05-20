@@ -1,34 +1,36 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Text, TouchableOpacity, View } from "../../components/Themed";
 import SelectDropdown from "react-native-select-dropdown";
-import { StyleSheet, TextInput } from "react-native";
+import { ScrollView, StyleSheet, TextInput } from "react-native";
 import { Divider } from "@rneui/themed";
 import { secondaryColor } from "../../constants/Colors";
-import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons";
 import { AppContext } from "../../model/Store";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import { Button } from "@rneui/base";
 import Playlist from "../../model/Playlist";
+import Habit from "../../model/Habit";
 
 export const AddEditPlaylist = ({ navigation, route }) => {
   const {
-    state: { habits }, dispatch
+    state: { habits },
+    dispatch,
   } = useContext(AppContext);
 
   const isEditMode = route.params?.playlist !== undefined;
-  const [name, setName] = useState("");
-  const [playlistHabits, setPlaylistHabits] = useState([]);
+
+  const initHabits: Habit[] = isEditMode
+    ? route.params.playlist.habits.map((habitId) =>
+        habits.find((habit) => habit.id === habitId)
+      )
+    : [];
+
+  const initName = isEditMode ? route.params.playlist.name : "";
+
+  const [name, setName] = useState(initName);
+  const [playlistHabits, setPlaylistHabits] = useState(initHabits);
   const [availableHabits, setAvailableHabits] = useState([]);
 
-  useEffect(() => {
-    if (isEditMode) {
-      setName(route.params.playlist.name);
-      setPlaylistHabits(route.params.playlist.habits);
-    }
-    setAvailableHabits(habits);
-  }, []);
-
-  // Everytime a habit is added or removed from the playlist, update the available habits
   useEffect(() => {
     setAvailableHabits(
       habits.filter((habit) => !playlistHabits.includes(habit))
@@ -36,37 +38,44 @@ export const AddEditPlaylist = ({ navigation, route }) => {
   }, [playlistHabits]);
 
   const registerPlaylist = () => {
-    const playlist = new Playlist("", name);
-    playlistHabits.forEach((habit) => {
-      playlist.addHabit(habit.id);
-    });
-    dispatch({ type: "ADD_PLAYLIST", playlist: playlist });
+    let updatedPlaylist = new Playlist(route.params.playlist.id, name);
+    updatedPlaylist.habits = playlistHabits.map((habit) => habit.id);
+
+    if (isEditMode) {
+      dispatch({
+        type: "UPDATE_PLAYLIST",
+        playlist: updatedPlaylist,
+      });
+    } else {
+      const playlist = new Playlist("", name);
+
+      dispatch({ type: "ADD_PLAYLIST", playlist: playlist });
+    }
+  };
+
+  const onRemoveHabit = (habit: Habit) => {
+    setPlaylistHabits(playlistHabits.filter((h) => h.id !== habit.id));
   };
 
   return (
-    <View>
-      <Text>
-        <Text style={styles.title}>
-          {isEditMode ? "Edit" : "Add new"} playlist
-        </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>
+        {isEditMode ? "Edit Playlist" : "Add Playlist"}
       </Text>
       <Divider />
-      {/* Name input */}
+      {/* Playlist Name */}
       <View style={styles.formLine}>
         <Text style={styles.formLineText}>
           <MaterialIcons name="title" size={24} color={secondaryColor} />
-          Name
+          Name:
         </Text>
         <TextInput
-          placeholder="Playlist name"
-          onChangeText={(text) => {
-            setName(text);
-          }}
           style={styles.textInput}
+          onChangeText={(text) => setName(text)}
           value={name}
         />
       </View>
-      {/* Habit selection */}
+      {/* Playlist Habits */}
       <View style={styles.formLine}>
         <Text style={styles.formLineText}>
           <MaterialIcons name="playlist-add" size={24} color={secondaryColor} />
@@ -100,41 +109,45 @@ export const AddEditPlaylist = ({ navigation, route }) => {
           search={true}
         />
       </View>
-      {/* Selected habits */}
-      <View style={styles.formLine}>
-        <Text style={styles.formLineText}>
-          <MaterialIcons
-            name="playlist-add-check"
-            size={24}
-            color={secondaryColor}
-          />
-          Selected habits
-        </Text>
-      </View>
+
+      {/* Playlist Habits List */}
+      <Text style={styles.title}>Habits in Playlist</Text>
       <DraggableFlatList
         data={playlistHabits}
         renderItem={({ item, drag, isActive }) => {
-          return <RowItem item={item.name} drag={drag} isActive={isActive} />;
+          return (
+            <RowItem
+              item={item.name}
+              drag={drag}
+              isActive={isActive}
+              onRemove={() => onRemoveHabit(item)}
+            />
+          );
         }}
-        keyExtractor={(item, index) => `draggable-item-${item.name}`}
+        keyExtractor={(item, index) => `draggable-item-${index}`}
         onDragEnd={({ data }) => setPlaylistHabits(data)}
+        style={{ maxHeight: "50%" }}
       />
-      {/* Save button */}
+
       <Button
         onPress={() => {
           registerPlaylist();
           navigation.goBack();
         }}
-        style={{ margin: 10 }}
-      >
-        Save
-      </Button>
-
+        title={
+          <Text style={{ fontSize: 16 }}>
+            <Entypo name="save" size={16} color="black" /> Save
+          </Text>
+        }
+        buttonStyle={{ backgroundColor: "white", ...styles.button }}
+        color={secondaryColor}
+        titleStyle={{ color: "black" }}
+      />
     </View>
   );
 };
 
-const RowItem = ({ item, drag, isActive }) => {
+const RowItem = ({ item, drag, isActive, onRemove }) => {
   return (
     <TouchableOpacity
       onLongPress={drag}
@@ -143,23 +156,29 @@ const RowItem = ({ item, drag, isActive }) => {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginHorizontal: 10,
         borderBottomColor: "#eee",
         borderBottomWidth: 1,
-        paddingVertical: 10,
         backgroundColor: isActive ? secondaryColor : "white",
+        padding: 10,
+        width: "100%",
       }}
     >
       <Text style={{ fontSize: 18, fontWeight: "bold" }}>{item}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          onRemove();
+        }}
+      >
+        <AntDesign name="delete" size={18} color="red" />
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
     flexGrow: 1,
   },
   title: {
@@ -191,5 +210,22 @@ const styles = StyleSheet.create({
     borderColor: "#eee",
     fontWeight: "bold",
     minWidth: "15%",
+  },
+  button: {
+    margin: 10,
+    width: "80%",
+    shadowOpacity: 0.2,
+    borderWidth: 0.1,
+    borderRadius: 10,
+    padding: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+  },
+  separator: {
+    backgroundColor: secondaryColor,
+    marginVertical: 15,
+    height: 1,
+    width: "80%",
+    opacity: 0.2,
   },
 });

@@ -40,7 +40,6 @@ export const HabitList = ({ navigation }) => {
 
   useEffect(() => {
     // Filter on selected tags
-    const useEffectStartTimestamp = new Date().getTime();
     let searchedHabits = filteredHabits;
     if (selectedTags.length > 0) {
       searchedHabits = allHabits.filter((habit) => {
@@ -50,20 +49,11 @@ export const HabitList = ({ navigation }) => {
       searchedHabits = allHabits;
     }
     // Log search duration
-    const searchStart = new Date().getTime();
     searchedHabits = searchedHabits.filter((habit) =>
       habit.name.toLowerCase().includes(searchText.toLowerCase())
     );
-    const searchEnd = new Date().getTime();
-    console.log("Search duration: " + (searchEnd - searchStart) + "ms");
 
     setFilteredHabits(searchedHabits);
-    const useEffectEndTimestamp = new Date().getTime();
-    console.log(
-      "useEffect duration: " +
-        (useEffectEndTimestamp - useEffectStartTimestamp) +
-        "ms"
-    );
   }, [selectedTags, searchText, allHabits]);
 
   const removeHabit = (habit: Habit) => {
@@ -236,10 +226,7 @@ export const HabitList = ({ navigation }) => {
                   label={tag.toLowerCase()}
                   key={tag}
                   onPress={() => {
-                    const startTime = new Date().getTime();
                     toggleTagSelection(tag);
-                    const endTime = new Date().getTime();
-                    console.log("Time to toggle tag: " + (endTime - startTime));
                   }}
                   selected={selectedTags.includes(tag)}
                 />
