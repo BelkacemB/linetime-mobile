@@ -13,7 +13,7 @@ import {
   MaterialIcons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
-import { SelectChip } from "../../components/SelectChip";
+import SelectChip from "../../components/SelectChip";
 import { primaryColor, secondaryColor } from "../../constants/Colors";
 import useHabitTags from "../../hooks/useHabitTags";
 import { TIMES_OF_DAY } from "../../model/constants";

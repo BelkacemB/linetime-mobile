@@ -20,7 +20,7 @@ export const PlaylistsList = ({ navigation }) => {
 
   React.useEffect(() => {
     setFilteredPlaylists(
-      allPlaylists.filter((playlist) =>
+      allPlaylists?.filter((playlist) =>
         playlist.name.toLowerCase().includes(searchText.toLowerCase())
       )
     );
