@@ -21,6 +21,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { secondaryColor } from "../constants/Colors";
 import { SplashScreen } from "../screens/SplashScreen";
+import { PlaylistsList } from "../screens/playlists/PlaylistsList";
+import { AddEditPlaylist } from "../screens/playlists/AddEditPlaylist";
 
 export default function Navigation({
   colorScheme,
@@ -84,6 +86,11 @@ function RootNavigator() {
           component={AddEditHabit}
           options={{ title: "Add/edit habit" }}
         />
+        <HomeStack.Screen
+          name="AddEditPlaylist"
+          component={AddEditPlaylist}
+          options={{ title: "Add/edit playlist" }}
+        />
         {/* Add the bottom tab navigator to the stack navigator */}
       </HomeStack.Navigator>
     </AppProvider>
@@ -130,8 +137,17 @@ function BottomTabsNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Playlist"
+        name="Habits"
         component={HabitList}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="meditation" size={24} color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Playlists"
+        component={PlaylistsList}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons

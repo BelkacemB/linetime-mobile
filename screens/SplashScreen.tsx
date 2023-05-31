@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 export const SplashScreen = () => {
   return (
     <View style={styles.splashScreen}>
-      <Text style={{fontSize: 40}}>LineTime</Text>
+      <Text style={{ fontSize: 40 }}>LineTime</Text>
     </View>
   );
 };

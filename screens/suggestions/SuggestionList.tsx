@@ -89,6 +89,10 @@ export const SuggestionList = ({ navigation, route }) => {
         habit={habitToCheckIn}
         onConfirmCheckIn={onConfirmCheckIn}
         onCancel={() => setHabitToCheckIn(null)}
+        onChangeNote={(note) => {
+          habitToCheckIn.clockInWithNote(note);
+          dispatch({ type: "UPDATE_HABIT", habit: habitToCheckIn });
+        }}
       />
 
       <View style={styles.container}>

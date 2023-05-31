@@ -8,17 +8,29 @@ import {
 } from "../api/HabitService";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
+import Playlist from "./Playlist";
+import {
+  getUserPlaylists,
+  persistPlaylist,
+  updatePlaylist,
+  deletePlaylist,
+} from "../api/PlaylistService";
 
 type HabitAction =
   | { type: "ADD_HABIT"; habit: Habit }
   | { type: "UPDATE_HABIT"; habit: Habit }
   | { type: "DELETE_HABIT"; habit: Habit }
   | { type: "LOAD_HABITS"; habits: Habit[] }
+  | { type: "LOAD_PLAYLISTS"; playlists: Playlist[] }
+  | { type: "ADD_PLAYLIST"; playlist: Playlist }
+  | { type: "UPDATE_PLAYLIST"; playlist: Playlist }
+  | { type: "DELETE_PLAYLIST"; playlist: Playlist }
   | { type: "SET_TOKEN"; token: string }
   | { type: "SET_USER_ID"; userId: string };
 
 type InitialStateType = {
   habits: Habit[];
+  playlists: Playlist[];
   token: string;
   userId: string;
   status: string;
@@ -26,16 +38,13 @@ type InitialStateType = {
 
 const initialState = {
   habits: [] as Habit[],
+  playlists: [] as Playlist[],
   token: "",
   userId: "",
   status: "initial",
 };
 
-const persistHabitAndGetId = async (
-  habit: Habit,
-  token: string,
-  userId: string
-) => {
+const persistHabitAndGetId = async (habit: Habit, token: string) => {
   const id = await persistHabit(habit, token);
   return id;
 };
@@ -51,11 +60,9 @@ const mainReducer = (
 ): InitialStateType => {
   switch (action.type) {
     case "ADD_HABIT":
-      persistHabitAndGetId(action.habit, state.token, state.userId).then(
-        (id) => {
-          action.habit.id = id;
-        }
-      );
+      persistHabitAndGetId(action.habit, state.token).then((id) => {
+        action.habit.id = id;
+      });
       return {
         ...state,
         habits: [...state.habits, action.habit],
@@ -80,6 +87,34 @@ const mainReducer = (
         ...state,
         habits: action.habits,
         status: "loaded",
+      };
+    case "LOAD_PLAYLISTS":
+      return {
+        ...state,
+        playlists: action.playlists,
+        status: "loaded",
+      };
+    case "ADD_PLAYLIST":
+      persistPlaylist(action.playlist, state.token);
+      return {
+        ...state,
+        playlists: [...state.playlists, action.playlist],
+      };
+    case "UPDATE_PLAYLIST":
+      updatePlaylist(action.playlist, state.token, state.userId);
+      return {
+        ...state,
+        playlists: state.playlists.map((playlist) =>
+          playlist.id === action.playlist.id ? action.playlist : playlist
+        ),
+      };
+    case "DELETE_PLAYLIST":
+      deletePlaylist(action.playlist, state.token, state.userId);
+      return {
+        ...state,
+        playlists: state.playlists.filter(
+          (playlist) => playlist.id !== action.playlist.id
+        ),
       };
     case "SET_TOKEN":
       return {
@@ -107,6 +142,11 @@ const AppProvider = ({ children }) => {
     dispatch({ type: "LOAD_HABITS", habits });
   };
 
+  const loadPlaylists = async () => {
+    const playlists = await getUserPlaylists(state.userId, token);
+    dispatch({ type: "LOAD_PLAYLISTS", playlists });
+  };
+
   useEffect(() => {
     if (user) {
       user.getIdToken().then((token) => {
@@ -121,6 +161,7 @@ const AppProvider = ({ children }) => {
       dispatch({ type: "SET_TOKEN", token: token });
       dispatch({ type: "SET_USER_ID", userId: user.uid });
       loadHabits();
+      loadPlaylists();
     }
   }, [user, token]);
 

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const SelectChip = ({ label, selected, onPress }: SelectChipProps) => {
+const SelectChip = ({ label, selected, onPress }: SelectChipProps) => {
   return (
     <Chip
       onPress={onPress}
@@ -34,3 +34,6 @@ export const SelectChip = ({ label, selected, onPress }: SelectChipProps) => {
     </Chip>
   );
 };
+
+// Export memoized component
+export default React.memo(SelectChip);

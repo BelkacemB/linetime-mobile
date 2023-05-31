@@ -16,19 +16,16 @@ import {
 import { SelectChip } from "../../components/SelectChip";
 import { primaryColor, secondaryColor } from "../../constants/Colors";
 import useHabitTags from "../../hooks/useHabitTags";
-import useUserId from "../../hooks/useUserId";
 import { TIMES_OF_DAY } from "../../model/constants";
 import Habit, { HabitBuilder } from "../../model/Habit";
 import { AppContext } from "../../model/Store";
-import { getUserHabits } from "../../api/HabitService";
-import { reloadAndDispatch } from "../../model/Util";
 
 export const AddEditHabit = ({ navigation, route }) => {
   // Get habit from route params if it exists
   const habit = route.params?.habit ?? undefined;
 
   const {
-    state: { habits, token, userId },
+    state: { habits, userId },
     dispatch,
   } = useContext(AppContext);
   const typedHabit: Habit = habit as Habit;

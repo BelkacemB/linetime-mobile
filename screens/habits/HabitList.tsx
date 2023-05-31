@@ -1,9 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import {
-  Modal,
-  ScrollView,
-  StyleSheet
-} from "react-native";
+import React, { useContext, useCallback } from "react";
+import { Modal, ScrollView, StyleSheet } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { Button, Dialog } from "@rneui/base";
 
@@ -12,26 +8,26 @@ import { secondaryColor } from "../../constants/Colors";
 import { HabitElement } from "../../components/HabitElement";
 import { TouchableOpacity, View } from "../../components/Themed";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 
 import { AppContext } from "../../model/Store";
 import Habit from "../../model/Habit";
 import useHabitTags from "../../hooks/useHabitTags";
-import { SelectChip } from "../../components/SelectChip";
+import SelectChip from "../../components/SelectChip";
 import { ConfirmCheckIn } from "../../components/dialogs/ConfirmCheckIn";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { CheckInList } from "../../components/CheckInList";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 export const HabitList = ({ navigation }) => {
   const {
-    state: { habits: allHabits, token, userId },
+    state: { habits: allHabits },
     dispatch,
   } = useContext(AppContext);
 
   const [searchText, setSearchText] = React.useState("");
-  const [filteredHabits, setFilteredHabits] = React.useState(allHabits);
   const [habitToDelete, setHabitToDelete] = React.useState(null);
 
   const [habitToCheckIn, setHabitToCheckIn] = React.useState(null);
@@ -42,23 +38,14 @@ export const HabitList = ({ navigation }) => {
 
   const { tags, selectedTags, toggleTagSelection } = useHabitTags(allHabits);
 
-  useEffect(() => {
-    // Filter on selected tags
-    let searchedHabits = filteredHabits;
-    if (selectedTags.length > 0) {
-      searchedHabits = allHabits.filter((habit) => {
-        return selectedTags.every((tag) => habit.tags?.includes(tag));
-      });
-    } else {
-      searchedHabits = allHabits;
-    }
+  const handleToggleTag = useCallback(
+    (tag) => {
+      toggleTagSelection(tag);
+    },
+    [toggleTagSelection]
+  );
 
-    searchedHabits = searchedHabits.filter((habit) =>
-      habit.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-
-    setFilteredHabits(searchedHabits);
-  }, [selectedTags, searchText, allHabits]);
+  const tabBarHeight = useBottomTabBarHeight();
 
   const removeHabit = (habit: Habit) => {
     dispatch({ type: "DELETE_HABIT", habit });
@@ -105,8 +92,7 @@ export const HabitList = ({ navigation }) => {
   );
 
   return (
-    <View 
-    style={{ flexDirection: "column", alignContent: "center" }}>
+    <View style={{ flexDirection: "column", alignContent: "center" }}>
       {/* Confirm delete */}
       <Dialog
         isVisible={habitToDelete !== null}
@@ -159,17 +145,13 @@ export const HabitList = ({ navigation }) => {
         }}
       >
         <View style={styles.modalView}>
-          <CheckInList
-            habits={[habitToHistory]}
-          />
+          <CheckInList habits={[habitToHistory]} />
           <TouchableOpacity
             style={styles.modalButton}
             onPress={() => setHistoryModalVisible(!historyModalVisible)}
           >
             <FontAwesome name="remove" size={24} color="black" />
-            <Text style={{ fontSize: 20 }}>
-              Hide
-            </Text>
+            <Text style={{ fontSize: 20 }}>Hide</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -234,9 +216,7 @@ export const HabitList = ({ navigation }) => {
                 <SelectChip
                   label={tag.toLowerCase()}
                   key={tag}
-                  onPress={() => {
-                    toggleTagSelection(tag);
-                  }}
+                  onPress={() => handleToggleTag(tag)}
                   selected={selectedTags.includes(tag)}
                 />
               ))}
@@ -247,7 +227,11 @@ export const HabitList = ({ navigation }) => {
 
       {/* List of habits */}
       <SwipeListView
-        data={filteredHabits}
+        data={allHabits.filter(
+          (habit) =>
+            habit.name.toLowerCase().includes(searchText.toLowerCase()) &&
+            selectedTags.every((tag) => habit.tags?.includes(tag))
+        )}
         renderItem={({ item }) => (
           <HabitElement habit={item} navigation={navigation} />
         )}
@@ -257,7 +241,7 @@ export const HabitList = ({ navigation }) => {
         rightOpenValue={-150}
         previewRowKey={"0"}
         previewOpenValue={-40}
-        previewOpenDelay={3000}
+        style={{ marginBottom: tabBarHeight * 2 }}
       />
     </View>
   );
@@ -293,7 +277,7 @@ const styles = StyleSheet.create({
     width: "40%",
     alignItems: "center",
     shadowColor: "#000",
-    marginTop: 10
+    marginTop: 10,
   },
   backTextWhite: {
     color: "#FFF",
@@ -312,7 +296,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 15,
     borderBottomColor: secondaryColor,
-    borderBottomWidth: 0.5
+    borderBottomWidth: 0.5,
   },
   backRightBtn: {
     alignItems: "center",
@@ -320,13 +304,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "absolute",
     top: 0,
-    width: 75
+    width: 75,
   },
   backRightBtnLeft: {
-    right: 75
+    right: 75,
   },
   backRightBtnRight: {
-    right: 0
+    right: 0,
   },
   modalView: {
     backgroundColor: "white",
@@ -340,6 +324,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
 });

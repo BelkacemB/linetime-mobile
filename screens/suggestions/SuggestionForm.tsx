@@ -12,7 +12,7 @@ import { secondaryColor } from "../../constants/Colors";
 import { RootTabScreenProps } from "../../types";
 import useUserToken from "../../hooks/useUserToken";
 import useHabitTags from "../../hooks/useHabitTags";
-import { SelectChip } from "../../components/SelectChip";
+import SelectChip from "../../components/SelectChip";
 import SimpleLineIcons from "@expo/vector-icons/build/SimpleLineIcons";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { getDefaultEnergyLevel } from "../../constants/Util";

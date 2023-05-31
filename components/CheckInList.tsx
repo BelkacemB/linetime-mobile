@@ -56,12 +56,13 @@ export const CheckInList = ({ habits }: Props) => {
               {formatDate(checkIn.checkInTime)}
             </Text>
             <Text
-              style = {{
+              style={{
                 fontSize: 16,
                 textAlign: "center",
                 width: "50%",
               }}
-            >{checkIn.note}
+            >
+              {checkIn.note}
             </Text>
           </View>
         );
@@ -76,6 +77,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#fff",
     padding: 5,
-    marginVertical: 5
-  }
+    marginVertical: 5,
+  },
 });

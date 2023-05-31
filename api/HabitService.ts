@@ -59,6 +59,5 @@ export async function getUserHabits(
   });
   let json = await response.json();
   let habitCollection: any[] = json;
-  // Apply habit.fromJson to each habit in the json response
   return habitCollection.map((habitJson) => Habit.fromJSON(habitJson));
 }
